@@ -15,7 +15,7 @@ public class SQL {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team013", "team013", "96d980a0");
             Statement stmt = con.createStatement(); // create from open connection
-            
+           
             DatabaseMetaData md = con.getMetaData();
             ResultSet rs = md.getTables(null, null, "%", null);
             while (rs.next()) {
