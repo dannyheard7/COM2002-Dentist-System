@@ -40,33 +40,33 @@ public class TableCreator {
             Statement stmt = con.createStatement(); // create from open connection
 
             String createPatientTable = "CREATE TABLE IF NOT EXISTS Patient " +
-                    "(patientID INTEGER NOT NULL AUTO_INCREMENT, " +
-                    " title VARCHAR(10), " +
-                    " forename VARCHAR(40), " +
-                    " surname VARCHAR(40), " +
-                    " doB VARCHAR(9), " +
-                    " contactNo VARCHAR(30), " +
-                    " PRIMARY KEY ( patientID ))";
+                "(patientID INTEGER NOT NULL AUTO_INCREMENT, " +
+                " title VARCHAR(10), " +
+                " forename VARCHAR(40), " +
+                " surname VARCHAR(40), " +
+                " doB VARCHAR(9), " +
+                " contactNo VARCHAR(30), " +
+                " PRIMARY KEY ( patientID ))";
             
             String createPlanTable = "CREATE TABLE IF NOT EXISTS Plan (" +
-                "  planID INT NOT NULL AUTO_INCREMENT," +
                 "  name VARCHAR(30) NOT NULL," +
                 "  monthlyCost DECIMAL(4,2) NOT NULL," +
                 "  checkUpCount INT NOT NULL," +
                 "  hygieneCount INT NOT NULL," +
                 "  treatmentCount INT NOT NULL," +
-                "  PRIMARY KEY (planId)" +
+                "  PRIMARY KEY (name)" +
                 ")";
 
             String createPatientPlanTable = "CREATE TABLE IF NOT EXISTS PatientPlan " +
-                    "(patientID INTEGER not NULL, " +
-                    " planID INTEGER not NULL, " +
-                    " remainingCheckUps INTEGER, " +
-                    " remainingHygiene INTEGER, " +
-                    " remainingTreatments INTEGER, " +
-                    " renewDate VARCHAR(9), " +
-                    " FOREIGN KEY (patientID) REFERENCES Patient(patientID), " +
-                    " PRIMARY KEY ( planID ))";
+                "(patientID INTEGER not NULL, " +
+                " planName VARCHAR(30) not NULL, " +
+                " remainingCheckUps INTEGER, " +
+                " remainingHygiene INTEGER, " +
+                " remainingTreatments INTEGER, " +
+                " renewDate VARCHAR(9), " +
+                " FOREIGN KEY (patientID) REFERENCES Patient(patientID), " +
+                " FOREIGN KEY (planName) REFERENCES Plan(name), " +
+                " PRIMARY KEY ( planName, patientID ))";
             
             String createStaffTable = "CREATE TABLE IF NOT EXISTS Staff (" +
                 "  staffID INT NOT NULL AUTO_INCREMENT," +
@@ -86,18 +86,18 @@ public class TableCreator {
                 ")";
 
             String createTreatmentTable = "CREATE TABLE IF NOT EXISTS Treatment " +
-                    "(treatmentID INTEGER not NULL AUTO_INCREMENT, " +
-                    " name VARCHAR(30), " +
-                    " cost DECIMAL, " +
-                    " length INTEGER, " +
-                    " PRIMARY KEY ( treatmentID ))";
+                "(treatmentID INTEGER not NULL AUTO_INCREMENT, " +
+                " name VARCHAR(30), " +
+                " cost DECIMAL, " +
+                " length INTEGER, " +
+                " PRIMARY KEY ( treatmentID ))";
 
             String createAppointTreatmentTable = "CREATE TABLE IF NOT EXISTS  AppointmentTreatment " +
-                    "(treatmentID INTEGER not NULL, " +
-                    " appointmentID INTEGER not NULL, " +
-                    " PRIMARY KEY (treatmentID, appointmentID), " +
-                    " FOREIGN KEY (treatmentID) REFERENCES Treatment(treatmentID), " +
-                    " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";
+                "(treatmentID INTEGER not NULL, " +
+                " appointmentID INTEGER not NULL, " +
+                " PRIMARY KEY (treatmentID, appointmentID), " +
+                " FOREIGN KEY (treatmentID) REFERENCES Treatment(treatmentID), " +
+                " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";
             
             String createAddressTable = "CREATE TABLE IF NOT EXISTS Address (" +
                 "houseNo INT NOT NULL," +
