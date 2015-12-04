@@ -18,18 +18,20 @@ import javax.swing.border.LineBorder;
 import java.util.ArrayList;
 
 public class graphicalDisplay {
-    private static final JPanel gui = new JPanel(new BorderLayout(3, 3));
-    private static final JPanel secGui = new JPanel(new BorderLayout(3, 3));
-    private static final char[] DAYS = {'M','T','W','T','F'};
-    private static JButton[] calendar = new JButton[5];
-    private static JPanel outerBoard;
-    private static JFrame main;
-    private static JFrame secretaryUI;
-    private static JFrame partnerUI;
+
+
     private static graphicalDisplay g;
     private Toolkit toolkit = Toolkit.getDefaultToolkit();
     private Dimension screenDimensions = toolkit.getScreenSize();
-    //private String[] days = ["Monday","Tuesday"]
+    private final String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    private JFrame main;
+    private JFrame secretaryUI; // Top Layer
+    private JFrame partnerUI;
+    private final JPanel gui = new JPanel(new BorderLayout(3, 3));
+    private final JPanel secGui = new JPanel(new BorderLayout(3, 3));
+    private JPanel calendarMaster;
+    private JPanel calendar;
+
 
     public static void main(String[] args){
         g = new graphicalDisplay();
@@ -67,7 +69,21 @@ public class graphicalDisplay {
     public void secretaryMain() {
         secretaryUI = new JFrame("Secretary Calendar View");
         secretaryUI.setContentPane(secGui);
-        JPanel calendar = new JPanel(new FlowLayout());
+
+
+
+        secGui.add(buildCalendar());
+
+        secretaryUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        secretaryUI.setSize(500,300);
+
+        secretaryUI.setLocation(new Point(screenDimensions.width/2 - main.getWidth()/2,screenDimensions.height/2 - main.getWidth()/2));
+        secretaryUI.setVisible(true);
+    }
+
+    public JPanel buildCalendar() {
+        calendarMaster = new JPanel(new FlowLayout());
+        calendar = new JPanel(new FlowLayout());
         JButton day1 = new JButton("Monday");
         day1.setBackground(Color.WHITE);
         JButton day2 = new JButton("Tuesday");
@@ -79,21 +95,23 @@ public class graphicalDisplay {
         JButton day5 = new JButton("Friday");
         day5.setBackground(Color.WHITE);
 
+
+        for (int i=0; i<5; i++) {
+            calendarMaster.add(new JLabel(days[i]));
+        }
+
+
+
         calendar.add(day1);
         calendar.add(day2);
         calendar.add(day3);
         calendar.add(day4);
         calendar.add(day5);
 
-        secGui.add(calendar);
+        calendarMaster.add(calendar);
 
-        secretaryUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        secretaryUI.setSize(500,300);
+        return calendarMaster;
 
-        secretaryUI.setLocation(new Point(screenDimensions.width/2 - main.getWidth()/2,screenDimensions.height/2 - main.getWidth()/2));
-        secretaryUI.setVisible(true);
     }
-
-
 
 }
