@@ -1,4 +1,4 @@
-package db;
+package com2002.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,14 +22,25 @@ public class TableCreator {
     private static String teamPassword = "96d980a0";
 
     public static void main(String[] args) {
-
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(teamURL, teamUserName , teamPassword );
+            dropAll();
+            createSchema();
+        } catch(Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    /**
+     * Creates the database schema
+     */
+    public static void createSchema() {
+        try {
+            Connection con = Database.getConnection();
             Statement stmt = con.createStatement(); // create from open connection
 
             String createPatientTable = "CREATE TABLE IF NOT EXISTS Patient " +
-                    "(patientID INTEGER NOT NULL, " +
+                    "(patientID INTEGER NOT NULL AUTO_INCREMENT, " +
                     " title VARCHAR(10), " +
                     " forename VARCHAR(40), " +
                     " surname VARCHAR(40), " +
@@ -58,16 +69,15 @@ public class TableCreator {
                     " PRIMARY KEY ( planID ))";
             
             String createStaffTable = "CREATE TABLE IF NOT EXISTS Staff (" +
-                "  staffID INT NOT NULL," +
+                "  staffID INT NOT NULL AUTO_INCREMENT," +
                 "  position varchar(10) NOT NULL," +
                 "  PRIMARY KEY (staffID)" +
                 ")";
             
             String createAppointmentTable = "CREATE TABLE IF NOT EXISTS Appointment (" +
-                "  appointmentID INT NOT NULL, " +
-                "  date DATE NOT NULL," +
-                "  startTime TIME NOT NULL," +
-                "  endTime TIME NOT NULL," +
+                "  appointmentID INT NOT NULL AUTO_INCREMENT, " +
+                "  startTime DATETIME NOT NULL," +
+                "  endTime DATETIME NOT NULL," +
                 "  staffID INT NOT NULL," +
                 "  patientID INT," +
                 "  PRIMARY KEY (appointmentID)," +
@@ -76,7 +86,7 @@ public class TableCreator {
                 ")";
 
             String createTreatmentTable = "CREATE TABLE IF NOT EXISTS Treatment " +
-                    "(treatmentID INTEGER not NULL, " +
+                    "(treatmentID INTEGER not NULL AUTO_INCREMENT, " +
                     " name VARCHAR(30), " +
                     " cost DECIMAL, " +
                     " length INTEGER, " +
@@ -117,14 +127,17 @@ public class TableCreator {
             stmt.executeUpdate(createAddressTable);
             stmt.executeUpdate(createPatientAddressTable);
            
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
     }
     
-    public void dropAll() {
+    /** 
+     * Drops all tables in the database for schema changes
+     */
+    public static void dropAll() {
         try {
-            Connection con = DriverManager.getConnection(teamURL, teamUserName , teamPassword );
+            Connection con =  Database.getConnection();
             Statement stmt = con.createStatement(); // create from open connection
         
             String clear = "DROP TABLE IF EXISTS PatientAddress,Address,"
