@@ -40,7 +40,7 @@ public class TableCreator {
             Statement stmt = con.createStatement(); // create from open connection
 
             String createPatientTable = "CREATE TABLE IF NOT EXISTS Patient " +
-                "(patientID INTEGER NOT NULL AUTO_INCREMENT, " +
+                "(patientID INT NOT NULL AUTO_INCREMENT, " +
                 " title VARCHAR(10), " +
                 " forename VARCHAR(40), " +
                 " surname VARCHAR(40), " +
@@ -58,12 +58,12 @@ public class TableCreator {
                 ")";
 
             String createPatientPlanTable = "CREATE TABLE IF NOT EXISTS PatientPlan " +
-                "(patientID INTEGER not NULL, " +
+                "(patientID INT not NULL, " +
                 " planName VARCHAR(30) not NULL, " +
-                " remainingCheckUps INTEGER, " +
-                " remainingHygiene INTEGER, " +
-                " remainingTreatments INTEGER, " +
-                " renewDate VARCHAR(9), " +
+                " remainingCheckUps INT, " +
+                " remainingHygiene INT, " +
+                " remainingTreatments INT, " +
+                " renewDate DATETIME NOT NULL, " +
                 " FOREIGN KEY (patientID) REFERENCES Patient(patientID), " +
                 " FOREIGN KEY (planName) REFERENCES Plan(name), " +
                 " PRIMARY KEY ( planName, patientID ))";
@@ -86,10 +86,9 @@ public class TableCreator {
                 ")";
 
             String createTreatmentTable = "CREATE TABLE IF NOT EXISTS Treatment " +
-                "(treatmentID INTEGER not NULL AUTO_INCREMENT, " +
+                "(treatmentID INT not NULL AUTO_INCREMENT, " +
                 " name VARCHAR(30), " +
                 " cost DECIMAL, " +
-                " length INTEGER, " +
                 " PRIMARY KEY ( treatmentID ))";
 
             String createAppointTreatmentTable = "CREATE TABLE IF NOT EXISTS  AppointmentTreatment " +
