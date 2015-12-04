@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Date;
+import java.util.ArrayList;
 
 import com2002.db.Database;
 
@@ -14,14 +15,20 @@ public class Appointment {
     private Date startTime, endTime;
     private Connection conn;
 
-    public Appointment() {
+    public Appointment(int id) {
         conn = Database.getConnection();
+        load(id);
+    }
+    
+    public Appointment(int patientID, Date startTime, Date endTime, int staffID) {
+        conn = Database.getConnection();
+        create(patientID, startTime, endTime, staffID);
     }
     
     /**
     * Creates a new appointment record in the database
     */
-    public boolean create(int patientID, Date startTime, Date endTime, int staffID){
+    private boolean create(int patientID, Date startTime, Date endTime, int staffID){
         this.patientID = patientID;
         this.staffID = staffID;
         this.startTime = startTime;
@@ -61,7 +68,7 @@ public class Appointment {
      * Load the appointment given an id
      * @param id - the id of the appointment being loaded
      */
-    public boolean load(int id) {
+    private boolean load(int id) {
         PreparedStatement stmt = null;
         
         try {
@@ -101,6 +108,38 @@ public class Appointment {
     
     public Date getEndTime() {
         return endTime;
+    }
+    
+    /** 
+     * Returns an array list of appointments on a specified date
+     */
+    private static ArrayList getOnDate(Date date) {
+        Connection conn = Database.getConnection();
+        
+        ArrayList list = new ArrayList();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment"
+                    + "WHERE DATE(startDate) = ?");
+            
+            stmt.setDate(1, new java.sql.Date(date.getTime()));
+            ResultSet rs = stmt.executeQuery();  
+           
+            while(rs.next()) {
+                list.add(new Appointment(rs.getInt("appointmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            try {
+                if (stmt != null) { stmt.close();}
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+	}
+        
+        return list;
     }
             
 }
