@@ -4,6 +4,7 @@ import com2002.db.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -24,8 +25,7 @@ public class Patient {
     /**
      * Creates a new address record in the database
      */
-    public boolean create(int patientID, String title, String forename, String surname, Date dob, String contactNo){
-        this.patientID = patientID;
+    public boolean create(String title, String forename, String surname, Date dob, String contactNo){
         this.title = title;
         this.forename = forename;
         this.surname = surname;
@@ -35,18 +35,22 @@ public class Patient {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("INSERT INTO Patient (patientID, title, "
-                    + "forename, surname, doB, contactNo) VALUES (?, ?, ?, ?, ?, ?)");
+            stmt = conn.prepareStatement("INSERT INTO Patient (title, "
+                    + "forename, surname, doB, contactNo) VALUES ( ?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
 
-            stmt.setInt(1, patientID);
-            stmt.setString(2, title);
-            stmt.setString(3, forename);
-            stmt.setString(4, surname);
-            stmt.setDate(5, new java.sql.Date(dob.getTime())); // what is with this??
-            stmt.setString(6, contactNo);
+            stmt.setString(1, title);
+            stmt.setString(2, forename);
+            stmt.setString(3, surname);
+            stmt.setDate(4, new java.sql.Date(dob.getTime())); // what is with this??
+            stmt.setString(5, contactNo);
 
             stmt.executeUpdate();
-        } catch(SQLException e) {
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()) { this.patientID = rs.getInt(1);}
+
+        } catch (SQLException e) {
             System.out.println(e.toString());
             return false;
         }  finally {
