@@ -2,5 +2,6 @@ build/
 nbproject/
 .idea/
 *.xml
-nbproject/
 *.mf
+*.iml
+out/
