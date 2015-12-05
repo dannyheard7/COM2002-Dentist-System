@@ -20,14 +20,20 @@ public class Patient {
     private Date dateOfBirth;
     private Connection conn;
 
-    public Patient() {
+
+    public Patient (int patientID){
         conn = Database.getConnection();
+        patientByID(patientID);
+    }
+    public Patient(String title, String forename, String surname, Date dob, String contactNo) {
+        conn = Database.getConnection();
+        create(title, forename, surname, dob, contactNo);
     }
 
     /**
      * Creates a new patient record in the database
      */
-    public boolean create(String title, String forename, String surname, Date dob, String contactNo){
+    private boolean create(String title, String forename, String surname, Date dob, String contactNo){
         this.title = title;
         this.forename = forename;
         this.surname = surname;
@@ -66,26 +72,59 @@ public class Patient {
         return true;
     }
 
+    /**
+     * Load the patient given a Patient's ID number
+     * @param id - the id of the patient
+     */
+    private boolean patientByID(int id) {
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM Patient WHERE patientID = ?");
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                this.patientID = rs.getInt("patientID");
+                this.title = rs.getString("title");
+                this.forename = rs.getString("forename");
+                this.surname = rs.getString("surname");
+                this.dateOfBirth = rs.getDate("doB");
+                this.contactNo = rs.getString("contactNo");
+
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            try {
+                if (stmt != null) { stmt.close();}
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+
+        return true;
+    }
+
+
+    // Basic get methods.
     public int getPatientID() {
         return patientID;
     }
-
     public String getTitle() {
         return title;
     }
-
     public String getForename() {
         return forename;
     }
-
     public String getSurname() {
         return surname;
     }
-
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
-
     public String getContactNo() {return contactNo;}
 
 
