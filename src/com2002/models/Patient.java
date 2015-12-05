@@ -6,12 +6,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by HarryH on 04/12/2015.
  */
 public class Patient {
+
+    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE
 
     private int patientID;
     private String title, forename, surname, contactNo;
@@ -23,7 +25,7 @@ public class Patient {
     }
 
     /**
-     * Creates a new address record in the database
+     * Creates a new patient record in the database
      */
     public boolean create(String title, String forename, String surname, Date dob, String contactNo){
         this.title = title;
@@ -42,7 +44,7 @@ public class Patient {
             stmt.setString(1, title);
             stmt.setString(2, forename);
             stmt.setString(3, surname);
-            stmt.setDate(4, new java.sql.Date(dob.getTime())); // what is with this??
+            stmt.setDate(4, dob); // what is with this??
             stmt.setString(5, contactNo);
 
             stmt.executeUpdate();
