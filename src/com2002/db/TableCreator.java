@@ -1,9 +1,8 @@
 package com2002.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class TableCreator {
 
@@ -44,7 +43,7 @@ public class TableCreator {
                 " title VARCHAR(10), " +
                 " forename VARCHAR(40), " +
                 " surname VARCHAR(40), " +
-                " doB VARCHAR(9), " +
+                " doB DATETIME, " +
                 " contactNo VARCHAR(30), " +
                 " PRIMARY KEY ( patientID ))";
             

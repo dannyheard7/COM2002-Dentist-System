@@ -1,13 +1,13 @@
 package com2002.models;
 
+import com2002.db.Database;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.util.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
-
-import com2002.db.Database;
+import java.util.Date;
 
 public class Appointment {
     
@@ -28,6 +28,7 @@ public class Appointment {
     /**
     * Creates a new appointment record in the database
     */
+    // TODO: load if appointment already exists
     private boolean create(int patientID, Date startTime, Date endTime, int staffID){
         this.patientID = patientID;
         this.staffID = staffID;
@@ -59,7 +60,7 @@ public class Appointment {
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
-	}
+	    }
         
         return true;
     }
@@ -93,7 +94,7 @@ public class Appointment {
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
-	}
+	    }
         
         return true;
     }
@@ -120,8 +121,7 @@ public class Appointment {
         PreparedStatement stmt = null;
         
         try {
-            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment"
-                    + "WHERE DATE(startDate) = ?");
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startDate) = ?");
             
             stmt.setDate(1, new java.sql.Date(date.getTime()));
             ResultSet rs = stmt.executeQuery();  

@@ -1,41 +1,25 @@
 package com2002.models;
 
-import java.util.Date;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.sql.Date;
+
+import static org.junit.Assert.assertTrue;
 
 public class AppointmentTest {
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-    
     @Test
-    public void testCreateTwoAppointments() {
+    public void testCreateAppointment() {
 
-    // MyClass is tested
-    Appointment tester1 = new Appointment(1, new java.util.Date(), new java.util.Date(), 1);
-    Appointment tester2 = new Appointment(2, new java.util.Date(), new java.util.Date(), 2);
+        // MyClass is tester
+        Staff staff = new Staff("hygienist");
+        Patient patient = new Patient();
+        patient.create("Ms", "Beth", "Lum", new Date((new java.util.Date()).getTime()), "070");
 
-    // assert statements
-    assertThat(tester1.getID(), is(not(tester2.getID())));
+        Appointment tester1 = new Appointment(patient.getPatientID(), new java.util.Date(), new java.util.Date(), staff.getId());
+
+        // assert statements
+        assertTrue(tester1.getID() > 0);
   }
 
 }

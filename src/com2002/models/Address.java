@@ -1,10 +1,10 @@
 package com2002.models;
 
+import com2002.db.Database;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import com2002.db.Database;
 
 public class Address {
     
@@ -19,7 +19,8 @@ public class Address {
     /**
     * Creates a new address record in the database
     */
-    public boolean create(int houseNo, String street, String city, String district, String postcode){
+    // TODO: load if address already exists
+    private boolean create(int houseNo, String street, String city, String district, String postcode){
         this.houseNo = houseNo;
         this.street = street;
         this.city = city;
@@ -48,7 +49,7 @@ public class Address {
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
-	}
+	    }
         
         return true;
     }
