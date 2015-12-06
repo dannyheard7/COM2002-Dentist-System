@@ -22,11 +22,10 @@ public class Patient {
 
 
     public Patient (int patientID){
-        conn = Database.getConnection();
         patientByID(patientID);
     }
+
     public Patient(String title, String forename, String surname, Date dob, String contactNo) {
-        conn = Database.getConnection();
         create(title, forename, surname, dob, contactNo);
     }
 
@@ -39,7 +38,7 @@ public class Patient {
         this.surname = surname;
         this.dateOfBirth = dob;
         this.contactNo = contactNo;
-
+        conn = Database.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -64,6 +63,9 @@ public class Patient {
         }  finally {
             try {
                 if (stmt != null) { stmt.close();}
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
@@ -78,7 +80,7 @@ public class Patient {
      */
     private boolean patientByID(int id) {
         PreparedStatement stmt = null;
-
+        conn = Database.getConnection();
         try {
             stmt = conn.prepareStatement("SELECT * FROM Patient WHERE patientID = ?");
 
@@ -100,6 +102,9 @@ public class Patient {
         }  finally {
             try {
                 if (stmt != null) { stmt.close();}
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
@@ -107,6 +112,8 @@ public class Patient {
 
         return true;
     }
+
+    // TODO decide another way to return a patient - how much is enough to uniquely identify them. So we can get the ID.....
 
 
     // Basic get methods.

@@ -3,11 +3,12 @@ package com2002.models;
 import com2002.db.Database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Created by HarryH on 04/12/2015.
  */
-
 
 public class PatientPlan {
 
@@ -19,13 +20,15 @@ public class PatientPlan {
     private Connection conn;
 
     public PatientPlan(int id) {
-        conn = Database.getConnection();
         patientPlanByID(id);
+    }
+
+    public PatientPlan(String planName){
+        patientPlanByName(planName);
     }
 
     public PatientPlan(int patientID, String planName, int remainCheckups, int remainHygiene, int remainTreatments,
                        Date renewDate) {
-        conn = Database.getConnection();
         create(patientID, planName, remainCheckups, remainHygiene, remainTreatments, renewDate);
     }
 
@@ -40,7 +43,7 @@ public class PatientPlan {
         this.remainHygiene = remainHygiene;
         this.remainTreatments = remainTreatments;
         this.renewDate = renewDate;
-
+        conn = Database.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -61,6 +64,9 @@ public class PatientPlan {
         }  finally {
             try {
                 if (stmt != null) { stmt.close();}
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
@@ -75,7 +81,7 @@ public class PatientPlan {
      */
     private boolean patientPlanByID(int id) {
         PreparedStatement stmt = null;
-
+        conn = Database.getConnection();
         try {
             stmt = conn.prepareStatement("SELECT * FROM PatientPlan WHERE patientID = ?");
 
@@ -97,14 +103,48 @@ public class PatientPlan {
         }  finally {
             try {
                 if (stmt != null) { stmt.close();}
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
         }
 
-        // TODO arraylist of patients on each plan - based on plan name.
-
         return true;
+    }
+
+    // TODO arraylist of patients on each plan - based on plan name.
+    private ArrayList patientPlanByName(String planName) {
+        PreparedStatement stmt = null;
+        conn = Database.getConnection();
+
+        ArrayList lis = new ArrayList();
+
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM PatientPlan WHERE patientID = ?");
+
+            stmt.setString(1, planName);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                lis.add(new Patient(rs.getInt("patientID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return null;
+        }  finally {
+            try {
+                if (stmt != null) { stmt.close();}
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+
+        return lis;
     }
 
 
