@@ -6,33 +6,37 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Staff {
     
     private int id;
     private String position;
-    private Connection conn;
-
-    public Staff() {
-        conn = Database.getConnection();
-    }
 
     public Staff(String position) {
-        conn = Database.getConnection();
         create(position);
     }
 
     public Staff(int id) {
-        conn = Database.getConnection();
         load(id);
+    }
+
+    private void closeStatement(Connection conn, PreparedStatement stmt) {
+        try {
+            if (stmt != null) { stmt.close();}
+            if (conn != null) { conn.close(); }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
 
     /**
      * Creates a new staff record in the database
      */
-    public boolean create(String position){
+    private boolean create(String position){
         this.position = position;
 
+        Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -48,11 +52,7 @@ public class Staff {
             System.out.println(e.toString());
             return false;
         }  finally {
-            try {
-                if (stmt != null) { stmt.close();}
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            closeStatement(conn, stmt);
         }
 
         return true;
@@ -63,6 +63,7 @@ public class Staff {
      * @param id - the id of the staff member being loaded
      */
     private boolean load(int id) {
+        Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -73,24 +74,52 @@ public class Staff {
 
             if (rs.next()) {
                 this.id = rs.getInt("staffID");
+                this.position = rs.getString("position");
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
             return false;
         } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            closeStatement(conn, stmt);
         }
 
         return true;
     }
 
-    public int getId() {
-        return id;
+    public int getId() { return id; }
+
+    public String getPosition() { return position; }
+
+    /**
+     * Returns an array list of staff with a specified position e.g. 'dentist', 'hygienist'
+     */
+    public static ArrayList<Staff> getStaffWithPosition(String position) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        ArrayList<Staff> list = new ArrayList<>();
+
+        try {
+            stmt = conn.prepareStatement("SELECT staffID FROM Staff WHERE position = ?");
+
+            stmt.setString(1, position);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                list.add(new Staff(rs.getInt("staffID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            try {
+                if (stmt != null) { stmt.close();}
+                if (conn != null) { conn.close(); }
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+
+        return list;
     }
+
 }

@@ -13,16 +13,22 @@ public class Appointment {
     
     private int id, staffID, patientID;
     private Date startTime, endTime;
-    private Connection conn;
 
     public Appointment(int id) {
-        conn = Database.getConnection();
         load(id);
     }
     
     public Appointment(int patientID, Date startTime, Date endTime, int staffID) {
-        conn = Database.getConnection();
         create(patientID, startTime, endTime, staffID);
+    }
+
+    private void closeStatement(Connection conn, PreparedStatement stmt) {
+        try {
+            if (stmt != null) { stmt.close();}
+            if (conn != null) { conn.close(); }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }
     
     /**
@@ -34,7 +40,8 @@ public class Appointment {
         this.staffID = staffID;
         this.startTime = startTime;
         this.endTime = endTime;
-        
+
+        Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         
         try {
@@ -55,11 +62,7 @@ public class Appointment {
             System.out.println(e.toString());
             return false;
         }  finally {
-            try {
-                if (stmt != null) { stmt.close();}
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            closeStatement(conn, stmt);
 	    }
         
         return true;
@@ -70,10 +73,11 @@ public class Appointment {
      * @param id - the id of the appointment being loaded
      */
     private boolean load(int id) {
+        Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         
         try {
-            stmt = conn.prepareStatement("SELECT * FROM appointments WHERE appointmentID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM Appointment WHERE appointmentID = ?");
           
             stmt.setInt(1, id);          
             ResultSet rs = stmt.executeQuery();
@@ -89,11 +93,7 @@ public class Appointment {
             System.out.println(e.toString());
             return false;
         }  finally {
-            try {
-                if (stmt != null) { stmt.close();}
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            closeStatement(conn, stmt);
 	    }
         
         return true;
@@ -110,16 +110,47 @@ public class Appointment {
     public Date getEndTime() {
         return endTime;
     }
+
+    public Patient getPatient() { return new Patient(this.patientID); }
+
+    public Staff getStaff() { return new Staff(this.staffID); }
+
+    /**
+     * Cancels the appointment linked to the instance
+     * @return 1 if executed correctly otherwise 0
+     */
+    public boolean cancel() {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("DELETE FROM Appointment WHERE appointmentID = ?");
+            stmt.setInt(1, this.id);
+
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            this.id = this.staffID = this.patientID = 0;
+            this.startTime = this.endTime = null;
+
+            closeStatement(conn, stmt);
+        }
+
+        return true;
+    }
     
     /** 
      * Returns an array list of appointments on a specified date
      */
-    private static ArrayList getOnDate(Date date) {
+    // TODO: get appointments within a date range
+    private static ArrayList getAppointmentsOnDate(Date date) {
         Connection conn = Database.getConnection();
-        
-        ArrayList list = new ArrayList();
         PreparedStatement stmt = null;
-        
+
+        ArrayList list = new ArrayList();
+
         try {
             stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startDate) = ?");
             
@@ -137,9 +168,9 @@ public class Appointment {
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
-	}
+	    }
         
         return list;
     }
-            
+
 }
