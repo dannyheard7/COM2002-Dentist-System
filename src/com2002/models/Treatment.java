@@ -9,7 +9,6 @@ import java.sql.*;
  * Created by HarryH on 04/12/2015.
  */
 public class Treatment {
-    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE
 
     private int treatmentID;
     private BigDecimal cost;
