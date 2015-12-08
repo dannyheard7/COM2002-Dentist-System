@@ -1,6 +1,8 @@
 package com2002.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Database {
      private static Connection conn = null;  
@@ -19,5 +21,14 @@ public class Database {
          
          return conn;
      }
+
+    public static void closeStatement(Connection conn, PreparedStatement stmt) {
+        try {
+            if (stmt != null) { stmt.close();}
+            if (conn != null) { conn.close(); }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
   
 }

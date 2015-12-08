@@ -22,13 +22,8 @@ public class Appointment {
         create(patientID, startTime, endTime, staffID);
     }
 
-    private void closeStatement(Connection conn, PreparedStatement stmt) {
-        try {
-            if (stmt != null) { stmt.close();}
-            if (conn != null) { conn.close(); }
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
+    public Appointment(Date startTime, Date endTime, int staffID) {
+        create(startTime, endTime, staffID);
     }
     
     /**
@@ -62,9 +57,43 @@ public class Appointment {
             System.out.println(e.toString());
             return false;
         }  finally {
-            closeStatement(conn, stmt);
+            Database.closeStatement(conn, stmt);
 	    }
         
+        return true;
+    }
+
+    /**
+     * Creates an appointment with no patient
+     */
+    private boolean create(Date startTime, Date endTime, int staffID){
+        this.patientID = 0;
+        this.staffID = staffID;
+        this.startTime = startTime;
+        this.endTime = endTime;
+
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("INSERT INTO Appointment (startTime, endTime, staffID) VALUES (?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+
+            stmt.setDate(1, new java.sql.Date(startTime.getTime()));
+            stmt.setDate(2, new java.sql.Date(endTime.getTime()));
+            stmt.setInt(3, staffID);
+
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()) { this.id = rs.getInt(1); }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+
         return true;
     }
     
@@ -87,31 +116,36 @@ public class Appointment {
                 this.startTime = rs.getDate("startTime");
                 this.endTime = rs.getDate("endTime");
                 this.staffID = rs.getInt("staffID");
+
                 this.patientID = rs.getInt("patientID");
+                if (rs.wasNull()) {
+                    // Patient column can be null
+                    this.patientID = 0;
+                }
             }
         } catch(SQLException e) {
             System.out.println(e.toString());
             return false;
         }  finally {
-            closeStatement(conn, stmt);
+            Database.closeStatement(conn, stmt);
 	    }
         
         return true;
     }
     
-    public int getID() {
-        return this.id;
-    }
+    public int getID() { return this.id; }
     
-    public Date getStartTime() {
-        return startTime;
-    }
+    public Date getStartTime() { return startTime; }
     
-    public Date getEndTime() {
-        return endTime;
-    }
+    public Date getEndTime() { return endTime; }
 
-    public Patient getPatient() { return new Patient(this.patientID); }
+    public Patient getPatient() {
+        if (this.patientID == 0) {
+            return null;
+        }
+
+        return new Patient(this.patientID);
+    }
 
     public Staff getStaff() { return new Staff(this.staffID); }
 
@@ -135,7 +169,7 @@ public class Appointment {
             this.id = this.staffID = this.patientID = 0;
             this.startTime = this.endTime = null;
 
-            closeStatement(conn, stmt);
+            Database.closeStatement(conn, stmt);
         }
 
         return true;
@@ -144,33 +178,57 @@ public class Appointment {
     /** 
      * Returns an array list of appointments on a specified date
      */
-    // TODO: get appointments within a date range
-    private static ArrayList getAppointmentsOnDate(Date date) {
+    public static ArrayList<Appointment> getAppointmentsOnDate(Date date) {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
-        ArrayList list = new ArrayList();
+        ArrayList<Appointment> list = new ArrayList<>();
 
         try {
             stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startDate) = ?");
-            
+
             stmt.setDate(1, new java.sql.Date(date.getTime()));
-            ResultSet rs = stmt.executeQuery();  
-           
+            ResultSet rs = stmt.executeQuery();
+
             while(rs.next()) {
                 list.add(new Appointment(rs.getInt("appointmentID")));
             }
         } catch(SQLException e) {
             System.out.println(e.toString());
         }  finally {
-            try {
-                if (stmt != null) { stmt.close();}
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
-	    }
-        
+            Database.closeStatement(conn, stmt);
+        }
+
         return list;
     }
+
+    /**
+     * Returns an array list of appointments on a specified date for a specified staff member
+     */
+    public static ArrayList<Appointment> getAppointmentsOnDate(Date date, Staff staff) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        ArrayList<Appointment> list = new ArrayList<>();
+
+        try {
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startDate) = ? AND partnerID = ?");
+
+            stmt.setDate(1, new java.sql.Date(date.getTime()));
+            stmt.setInt(2, staff.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                list.add(new Appointment(rs.getInt("appointmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+
+        return list;
+    }
+
 
 }

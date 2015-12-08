@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Staff {
     
@@ -19,15 +20,6 @@ public class Staff {
 
     public Staff(int id) {
         load(id);
-    }
-
-    private void closeStatement(Connection conn, PreparedStatement stmt) {
-        try {
-            if (stmt != null) { stmt.close();}
-            if (conn != null) { conn.close(); }
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
     }
 
     /**
@@ -52,7 +44,7 @@ public class Staff {
             System.out.println(e.toString());
             return false;
         }  finally {
-            closeStatement(conn, stmt);
+            Database.closeStatement(conn, stmt);
         }
 
         return true;
@@ -80,7 +72,7 @@ public class Staff {
             System.out.println(e.toString());
             return false;
         } finally {
-            closeStatement(conn, stmt);
+            Database.closeStatement(conn, stmt);
         }
 
         return true;
@@ -89,6 +81,13 @@ public class Staff {
     public int getId() { return id; }
 
     public String getPosition() { return position; }
+
+    /**
+     * Returns an array list of appointments for this staff member on the specified date
+     */
+    public ArrayList<Appointment> getAppointmentsOnDate(Date date) {
+        return Appointment.getAppointmentsOnDate(date, this);
+    }
 
     /**
      * Returns an array list of staff with a specified position e.g. 'dentist', 'hygienist'
@@ -111,12 +110,7 @@ public class Staff {
         } catch(SQLException e) {
             System.out.println(e.toString());
         }  finally {
-            try {
-                if (stmt != null) { stmt.close();}
-                if (conn != null) { conn.close(); }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            Database.closeStatement(conn, stmt);
         }
 
         return list;

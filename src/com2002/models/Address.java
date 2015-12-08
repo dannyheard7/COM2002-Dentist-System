@@ -54,23 +54,13 @@ public class Address {
         return true;
     }
     
-    public int getHouseNo() {
-        return houseNo;
-    }
+    public int getHouseNo() { return houseNo; }
     
-    public String getStreet() {
-        return street;
-    }
+    public String getStreet() { return street; }
     
-    public String getCity() {
-        return city;
-    }
+    public String getCity() { return city; }
     
-    public String getDistrict() {
-        return district;
-    }
+    public String getDistrict() { return district; }
     
-    public String getPostcode() {
-        return postcode;
-    }
+    public String getPostcode() { return postcode; }
 }
