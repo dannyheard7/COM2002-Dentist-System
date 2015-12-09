@@ -5,9 +5,7 @@ import com2002.db.Database;
 import java.math.BigDecimal;
 import java.sql.*;
 
-/**
- * Created by HarryH on 04/12/2015.
- */
+
 public class Treatment {
 
     private int treatmentID;
@@ -88,16 +86,7 @@ public class Treatment {
             System.out.println(e.toString());
             return false;
         }  finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+                Database.closeStatement(conn, stmt);
         }
 
         return true;
