@@ -16,6 +16,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -38,19 +40,23 @@ public class graphicalDisplay {
     private JPanel navWrapper =  new JPanel();
     private JPanel calendarWrapper =  new JPanel();
     private JButton[] dayButtons = new JButton[5];
+    private Calendar calendar;
     private int currentYear;
     private int currentMonth;
-    private int currentWeek;
     private int currentDay;
-    private int DoM;
-    private int viewingDay;
-    private int viewingWeek;
     private int viewingMonth;
+    private int viewingDay;
+    private int dayOfWeek;
     private BasicArrowButton nextWeek = new BasicArrowButton(BasicArrowButton.EAST);
     private BasicArrowButton prevWeek = new BasicArrowButton(BasicArrowButton.WEST);
     private JLabel weekDates;
     private JLabel viewWeek;
     private JLabel viewYear;
+
+
+    private String weekStart;
+    private String weekEnd;
+    private String viewingYear;
 
 
 
@@ -99,17 +105,17 @@ public class graphicalDisplay {
         secretaryUI.setContentPane(secContentPane);
 
         ///////////////////////// SET UP CALENDAR VALUES ///////////////////////
-        Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+
+        calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         Date now = new Date();
         calendar.setTime(now);
         currentYear = calendar.get(Calendar.YEAR);
         currentMonth = calendar.get(Calendar.MONTH);
-        currentWeek = calendar.get(Calendar.WEEK_OF_MONTH);
-        currentDay = calendar.get(Calendar.DAY_OF_WEEK);
-        DoM = calendar.get(Calendar.DAY_OF_MONTH);
-        viewingDay = calendar.get(Calendar.DAY_OF_WEEK);
-        viewingWeek = calendar.get(Calendar.WEEK_OF_MONTH);
-        viewingMonth = calendar.get(Calendar.MONTH);
+        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        viewingMonth = calendar.get(Calendar.MONTH)+1;
+        viewingDay = calendar.get(Calendar.DAY_OF_MONTH);
+        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
 
         viewYear = new JLabel(" ", SwingConstants.CENTER);
         viewYear.setFont(new Font("Helvetica", Font.PLAIN, 20));
@@ -132,7 +138,10 @@ public class graphicalDisplay {
         // Week scrolling Buttons
         prevWeek.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewingDay += 7;
+
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                calendar.add(Calendar.DATE, -7);
+
 
                 calendarMain.removeAll();
                 dateWrapper.removeAll();
@@ -142,12 +151,19 @@ public class graphicalDisplay {
                 buildCalendarMain(secContentPane);
                 calendarMaster.repaint();
                 calendarMaster.revalidate();
+
+
+
                 updateNav();
+                System.out.println("BackViewingDay");
+                System.out.println(viewingDay);
+
             }
         });
         nextWeek.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewingDay -= 7;
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                calendar.add(Calendar.DATE, +7);
 
                 calendarMain.removeAll();
                 dateWrapper.removeAll();
@@ -157,7 +173,12 @@ public class graphicalDisplay {
                 buildCalendarMain(secContentPane);
                 calendarMaster.repaint();
                 calendarMaster.revalidate();
+
+
+
                 updateNav();
+                System.out.println("NextViewingDay");
+                System.out.println(viewingDay);
             }
         });
         //////////////////////////////////////////////////////////////////////////
@@ -244,11 +265,19 @@ public class graphicalDisplay {
 
     ///////////// Update the Nav bar ///////////////////
     public void updateNav(){
-        int weekSpan;
-        int offset = viewingDay-2;
-        weekSpan = DoM+(4-offset);
+        DateFormat dFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
 
-        weekDates.setText(weekSpan-4 + "/" + viewingMonth + "-" + weekSpan + "/" + viewingMonth);
-        viewYear.setText(String.valueOf(currentYear));
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        weekStart = dFormat.format(calendar.getTime());
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        weekEnd = dFormat.format(calendar.getTime());
+
+        weekDates.setText(weekStart + "-" + weekEnd);
+
+        DateFormat yFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+        viewingYear = yFormat.format(calendar.getTime());
+        viewYear.setText(viewingYear);
     }
+
+
 }
