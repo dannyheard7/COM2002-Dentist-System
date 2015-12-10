@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Appointment {
     
@@ -58,7 +59,7 @@ public class Appointment {
             return false;
         }  finally {
             Database.closeStatement(conn, stmt);
-	    }
+	}
         
         return true;
     }
@@ -78,9 +79,13 @@ public class Appointment {
         try {
             stmt = conn.prepareStatement("INSERT INTO Appointment (startTime, endTime, staffID) VALUES (?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String sTime = sdf.format(startTime);
+            String eTime = sdf.format(endTime);
 
-            stmt.setDate(1, new java.sql.Date(startTime.getTime()));
-            stmt.setDate(2, new java.sql.Date(endTime.getTime()));
+            stmt.setObject(1, sTime);
+            stmt.setObject(2, eTime);
             stmt.setInt(3, staffID);
 
             stmt.executeUpdate();
@@ -106,7 +111,7 @@ public class Appointment {
         PreparedStatement stmt = null;
         
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Appointment WHERE appointmentID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM Appointment WHERE appointmentID = ? LIMIT 1");
           
             stmt.setInt(1, id);          
             ResultSet rs = stmt.executeQuery();
@@ -175,6 +180,34 @@ public class Appointment {
         return true;
     }
     
+    /**
+     * Returns an array list of treatments associated with this appointment
+     */
+    public ArrayList<Treatment> getTreatments() {
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT treatmentID FROM AppointmentTreatment"
+                    + " WHERE appointmentID = ?");
+
+            stmt.setInt(1, this.id);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                treatments.add(new Treatment(rs.getInt("treatmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        return treatments;
+    }
+    
     /** 
      * Returns an array list of appointments on a specified date
      */
@@ -185,9 +218,12 @@ public class Appointment {
         ArrayList<Appointment> list = new ArrayList<>();
 
         try {
-            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startDate) = ?");
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startTime) = ?");
+            
+            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
+            String dt = sdf.format(date);
 
-            stmt.setDate(1, new java.sql.Date(date.getTime()));
+            stmt.setObject(1, dt);
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
@@ -230,5 +266,5 @@ public class Appointment {
         return list;
     }
 
-
+    //TODO HazZZzzzZzZzZZ patientID, staff.
 }

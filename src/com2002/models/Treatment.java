@@ -48,16 +48,7 @@ public class Treatment {
             System.out.println(e.toString());
             return false;
         }  finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            Database.closeStatement(conn, stmt);
         }
 
         return true;
@@ -71,7 +62,7 @@ public class Treatment {
         PreparedStatement stmt = null;
         conn = Database.getConnection();
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Treatment WHERE treatmentID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM Treatment WHERE treatmentID = ? LIMIT 1");
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();

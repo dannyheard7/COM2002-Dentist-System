@@ -59,7 +59,7 @@ public class Staff {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Staff WHERE staffID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM Staff WHERE staffID = ? LIMIT 1");
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
