@@ -122,12 +122,35 @@ public class PatientPlan {
         return true;
     }
     private boolean updateCheckUps(){
-
+        PreparedStatement stmt = null;
+        conn = Database.getConnection();
+        try{
+            this.remainCheckups = getRemainCheckups()-1;
+            stmt = conn.prepareStatement("UPDATE PatientPlan SET remainingCheckUps="+(remainCheckups)+
+                    "WHERE PatientID="+getPatientID());
+        } catch (SQLException e){
+            System.out.println(e.toString());
+            return false;
+        } finally {
+            Database.closeStatement(conn, stmt);
+        }
 
         return true;
+
     }
     private boolean updateHygiene(){
-
+        PreparedStatement stmt = null;
+        conn = Database.getConnection();
+        try{
+            this.remainHygiene = getRemainHygiene()-1;
+            stmt = conn.prepareStatement("UPDATE PatientPlan SET remainingHygiene="+(remainHygiene)+
+                    "WHERE PatientID="+getPatientID());
+        } catch (SQLException e){
+            System.out.println(e.toString());
+            return false;
+        } finally {
+            Database.closeStatement(conn, stmt);
+        }
 
         return true;
     }
@@ -162,6 +185,8 @@ public class PatientPlan {
     // Basic get methods.
     public int getPatientID() {return patientID;}
     public String getPlanName() {return planName;}
+    public int getRemainCheckups(){return remainCheckups;}
+    public int getRemainHygiene(){return remainHygiene;}
     public int getRemainTreatments() {return remainTreatments;}
     public Date renewDate() {return renewDate;}
 
