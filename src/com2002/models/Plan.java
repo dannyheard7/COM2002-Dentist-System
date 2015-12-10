@@ -58,7 +58,7 @@ public class Plan {
       PreparedStatement stmt = null;
 
       try {
-         stmt = conn.prepareStatement("SELECT * FROM Plan WHERE name = ?");
+         stmt = conn.prepareStatement("SELECT * FROM Plan WHERE name = ? LIMIT 1");
 
          stmt.setString(1, planName);
          ResultSet rs = stmt.executeQuery();

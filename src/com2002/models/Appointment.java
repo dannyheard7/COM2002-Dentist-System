@@ -58,7 +58,7 @@ public class Appointment {
             return false;
         }  finally {
             Database.closeStatement(conn, stmt);
-	    }
+	}
         
         return true;
     }
@@ -106,7 +106,7 @@ public class Appointment {
         PreparedStatement stmt = null;
         
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Appointment WHERE appointmentID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM Appointment WHERE appointmentID = ? LIMIT 1");
           
             stmt.setInt(1, id);          
             ResultSet rs = stmt.executeQuery();
@@ -175,6 +175,34 @@ public class Appointment {
         return true;
     }
     
+    /**
+     * Returns an array list of treatments associated with this appointment
+     */
+    public ArrayList<Treatment> getTreatments() {
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT treatmentID FROM AppointmentTreatment"
+                    + " WHERE appointmentID = ?");
+
+            stmt.setInt(1, this.id);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                treatments.add(new Treatment(rs.getInt("treatmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        return treatments;
+    }
+    
     /** 
      * Returns an array list of appointments on a specified date
      */
@@ -229,6 +257,5 @@ public class Appointment {
 
         return list;
     }
-
 
 }

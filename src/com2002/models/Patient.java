@@ -75,7 +75,7 @@ public class Patient {
         PreparedStatement stmt = null;
         conn = Database.getConnection();
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Patient WHERE patientID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM Patient WHERE patientID = ? LIMIT 1");
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
