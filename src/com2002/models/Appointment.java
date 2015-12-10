@@ -265,6 +265,6 @@ public class Appointment {
 
         return list;
     }
-    
+
     //TODO HazZZzzzZzZzZZ patientID, staff.
 }

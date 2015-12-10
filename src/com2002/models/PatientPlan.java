@@ -32,6 +32,7 @@ public class PatientPlan {
         create(patientID, planName, renewDate);
     }
 
+
     /**
      * Creates a new patient plan record in the database
      */
@@ -63,14 +64,7 @@ public class PatientPlan {
             System.out.println(e.toString());
             return false;
         }  finally {
-            try {
-                if (stmt != null) { stmt.close();}
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            Database.closeStatement(conn, stmt);
         }
 
         return true;
