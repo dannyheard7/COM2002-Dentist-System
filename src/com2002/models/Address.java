@@ -17,7 +17,13 @@ public class Address {
     }
     
     public Address(int houseNo, String street, String city, String district, String postcode) {
-        create(houseNo, street, city, district, postcode);
+        this.houseNo = 0;     
+        load(houseNo, postcode);
+        
+        // First check if the address to create already exists
+        if (this.houseNo == 0){
+            create(houseNo, street, city, district, postcode);
+        }
     }
     
     private boolean load(int houseNo, String postcode) {
@@ -51,7 +57,6 @@ public class Address {
     /**
     * Creates a new address record in the database
     */
-    // TODO: load if address already exists
     private boolean create(int houseNo, String street, String city, String district, String postcode){
         Connection conn = Database.getConnection();
         
