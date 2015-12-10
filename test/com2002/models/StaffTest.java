@@ -1,5 +1,7 @@
 package com2002.models;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -8,20 +10,26 @@ import static org.junit.Assert.assertTrue;
 
 public class StaffTest {
 
+    Staff staff;
+
+    @BeforeClass
+    public static void setup() {
+        new Staff("hygienist");
+    }
+
+    @Before
+    public void before() {
+        staff = new Staff(1);
+    }
+
     @Test
     public void testCreateStaffMember() {
-
-        // MyClass is tested
-        Staff staff = new Staff("hygienist");
-
         // assert statements
         assertTrue(staff.getId() > 0);
     }
 
     @Test
     public void testGetHygienist() {
-        Staff staff = new Staff("hygienist");
-
         ArrayList<Staff> hygienists = Staff.getStaffWithPosition("hygienist");
         Staff hygienist = hygienists.get(0);
 

@@ -1,15 +1,11 @@
 package com2002.models;
 
 import com2002.db.Database;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Date;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by HarryH on 04/12/2015.
@@ -22,7 +18,7 @@ public class Patient {
 
     private int patientID;
     private String title, forename, surname, contactNo;
-    private SimpleDateFormat dateOfBirth;
+    private Date dateOfBirth;
     private Connection conn;
 
 
@@ -30,11 +26,11 @@ public class Patient {
         patientByID(patientID);
     }
 
-    public Patient(String title, String forename, String surname, SimpleDateFormat dob, String contactNo) {
+    public Patient(String title, String forename, String surname, Date dob, String contactNo) {
         create(title, forename, surname, dob, contactNo);
     }
 
-    public Patient(String forename, String surname, SimpleDateFormat dob){
+    public Patient(String forename, String surname, Date dob){
         findPatients(forename, surname, dob);
 
     }
@@ -42,7 +38,7 @@ public class Patient {
     /**
      * Creates a new patient record in the database
      */
-    private boolean create(String title, String forename, String surname, SimpleDateFormat dob, String contactNo){
+    private boolean create(String title, String forename, String surname, Date dob, String contactNo){
         this.title = title;
         this.forename = forename;
         this.surname = surname;
@@ -79,7 +75,7 @@ public class Patient {
         return true;
     }
 
-    private ArrayList findPatients(String forename, String surname, SimpleDateFormat dob){
+    private ArrayList findPatients(String forename, String surname, Date dob){
         this.forename = forename;
         this.surname = surname;
         this.dateOfBirth = dob;
@@ -92,7 +88,7 @@ public class Patient {
 
             stmt.setString(1, forename);
             stmt.setString(2, surname);
-            stmt.setString(3, dob.toString());
+            stmt.setDate(3, new java.sql.Date(dob.getTime()));
             ResultSet rs = stmt.executeQuery();
 
             if(rs.next()) {
@@ -125,7 +121,7 @@ public class Patient {
                 this.title = rs.getString("title");
                 this.forename = rs.getString("forename");
                 this.surname = rs.getString("surname");
-                this.dateOfBirth = new SimpleDateFormat(rs.getString("doB"));
+                this.dateOfBirth = rs.getDate("doB");
                 this.contactNo = rs.getString("contactNo");
 
             }
@@ -155,7 +151,7 @@ public class Patient {
     public String getSurname() {
         return surname;
     }
-    public SimpleDateFormat getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
     public String getContactNo() {return contactNo;}

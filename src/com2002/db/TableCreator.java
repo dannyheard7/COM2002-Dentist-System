@@ -6,37 +6,20 @@ import java.sql.Statement;
 
 public class TableCreator {
 
-//    public static String patientID;
-//    public static String title;
-//    public static String forename;
-//    public static String surname;
-//    public static String doB;
-//    public static String contactNo;
-//    public static int remainingCheckUps;
-//    public static int remainingHygene;
-//    public static int remainingTreatments;
-//    public static String renewDate;
-    private static String teamURL = "jdbc:mysql://stusql.dcs.shef.ac.uk/team013";
-    private static String teamUserName = "team013" ;
-    private static String teamPassword = "96d980a0";
-
     public static void main(String[] args) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            dropAll();
-            createSchema();
-        } catch(Exception e) {
-            System.out.println(e.toString());
-        }
+        dropAll();
+        createSchema();
     }
     
     /**
      * Creates the database schema
      */
     public static void createSchema() {
+        Connection conn = Database.getConnection();
+        Statement stmt = null;
+
         try {
-            Connection con = Database.getConnection();
-            Statement stmt = con.createStatement(); // create from open connection
+            stmt = conn.createStatement();
 
             String createPatientTable = "CREATE TABLE IF NOT EXISTS Patient " +
                 "(patientID INT NOT NULL AUTO_INCREMENT, " +
@@ -127,6 +110,8 @@ public class TableCreator {
            
         } catch (SQLException ex) {
             System.out.println(ex.toString());
+        } finally {
+            Database.closeStatement(conn, stmt);
         }
     }
     
