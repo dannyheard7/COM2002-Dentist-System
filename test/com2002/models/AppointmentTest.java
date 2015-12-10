@@ -1,10 +1,9 @@
 package com2002.models;
 
 import org.junit.Test;
-
 import java.sql.Date;
-
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 public class AppointmentTest {
 
@@ -29,6 +28,18 @@ public class AppointmentTest {
 
         assertTrue(tester1.cancel());
         assertTrue(tester1.getID() == 0);
+    }
+    
+    @Test
+    public void testGetAppointmentsOnDate() {
+        Staff staff = new Staff(1);
+        Patient patient = new Patient(1);
+        Appointment tester1 = new Appointment(1);
+        
+        ArrayList<Appointment> appointments = Appointment.getAppointmentsOnDate(new java.util.Date());
+        System.out.println(appointments.get(0).getStaff().getId());
+
+        assertEquals(tester1, appointments.get(0));
     }
 
 }

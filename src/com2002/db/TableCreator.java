@@ -59,9 +59,9 @@ public class TableCreator {
             String createPatientPlanTable = "CREATE TABLE IF NOT EXISTS PatientPlan " +
                 "(patientID INT not NULL, " +
                 " planName VARCHAR(30) not NULL, " +
-                " remainingCheckUps INT, " +
-                " remainingHygiene INT, " +
                 " remainingTreatments INT, " +
+                    "remainingCheckUps INT, " +
+                    "remainingHygiene INT, " +
                 " renewDate DATETIME NOT NULL, " +
                 " FOREIGN KEY (patientID) REFERENCES Patient(patientID), " +
                 " FOREIGN KEY (planName) REFERENCES Plan(name), " +
