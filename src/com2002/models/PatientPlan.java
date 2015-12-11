@@ -82,7 +82,9 @@ public class PatientPlan {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-
+            if (!rs.first()){
+                return false;
+            }
             if(rs.next()) {
                 this.patientID = rs.getInt("patientID");
                 this.planName = rs.getString("planName");
