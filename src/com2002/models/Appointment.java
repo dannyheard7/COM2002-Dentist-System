@@ -2,7 +2,6 @@ package com2002.models;
 
 import com2002.db.Database;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,22 +19,18 @@ public class Appointment {
         load(id);
     }
     
-    public Appointment(int patientID, Date startTime, Date endTime, int staffID) {
-        create(patientID, startTime, endTime, staffID);
+    public Appointment(Patient patient, Date startTime, Date endTime, Staff staff) {
+        create(patient, startTime, endTime, staff);
     }
 
-    public Appointment(Date startTime, Date endTime, int staffID) {
-        create(startTime, endTime, staffID);
-    }
-
-    public Appointment(int patientID, int staffID){
-
+    public Appointment(Date startTime, Date endTime, Staff staff) {
+        create(startTime, endTime, staff);
     }
     
     /**
     * Creates a new appointment record in the database
     */
-    private boolean create(int patientID, Date startTime, Date endTime, int staffID){
+    private boolean create(Patient patient, Date startTime, Date endTime, Staff staff){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         
@@ -48,8 +43,8 @@ public class Appointment {
             
             stmt.setObject(1, sdf.format(startTime));
             stmt.setObject(2, sdf.format(endTime));
-            stmt.setInt(3, staffID);
-            stmt.setInt(4, patientID);
+            stmt.setInt(3, staff.getId());
+            stmt.setInt(4, patient.getPatientID());
             
             stmt.executeUpdate();
             
@@ -62,8 +57,8 @@ public class Appointment {
             Database.closeStatement(conn, stmt);
 	}
         
-        this.patientID = patientID;
-        this.staffID = staffID;
+        this.patientID = patient.getPatientID();
+        this.staffID = staff.getId();
         this.startTime = startTime;
         this.endTime = endTime;
         
@@ -73,7 +68,7 @@ public class Appointment {
     /**
      * Creates an appointment with no patient
      */
-    private boolean create(Date startTime, Date endTime, int staffID){
+    private boolean create(Date startTime, Date endTime, Staff staff){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
@@ -85,7 +80,7 @@ public class Appointment {
 
             stmt.setObject(1, sdf.format(startTime));
             stmt.setObject(2, sdf.format(endTime));
-            stmt.setInt(3, staffID);
+            stmt.setInt(3, staff.getId());
 
             stmt.executeUpdate();
 
@@ -99,7 +94,7 @@ public class Appointment {
         }
         
         this.patientID = 0;
-        this.staffID = staffID;
+        this.staffID = staff.getId();
         this.startTime = startTime;
         this.endTime = endTime;
         
@@ -304,6 +299,7 @@ public class Appointment {
     /**
      * Appointment objects are equal if they have the same id
      */
+    @Override
     public boolean equals(Object other){
         if((other == null) || (getClass() != other.getClass())){
             return false;

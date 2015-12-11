@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class AppointmentTest {
 
@@ -31,7 +32,7 @@ public class AppointmentTest {
         staff = new Staff(1);
         patient = new Patient(1);
         date = new Date();
-        appointment = new Appointment(patient.getPatientID(),date, date, staff.getId());
+        appointment = new Appointment(patient,date, date, staff);
     }
 
     @After
@@ -47,7 +48,7 @@ public class AppointmentTest {
     
     @Test
     public void testCreateTwoIdenticalAppointments() {
-        Appointment ident = new Appointment(patient.getPatientID(), date, date, staff.getId());
+        Appointment ident = new Appointment(patient, date, date, staff);
         
         assertTrue(ident.getID() == 0);
     }
@@ -72,5 +73,12 @@ public class AppointmentTest {
         
         ArrayList<Treatment> treatments = appointment.getTreatments();
         assertThat(treatments, hasItem(t));
+    }
+    
+    @Test
+    public void testLoadAppointment() {
+        Appointment tester = new Appointment(appointment.getID());
+        
+        assertEquals(appointment, tester);
     }
 }

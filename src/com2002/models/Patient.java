@@ -153,6 +153,51 @@ public class Patient {
         return dateOfBirth;
     }
     public String getContactNo() {return contactNo;}
+    
+    public boolean addAddress(Address a) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("INSERT INTO PatientAddress ("
+                    + "patientId, houseNo, postcode) VAUES (?, ?, ?)");
+            
+            stmt.setInt(1, patientID);
+            stmt.setInt(2, a.getHouseNo());
+            stmt.setString(3, a.getPostcode());
+            
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+	}
+        
+        return true;
+    }
+    
+    public Address getAddress() {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        Address address = null;
 
+        try {
+            stmt = conn.prepareStatement("SELECT houseNo, postcode FROM PatientAddress"
+                    + " WHERE patientID = ?");
 
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                address = new Address(rs.getInt("houseNo"), rs.getString("postcode"));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        return address;
+    }
 }

@@ -59,13 +59,7 @@ public class Address {
     */
     private boolean create(int houseNo, String street, String city, String district, String postcode){
         Connection conn = Database.getConnection();
-        
-        this.houseNo = houseNo;
-        this.street = street;
-        this.city = city;
-        this.district = district;
-        this.postcode = postcode;
-        
+         
         PreparedStatement stmt = null;
         
         try {
@@ -86,6 +80,12 @@ public class Address {
             Database.closeStatement(conn, stmt);
 	}
         
+        this.houseNo = houseNo;
+        this.street = street;
+        this.city = city;
+        this.district = district;
+        this.postcode = postcode;
+        
         return true;
     }
     
@@ -98,4 +98,14 @@ public class Address {
     public String getDistrict() { return district; }
     
     public String getPostcode() { return postcode; }
+    
+    @Override
+    public boolean equals(Object other){
+        if((other == null) || (getClass() != other.getClass())){
+            return false;
+        } else {
+            Address otherAddr = (Address) other;
+            return houseNo == otherAddr.getHouseNo() && postcode.equals(otherAddr.getPostcode());
+        }
+    }
 }
