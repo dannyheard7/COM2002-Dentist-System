@@ -14,8 +14,6 @@ public class Patient {
 
     // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE - check assignment to see if its on the sheet.
 
-    //
-
     private int patientID;
     private String title, forename, surname, contactNo;
     private Date dateOfBirth;
