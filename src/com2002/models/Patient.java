@@ -2,18 +2,19 @@ package com2002.models;
 
 import com2002.db.Database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Date;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by HarryH on 04/12/2015.
  */
 public class Patient {
 
-    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE
+    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE - check assignment to see if its on the sheet.
+
+    //
 
     private int patientID;
     private String title, forename, surname, contactNo;
@@ -27,6 +28,11 @@ public class Patient {
 
     public Patient(String title, String forename, String surname, Date dob, String contactNo) {
         create(title, forename, surname, dob, contactNo);
+    }
+
+    public Patient(String forename, String surname, Date dob){
+        findPatients(forename, surname, dob);
+
     }
 
     /**
@@ -46,10 +52,12 @@ public class Patient {
                     + "forename, surname, doB, contactNo) VALUES ( ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
+            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
+            String dt = sdf.format(dob);
             stmt.setString(1, title);
             stmt.setString(2, forename);
             stmt.setString(3, surname);
-            stmt.setDate(4, dob); // what is with this??
+            stmt.setObject(4, dt); // what is with this??
             stmt.setString(5, contactNo);
 
             stmt.executeUpdate();
@@ -67,6 +75,35 @@ public class Patient {
         return true;
     }
 
+    private ArrayList findPatients(String forename, String surname, Date dob){
+        this.forename = forename;
+        this.surname = surname;
+        this.dateOfBirth = dob;
+        conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        ArrayList lis = new ArrayList();
+
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM Patient WHERE forename = ? and surname = ? and doB = ?");
+
+            stmt.setString(1, forename);
+            stmt.setString(2, surname);
+            stmt.setDate(3, new java.sql.Date(dob.getTime()));
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                lis.add(new Patient(rs.getInt("patientID")));
+            }
+        } catch (SQLException e){
+            System.out.println(e.toString());
+            return null;
+        } finally {
+            Database.closeStatement(conn, stmt);
+        }
+
+        return lis;
+    }
+
     /**
      * Load the patient given a Patient's ID number
      * @param id - the id of the patient
@@ -79,7 +116,6 @@ public class Patient {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-
             if(rs.next()) {
                 this.patientID = rs.getInt("patientID");
                 this.title = rs.getString("title");

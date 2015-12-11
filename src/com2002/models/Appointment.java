@@ -221,15 +221,16 @@ public class Appointment {
             stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startTime) = ?");
             
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
-            String dt = sdf.format(date);
+            String dtString = sdf.format(date);
+            Date dt = sdf.parse(dtString);
 
-            stmt.setObject(1, dt);
+            stmt.setDate(1, new java.sql.Date(dt.getTime()));
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
                 list.add(new Appointment(rs.getInt("appointmentID")));
             }
-        } catch(SQLException e) {
+        } catch(Exception e) {
             System.out.println(e.toString());
         }  finally {
             Database.closeStatement(conn, stmt);
@@ -265,6 +266,19 @@ public class Appointment {
 
         return list;
     }
-    
+
+    /**
+     * Appointment objects are equal if they have the same id
+     */
+    public boolean equals(Object other){
+        if((other == null) || (getClass() != other.getClass())){
+            return false;
+        } else {
+            Appointment otherApp = (Appointment) other;
+            return id == otherApp.getID();
+        }
+    }
+
     //TODO HazZZzzzZzZzZZ patientID, staff.
+
 }
