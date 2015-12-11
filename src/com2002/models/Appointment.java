@@ -2,6 +2,7 @@ package com2002.models;
 
 import com2002.db.Database;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +26,10 @@ public class Appointment {
 
     public Appointment(Date startTime, Date endTime, int staffID) {
         create(startTime, endTime, staffID);
+    }
+
+    public Appointment(int patientID, int staffID){
+
     }
     
     /**
@@ -310,6 +315,32 @@ public class Appointment {
         }
     }
 
-    //TODO HazZZzzzZzZzZZ patientID, staff.
+
+    public static ArrayList<Appointment> findPatientsAppointments(int patientID, String staff ){
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        ArrayList<Staff> lis = Staff.getStaffWithPosition(staff);
+        int staffID = (lis.get(0)).getId();
+
+        ArrayList<Appointment> list = new ArrayList<>();
+        try {
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE patientID = ? AND partnerID = ?");
+
+            stmt.setInt(1, patientID);
+            stmt.setInt(2, staffID);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                list.add(new Appointment(rs.getInt("appointmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+
+        return list;
+
+    }
 
 }

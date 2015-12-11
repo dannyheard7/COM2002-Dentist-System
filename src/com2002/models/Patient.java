@@ -30,10 +30,9 @@ public class Patient {
         create(title, forename, surname, dob, contactNo);
     }
 
-    public Patient(String forename, String surname, Date dob){
-        findPatients(forename, surname, dob);
-
-    }
+//    public Patient(String forename, String surname, Date dob){
+//        findPatients(forename, surname, dob);
+//    }
 
     /**
      * Creates a new patient record in the database
@@ -75,11 +74,8 @@ public class Patient {
         return true;
     }
 
-    private ArrayList findPatients(String forename, String surname, Date dob){
-        this.forename = forename;
-        this.surname = surname;
-        this.dateOfBirth = dob;
-        conn = Database.getConnection();
+    public static ArrayList findPatients(String forename, String surname, Date dob){
+        Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         ArrayList lis = new ArrayList();
 
