@@ -18,6 +18,7 @@ public class Appointment {
     public Appointment(int id) {
         load(id);
     }
+
     
     public Appointment(Patient patient, Date startTime, Date endTime, Staff staff) {
         create(patient, startTime, endTime, staff);
@@ -268,6 +269,29 @@ public class Appointment {
 
         return list;
     }
+
+    /**
+     * Updates the patientSeen column in the table
+     */
+    public boolean updatePatientSeen(Boolean b){
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        int patientSeen = b ? 1 : 0;
+        try {
+            stmt = conn.prepareStatement("UPDATE Appointment SET patientSeen="+(patientSeen)+
+                    "WHERE appointmentID="+getID());
+
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+
+        return true;
+    }
+
 
     /**
      * Returns an array list of appointments on a specified date for a specified staff member
