@@ -78,6 +78,7 @@ public class TableCreator {
             String createAppointTreatmentTable = "CREATE TABLE IF NOT EXISTS  AppointmentTreatment " +
                 "(treatmentID INTEGER not NULL, " +
                 " appointmentID INTEGER not NULL, " +
+                " paid TINYINT(1) NOT NULL DEFAULT 1, " +
                 " PRIMARY KEY (treatmentID, appointmentID), " +
                 " FOREIGN KEY (treatmentID) REFERENCES Treatment(treatmentID), " +
                 " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";

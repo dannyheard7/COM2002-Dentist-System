@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -239,6 +241,72 @@ public class Appointment {
         return treatments;
     }
     
+    /**
+     * Returns an array list of the unpaid treatments associated with this appointment
+     */
+    public ArrayList<Treatment> getUnpaidTreatments() {
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT treatmentID FROM AppointmentTreatment"
+                    + " WHERE appointmentID = ? AND paid = 0");
+
+            stmt.setInt(1, this.id);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                treatments.add(new Treatment(rs.getInt("treatmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        return treatments;
+    }
+    
+    /**
+     * Mark a given treatment as paid
+     */
+    public boolean payTreatment(Treatment t) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("UPDATE AppointmentTreatment SET paid = 1 "
+                    + "WHERE appointmentID = ? AND treatmentID = ?");
+            
+            stmt.setInt(1, id);
+            stmt.setInt(2, t.getTreatmentID());
+            
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+	}
+        
+        return true;
+    }
+    
+    /**
+     * Appointment objects are equal if they have the same id
+     */
+    @Override
+    public boolean equals(Object other){
+        if((other == null) || (getClass() != other.getClass())){
+            return false;
+        } else {
+            Appointment otherApp = (Appointment) other;
+            return id == otherApp.getID();
+        }
+    }
+    
     /** 
      * Returns an array list of appointments on a specified date
      */
@@ -319,19 +387,6 @@ public class Appointment {
         }
 
         return list;
-    }
-
-    /**
-     * Appointment objects are equal if they have the same id
-     */
-    @Override
-    public boolean equals(Object other){
-        if((other == null) || (getClass() != other.getClass())){
-            return false;
-        } else {
-            Appointment otherApp = (Appointment) other;
-            return id == otherApp.getID();
-        }
     }
 
 
