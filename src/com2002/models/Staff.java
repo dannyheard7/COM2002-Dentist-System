@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Staff {
-    
+
     private int id;
     private String position;
 

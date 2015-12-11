@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Plan {
-    
+
     private String name;
     private BigDecimal monthlyCost;
     private int checkUps, hygieneCount, treatments;

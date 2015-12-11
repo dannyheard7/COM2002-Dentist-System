@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class AddressTest {
-    
+
     Address address;
 
     @BeforeClass
@@ -20,16 +20,16 @@ public class AddressTest {
     public void before() {
         address = new Address(40, "pl157dy");
     }
-    
+
     @Test
-    public void testCreateAddress() {     
+    public void testCreateAddress() {
         assertTrue(address.getHouseNo() == 40);
     }
-    
+
     @Test
     public void testLoadAddress() {
         Address tester = new Address(address.getHouseNo(), address.getPostcode());
-        
+
         assertEquals(address, tester);
     }
 }

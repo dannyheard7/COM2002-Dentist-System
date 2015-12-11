@@ -151,19 +151,19 @@ public class Patient {
         return dateOfBirth;
     }
     public String getContactNo() {return contactNo;}
-    
+
     public boolean addAddress(Address a) {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = conn.prepareStatement("INSERT INTO PatientAddress ("
                     + "patientId, houseNo, postcode) VAUES (?, ?, ?)");
-            
+
             stmt.setInt(1, patientID);
             stmt.setInt(2, a.getHouseNo());
             stmt.setString(3, a.getPostcode());
-            
+
             stmt.executeUpdate();
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -171,10 +171,10 @@ public class Patient {
         }  finally {
             Database.closeStatement(conn, stmt);
 	}
-        
+
         return true;
     }
-    
+
     public Address getAddress() {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
@@ -195,7 +195,7 @@ public class Patient {
         }  finally {
             Database.closeStatement(conn, stmt);
         }
-        
+
         return address;
     }
 }

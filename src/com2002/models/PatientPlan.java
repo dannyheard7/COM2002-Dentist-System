@@ -54,7 +54,7 @@ public class PatientPlan {
                     + "remainingTreatments, remainingCheckUps, remainingHygiene, renewDate) VALUES (?, ?, ?, ?, ?, ?)");
 
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
-  
+
             stmt.setInt(1, patientID);
             stmt.setString(2, planName);
             stmt.setInt(3, remainTreatments);

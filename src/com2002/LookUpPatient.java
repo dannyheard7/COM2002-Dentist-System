@@ -6,6 +6,15 @@ package com2002;
  * and open the template in the editor.
  */
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import com2002.models.*;
+
 /**
  *
  * @author aca14ams
@@ -147,6 +156,27 @@ public class LookUpPatient extends javax.swing.JFrame {
     private void Btn_LookUpPatient_SubmitActionPerformed(java.awt.event.ActionEvent evt) {
         PatientView view = new PatientView();
         view.setVisible(true);
+
+        String forename = TxtFld_LookUpPatient_Forename.getText();
+        String surname = TxtFld_LookUpPatient_Surname.getText();
+        String dobString = TxtFld_LookUpPatient_Dob.getText();
+        DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+        String postcode = TxtFld_LookUpPatient_Postcode.getText();
+        try {
+            Date dob = fmt.parse(dobString);
+            ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
+            for (int i=0;i<patients.size();i++) {
+                if (postcode == patients.get(i).getAddress().getPostcode()) {
+                    view.setPatient(patients.get(i));
+                }
+                else {
+                    //TODO error message?
+                }
+            }
+
+        } catch (ParseException ex) {
+            Logger.getLogger(SecretaryUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //       setVisible(false);
     }
 

@@ -6,6 +6,8 @@ package com2002;
  * and open the template in the editor.
  */
 
+import com2002.models.*;
+
 /**
  *
  * @author aca14ams
@@ -18,8 +20,23 @@ public class PatientView extends javax.swing.JFrame {
     public PatientView() {
         initComponents();
         setLocationRelativeTo(null);
+
+        TxtFld_PatientView_PatientID.setText(""+patientID);
+        TxtFld_PatientView_Title.setText(title);
+        TxtFld_PatientView_Forename.setText(forename);
+        TxtFld_PatientView_Surname.setText(surname);
+        TxtFld_PatientView_Dob.setText(dateOfBirth);
+        TxtFld_PatientView_Contact.setText(contactNo);
     }
 
+    public void setPatient(Patient patient) {
+        patientID = patient.getPatientID();
+        title = patient.getTitle();
+        forename = patient.getForename();
+        surname = patient.getSurname();
+        dateOfBirth = patient.getDateOfBirth().toString();
+        contactNo = patient.getContactNo();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -252,5 +269,11 @@ public class PatientView extends javax.swing.JFrame {
     private javax.swing.JTextField TxtFld_PatientView_PatientID;
     private javax.swing.JTextField TxtFld_PatientView_Surname;
     private javax.swing.JTextField TxtFld_PatientView_Title;
+    private int patientID;
+    private String title;
+    private String forename;
+    private String surname;
+    private String dateOfBirth;
+    private String contactNo;
     // End of variables declaration
 }

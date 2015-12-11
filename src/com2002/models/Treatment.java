@@ -44,7 +44,7 @@ public class Treatment {
         }  finally {
             Database.closeStatement(conn, stmt);
         }
-        
+
         this.name = name;
         this.cost = cost;
         this.paid = false;
@@ -92,7 +92,7 @@ public class Treatment {
     public Appointment getAppointment() {
         return new Appointment(appointmentID);
     }
-    
+
     public boolean equals(Object other) {
         if((other == null) || (getClass() != other.getClass())){
             return false;
@@ -101,21 +101,21 @@ public class Treatment {
             return appointmentID == otherTreat.getAppointment().getID() && name == otherTreat.getName();
         }
     }
-    
+
     /**
      * Mark a given treatment as paid
      */
     public boolean pay() {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = conn.prepareStatement("UPDATE AppointmentTreatment SET paid = 1 "
                     + "WHERE appointmentID = ? AND name= ?");
-            
+
             stmt.setInt(1, appointmentID);
             stmt.setString(2, name);
-            
+
             stmt.executeUpdate();
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -123,10 +123,10 @@ public class Treatment {
         }  finally {
             Database.closeStatement(conn, stmt);
 	}
-        
+
         return true;
     }
-    
+
 
 
 }
