@@ -71,7 +71,7 @@ public class TableCreator {
             String createTreatmentTable = "CREATE TABLE IF NOT EXISTS Treatment " +
                 "(treatmentID INT not NULL AUTO_INCREMENT, " +
                 " name VARCHAR(30), " +
-                " cost DECIMAL, " +
+                " cost DECIMAL(5, 2), " +
                 " PRIMARY KEY ( treatmentID ))";
 
             String createAppointTreatmentTable = "CREATE TABLE IF NOT EXISTS  AppointmentTreatment " +

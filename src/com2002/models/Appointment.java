@@ -159,24 +159,22 @@ public class Appointment {
     public Staff getStaff() { return new Staff(this.staffID); }
 
     /**
-     * Cancels the appointment linked to the instance
+     * Cancels the appointment and all the related treatments
      * @return 1 if executed correctly otherwise 0
      */
     public boolean cancel() {
         Connection conn = Database.getConnection();
-        PreparedStatement stmt = null;
-        
-        // Also need to remove all appointments
+        PreparedStatement stmt = null;     
 
         try {  
-            // May need to do a batch
+            // May need to do a batch somehow
             stmt = conn.prepareStatement("DELETE FROM AppointmentTreatment WHERE appointmentID = ?");
-            stmt.setInt(1, this.id);
+            stmt.setInt(1, id);
             stmt.executeUpdate();
             
             stmt = conn.prepareStatement("DELETE FROM Appointment WHERE appointmentID = ?");
-            stmt.setInt(1, this.id);
-            stmt.executeUpdate();        
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         } catch(SQLException e) {
             System.out.println(e.toString());
             return false;
