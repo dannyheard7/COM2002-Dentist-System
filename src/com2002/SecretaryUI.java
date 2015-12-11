@@ -873,6 +873,8 @@ public class SecretaryUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         // Open the lookup patient GUI, do NOT close the current GUI
+        LookUpPatient lookup = new LookUpPatient();
+        lookup.setVisible(true);
     }
 
     private void bookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
