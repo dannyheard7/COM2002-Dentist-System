@@ -30,13 +30,7 @@ public class Appointment {
     /**
     * Creates a new appointment record in the database
     */
-    // TODO: load if appointment already exists
     private boolean create(int patientID, Date startTime, Date endTime, int staffID){
-        this.patientID = patientID;
-        this.staffID = staffID;
-        this.startTime = startTime;
-        this.endTime = endTime;
-
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         
@@ -63,6 +57,11 @@ public class Appointment {
             Database.closeStatement(conn, stmt);
 	}
         
+        this.patientID = patientID;
+        this.staffID = staffID;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        
         return true;
     }
 
@@ -70,11 +69,6 @@ public class Appointment {
      * Creates an appointment with no patient
      */
     private boolean create(Date startTime, Date endTime, int staffID){
-        this.patientID = 0;
-        this.staffID = staffID;
-        this.startTime = startTime;
-        this.endTime = endTime;
-
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
@@ -98,7 +92,12 @@ public class Appointment {
         }  finally {
             Database.closeStatement(conn, stmt);
         }
-
+        
+        this.patientID = 0;
+        this.staffID = staffID;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        
         return true;
     }
     
@@ -133,7 +132,7 @@ public class Appointment {
             return false;
         }  finally {
             Database.closeStatement(conn, stmt);
-	    }
+	}
         
         return true;
     }
@@ -161,12 +160,18 @@ public class Appointment {
     public boolean cancel() {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
+        
+        // Also need to remove all appointments
 
-        try {
+        try {  
+            // May need to do a batch
+            stmt = conn.prepareStatement("DELETE FROM AppointmentTreatment WHERE appointmentID = ?");
+            stmt.setInt(1, this.id);
+            stmt.executeUpdate();
+            
             stmt = conn.prepareStatement("DELETE FROM Appointment WHERE appointmentID = ?");
             stmt.setInt(1, this.id);
-
-            stmt.executeUpdate();
+            stmt.executeUpdate();        
         } catch(SQLException e) {
             System.out.println(e.toString());
             return false;
@@ -177,6 +182,32 @@ public class Appointment {
             Database.closeStatement(conn, stmt);
         }
 
+        return true;
+    }
+    
+    /**
+     * Adds a specified treatment to the appointment
+     * @return boolean value representing result
+     */
+    public boolean addTreatment(Treatment t) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("INSERT INTO AppointmentTreatment ("
+                    + "appointmentId, treatmentID) VALUES (?, ?)");
+            
+            stmt.setInt(1, id);
+            stmt.setInt(2, t.getTreatmentID());
+            
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+	}
+        
         return true;
     }
     

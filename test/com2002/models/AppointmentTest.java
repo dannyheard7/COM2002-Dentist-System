@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
@@ -16,7 +17,8 @@ public class AppointmentTest {
 
     Staff staff;
     Patient patient;
-    Appointment tester;
+    Appointment appointment;
+    Date date;
 
     @BeforeClass
     public static void setup() {
@@ -28,31 +30,47 @@ public class AppointmentTest {
     public void before() {
         staff = new Staff(1);
         patient = new Patient(1);
-        tester = new Appointment(patient.getPatientID(), new Date(), new Date(), staff.getId());
+        date = new Date();
+        appointment = new Appointment(patient.getPatientID(),date, date, staff.getId());
     }
 
     @After
     public void cleanup() {
         // Remove from database
-        tester.cancel();
+        appointment.cancel();
     }
 
     @Test
     public void testCreateAppointment() {
-        assertTrue(tester.getID() > 0);
+        assertTrue(appointment.getID() > 0);
+    }
+    
+    @Test
+    public void testCreateTwoIdenticalAppointments() {
+        Appointment ident = new Appointment(patient.getPatientID(), date, date, staff.getId());
+        
+        assertTrue(ident.getID() == 0);
     }
 
     @Test
     public void testCancelAppointment() {
-        assertTrue(tester.cancel());
-        assertTrue(tester.getID() == 0);
+        assertTrue(appointment.cancel());
+        assertTrue(appointment.getID() == 0);
     }
     
     @Test
     public void testGetAppointmentsOnDate() {
         ArrayList<Appointment> appointments = Appointment.getAppointmentsOnDate(new Date());
 
-        assertThat(appointments, hasItem(tester));
+        assertThat(appointments, hasItem(appointment));
     }
 
+    @Test
+    public void testAddTreatment() {
+        Treatment t = new Treatment("Tooth Extraction", new BigDecimal(150.00));
+        appointment.addTreatment(t);
+        
+        ArrayList<Treatment> treatments = appointment.getTreatments();
+        assertThat(treatments, hasItem(t));
+    }
 }

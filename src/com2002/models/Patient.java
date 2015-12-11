@@ -93,7 +93,7 @@ public class Patient {
             stmt.setObject(3, sdf.format(dob));
             ResultSet rs = stmt.executeQuery();
 
-            if(rs.next()) {
+            while(rs.next()) {
                 lis.add(new Patient(rs.getInt("patientID")));
             }
         } catch (SQLException e){

@@ -64,7 +64,8 @@ public class TableCreator {
                 "  patientID INT," +
                 "  PRIMARY KEY (appointmentID)," +
                 "  FOREIGN KEY (patientID) REFERENCES Patient(patientID)," +
-                "  FOREIGN KEY (staffID) REFERENCES Staff(staffID)" +
+                "  FOREIGN KEY (staffID) REFERENCES Staff(staffID)," +
+                "  UNIQUE KEY (startTime, staffID) " +
                 ")";
 
             String createTreatmentTable = "CREATE TABLE IF NOT EXISTS Treatment " +

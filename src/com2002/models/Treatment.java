@@ -83,6 +83,9 @@ public class Treatment {
         return true;
     }
 
+    public int getID() {
+        return treatmentID;
+    }
 
     // Basic get methods.
     public String getName() {
@@ -93,6 +96,15 @@ public class Treatment {
     }
     public int getTreatmentID() {
         return treatmentID;
+    }
+    
+    public boolean equals(Object other) {
+        if((other == null) || (getClass() != other.getClass())){
+            return false;
+        } else {
+            Treatment otherTreat = (Treatment) other;
+            return treatmentID == otherTreat.getID();
+        }
     }
 
 
