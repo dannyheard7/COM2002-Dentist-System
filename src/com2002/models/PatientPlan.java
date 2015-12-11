@@ -3,6 +3,7 @@ package com2002.models;
 import com2002.db.Database;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -52,12 +53,14 @@ public class PatientPlan {
             stmt = conn.prepareStatement("INSERT INTO PatientPlan (patientID, planName, "
                     + "remainingTreatments, remainingCheckUps, remainingHygiene, renewDate) VALUES (?, ?, ?, ?, ?, ?)");
 
+            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
+  
             stmt.setInt(1, patientID);
             stmt.setString(2, planName);
             stmt.setInt(3, remainTreatments);
             stmt.setInt(4, remainCheckups);
             stmt.setInt(5, remainHygiene);
-            stmt.setDate(6, new java.sql.Date(renewDate.getTime()));
+            stmt.setObject(6, sdf.format(renewDate));
 
             stmt.executeUpdate();
         } catch(SQLException e) {
@@ -82,7 +85,9 @@ public class PatientPlan {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-
+            if (!rs.first()){
+                return false;
+            }
             if(rs.next()) {
                 this.patientID = rs.getInt("patientID");
                 this.planName = rs.getString("planName");

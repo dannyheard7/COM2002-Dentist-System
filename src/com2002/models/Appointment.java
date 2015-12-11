@@ -6,49 +6,49 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
 public class Appointment {
     
-    private int id, staffID, patientID;
+    private int id, staffID, patientID, patientSeen;
     private Date startTime, endTime;
 
     public Appointment(int id) {
         load(id);
     }
+
     
-    public Appointment(int patientID, Date startTime, Date endTime, int staffID) {
-        create(patientID, startTime, endTime, staffID);
+    public Appointment(Patient patient, Date startTime, Date endTime, Staff staff) {
+        create(patient, startTime, endTime, staff);
     }
 
-    public Appointment(Date startTime, Date endTime, int staffID) {
-        create(startTime, endTime, staffID);
+    public Appointment(Date startTime, Date endTime, Staff staff) {
+        create(startTime, endTime, staff);
     }
     
     /**
     * Creates a new appointment record in the database
     */
-    // TODO: load if appointment already exists
-    private boolean create(int patientID, Date startTime, Date endTime, int staffID){
-        this.patientID = patientID;
-        this.staffID = staffID;
-        this.startTime = startTime;
-        this.endTime = endTime;
-
+    private boolean create(Patient patient, Date startTime, Date endTime, Staff staff){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         
         try {
             stmt = conn.prepareStatement("INSERT INTO Appointment (startTime, "
-                    + "endTime, staffID, patientID) VALUES (?, ?, ?, ?)", 
+                    + "endTime, staffID, patientID, patientSeen) VALUES (?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
+
+            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
-            stmt.setDate(1, new java.sql.Date(startTime.getTime()));
-            stmt.setDate(2, new java.sql.Date(endTime.getTime()));
-            stmt.setInt(3, staffID);
-            stmt.setInt(4, patientID);
+            stmt.setObject(1, sdf.format(startTime));
+            stmt.setObject(2, sdf.format(endTime));
+            stmt.setInt(3, staff.getId());
+            stmt.setInt(4, patient.getPatientID());
+            stmt.setInt(5, 0);
             
             stmt.executeUpdate();
             
@@ -61,18 +61,18 @@ public class Appointment {
             Database.closeStatement(conn, stmt);
 	}
         
+        this.patientID = patient.getPatientID();
+        this.staffID = staff.getId();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        
         return true;
     }
 
     /**
      * Creates an appointment with no patient
      */
-    private boolean create(Date startTime, Date endTime, int staffID){
-        this.patientID = 0;
-        this.staffID = staffID;
-        this.startTime = startTime;
-        this.endTime = endTime;
-
+    private boolean create(Date startTime, Date endTime, Staff staff){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
@@ -81,12 +81,10 @@ public class Appointment {
                     PreparedStatement.RETURN_GENERATED_KEYS);
             
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String sTime = sdf.format(startTime);
-            String eTime = sdf.format(endTime);
 
-            stmt.setObject(1, sTime);
-            stmt.setObject(2, eTime);
-            stmt.setInt(3, staffID);
+            stmt.setObject(1, sdf.format(startTime));
+            stmt.setObject(2, sdf.format(endTime));
+            stmt.setInt(3, staff.getId());
 
             stmt.executeUpdate();
 
@@ -98,7 +96,12 @@ public class Appointment {
         }  finally {
             Database.closeStatement(conn, stmt);
         }
-
+        
+        this.patientID = 0;
+        this.staffID = staff.getId();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        
         return true;
     }
     
@@ -133,7 +136,7 @@ public class Appointment {
             return false;
         }  finally {
             Database.closeStatement(conn, stmt);
-	    }
+	}
         
         return true;
     }
@@ -155,17 +158,21 @@ public class Appointment {
     public Staff getStaff() { return new Staff(this.staffID); }
 
     /**
-     * Cancels the appointment linked to the instance
+     * Cancels the appointment and all the related treatments
      * @return 1 if executed correctly otherwise 0
      */
     public boolean cancel() {
         Connection conn = Database.getConnection();
-        PreparedStatement stmt = null;
+        PreparedStatement stmt = null;     
 
-        try {
+        try {  
+            // May need to do a batch somehow
+            stmt = conn.prepareStatement("DELETE FROM AppointmentTreatment WHERE appointmentID = ?");
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            
             stmt = conn.prepareStatement("DELETE FROM Appointment WHERE appointmentID = ?");
-            stmt.setInt(1, this.id);
-
+            stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -177,6 +184,32 @@ public class Appointment {
             Database.closeStatement(conn, stmt);
         }
 
+        return true;
+    }
+    
+    /**
+     * Adds a specified treatment to the appointment
+     * @return boolean value representing result
+     */
+    public boolean addTreatment(Treatment t) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("INSERT INTO AppointmentTreatment ("
+                    + "appointmentId, treatmentID) VALUES (?, ?)");
+            
+            stmt.setInt(1, id);
+            stmt.setInt(2, t.getTreatmentID());
+            
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+	}
+        
         return true;
     }
     
@@ -206,6 +239,72 @@ public class Appointment {
         }
         
         return treatments;
+    }
+    
+    /**
+     * Returns an array list of the unpaid treatments associated with this appointment
+     */
+    public ArrayList<Treatment> getUnpaidTreatments() {
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT treatmentID FROM AppointmentTreatment"
+                    + " WHERE appointmentID = ? AND paid = 0");
+
+            stmt.setInt(1, this.id);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                treatments.add(new Treatment(rs.getInt("treatmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        return treatments;
+    }
+    
+    /**
+     * Mark a given treatment as paid
+     */
+    public boolean payTreatment(Treatment t) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("UPDATE AppointmentTreatment SET paid = 1 "
+                    + "WHERE appointmentID = ? AND treatmentID = ?");
+            
+            stmt.setInt(1, id);
+            stmt.setInt(2, t.getTreatmentID());
+            
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+	}
+        
+        return true;
+    }
+    
+    /**
+     * Appointment objects are equal if they have the same id
+     */
+    @Override
+    public boolean equals(Object other){
+        if((other == null) || (getClass() != other.getClass())){
+            return false;
+        } else {
+            Appointment otherApp = (Appointment) other;
+            return id == otherApp.getID();
+        }
     }
     
     /** 
@@ -240,6 +339,29 @@ public class Appointment {
     }
 
     /**
+     * Updates the patientSeen column in the table
+     */
+    public boolean updatePatientSeen(Boolean b){
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        int patientSeen = b ? 1 : 0;
+        try {
+            stmt = conn.prepareStatement("UPDATE Appointment SET patientSeen="+(patientSeen)+
+                    "WHERE appointmentID="+getID());
+
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+
+        return true;
+    }
+
+
+    /**
      * Returns an array list of appointments on a specified date for a specified staff member
      */
     public static ArrayList<Appointment> getAppointmentsOnDate(Date date, Staff staff) {
@@ -267,18 +389,32 @@ public class Appointment {
         return list;
     }
 
-    /**
-     * Appointment objects are equal if they have the same id
-     */
-    public boolean equals(Object other){
-        if((other == null) || (getClass() != other.getClass())){
-            return false;
-        } else {
-            Appointment otherApp = (Appointment) other;
-            return id == otherApp.getID();
-        }
-    }
 
-    //TODO HazZZzzzZzZzZZ patientID, staff.
+    public static ArrayList<Appointment> findPatientsAppointments(int patientID, String staff ){
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        ArrayList<Staff> lis = Staff.getStaffWithPosition(staff);
+        int staffID = (lis.get(0)).getId();
+
+        ArrayList<Appointment> list = new ArrayList<>();
+        try {
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE patientID = ? AND partnerID = ?");
+
+            stmt.setInt(1, patientID);
+            stmt.setInt(2, staffID);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                list.add(new Appointment(rs.getInt("appointmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+
+        return list;
+
+    }
 
 }

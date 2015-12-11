@@ -14,8 +14,6 @@ public class Patient {
 
     // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE - check assignment to see if its on the sheet.
 
-    //
-
     private int patientID;
     private String title, forename, surname, contactNo;
     private Date dateOfBirth;
@@ -30,10 +28,9 @@ public class Patient {
         create(title, forename, surname, dob, contactNo);
     }
 
-    public Patient(String forename, String surname, Date dob){
-        findPatients(forename, surname, dob);
-
-    }
+//    public Patient(String forename, String surname, Date dob){
+//        findPatients(forename, surname, dob);
+//    }
 
     /**
      * Creates a new patient record in the database
@@ -75,23 +72,22 @@ public class Patient {
         return true;
     }
 
-    private ArrayList findPatients(String forename, String surname, Date dob){
-        this.forename = forename;
-        this.surname = surname;
-        this.dateOfBirth = dob;
-        conn = Database.getConnection();
+    public static ArrayList findPatients(String forename, String surname, Date dob){
+        Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         ArrayList lis = new ArrayList();
 
         try {
             stmt = conn.prepareStatement("SELECT * FROM Patient WHERE forename = ? and surname = ? and doB = ?");
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
             stmt.setString(1, forename);
             stmt.setString(2, surname);
-            stmt.setDate(3, new java.sql.Date(dob.getTime()));
+            stmt.setObject(3, sdf.format(dob));
             ResultSet rs = stmt.executeQuery();
 
-            if(rs.next()) {
+            while(rs.next()) {
                 lis.add(new Patient(rs.getInt("patientID")));
             }
         } catch (SQLException e){
@@ -155,6 +151,51 @@ public class Patient {
         return dateOfBirth;
     }
     public String getContactNo() {return contactNo;}
+    
+    public boolean addAddress(Address a) {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("INSERT INTO PatientAddress ("
+                    + "patientId, houseNo, postcode) VAUES (?, ?, ?)");
+            
+            stmt.setInt(1, patientID);
+            stmt.setInt(2, a.getHouseNo());
+            stmt.setString(3, a.getPostcode());
+            
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+	}
+        
+        return true;
+    }
+    
+    public Address getAddress() {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        Address address = null;
 
+        try {
+            stmt = conn.prepareStatement("SELECT houseNo, postcode FROM PatientAddress"
+                    + " WHERE patientID = ?");
 
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                address = new Address(rs.getInt("houseNo"), rs.getString("postcode"));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        return address;
+    }
 }

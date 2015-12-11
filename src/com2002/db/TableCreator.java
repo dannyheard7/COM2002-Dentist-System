@@ -26,7 +26,7 @@ public class TableCreator {
                 " title VARCHAR(10), " +
                 " forename VARCHAR(40), " +
                 " surname VARCHAR(40), " +
-                " doB DATETIME, " +
+                " doB DATE, " +
                 " contactNo VARCHAR(30), " +
                 " PRIMARY KEY ( patientID ))";
             
@@ -45,7 +45,7 @@ public class TableCreator {
                 " remainingTreatments INT, " +
                     "remainingCheckUps INT, " +
                     "remainingHygiene INT, " +
-                " renewDate DATETIME NOT NULL, " +
+                " renewDate DATE NOT NULL, " +
                 " FOREIGN KEY (patientID) REFERENCES Patient(patientID), " +
                 " FOREIGN KEY (planName) REFERENCES Plan(name), " +
                 " PRIMARY KEY ( planName, patientID ))";
@@ -62,22 +62,19 @@ public class TableCreator {
                 "  endTime DATETIME NOT NULL," +
                 "  staffID INT NOT NULL," +
                 "  patientID INT," +
+                    " patientSeen TINYINT," +
                 "  PRIMARY KEY (appointmentID)," +
                 "  FOREIGN KEY (patientID) REFERENCES Patient(patientID)," +
-                "  FOREIGN KEY (staffID) REFERENCES Staff(staffID)" +
+                "  FOREIGN KEY (staffID) REFERENCES Staff(staffID)," +
+                "  UNIQUE KEY (startTime, staffID) " +
                 ")";
-
-            String createTreatmentTable = "CREATE TABLE IF NOT EXISTS Treatment " +
-                "(treatmentID INT not NULL AUTO_INCREMENT, " +
-                " name VARCHAR(30), " +
-                " cost DECIMAL, " +
-                " PRIMARY KEY ( treatmentID ))";
-
-            String createAppointTreatmentTable = "CREATE TABLE IF NOT EXISTS  AppointmentTreatment " +
-                "(treatmentID INTEGER not NULL, " +
+            
+            String createTreatmentTable = "CREATE TABLE IF NOT EXISTS  Treatment " +
+                "(name VARCHAR(30), " +
+                " cost DECIMAL(5, 2)," +
                 " appointmentID INTEGER not NULL, " +
-                " PRIMARY KEY (treatmentID, appointmentID), " +
-                " FOREIGN KEY (treatmentID) REFERENCES Treatment(treatmentID), " +
+                " paid TINYINT(1) NOT NULL DEFAULT 1, " +
+                " PRIMARY KEY (appointmentID, name), " +
                 " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";
             
             String createAddressTable = "CREATE TABLE IF NOT EXISTS Address (" +
@@ -104,7 +101,6 @@ public class TableCreator {
             stmt.executeUpdate(createStaffTable);
             stmt.executeUpdate(createAppointmentTable);
             stmt.executeUpdate(createTreatmentTable);
-            stmt.executeUpdate(createAppointTreatmentTable);
             stmt.executeUpdate(createAddressTable);
             stmt.executeUpdate(createPatientAddressTable);
            
@@ -119,16 +115,20 @@ public class TableCreator {
      * Drops all tables in the database for schema changes
      */
     public static void dropAll() {
+        Connection con =  Database.getConnection();
+        Statement stmt = null;
+
         try {
-            Connection con =  Database.getConnection();
-            Statement stmt = con.createStatement(); // create from open connection
+            stmt = con.createStatement(); // create from open connection
         
             String clear = "DROP TABLE IF EXISTS PatientAddress,Address,"
                     + "PatientPlan,Plan,AppointmentTreatment,Treatment,"
                     + "Appointment,Staff,Patient;"; 
-        stmt.executeUpdate(clear);
+            stmt.executeUpdate(clear);
         } catch(SQLException e) {
             System.out.println(e.toString());
+        } finally {
+            Database.closeStatement(con, stmt);
         }
     }
     

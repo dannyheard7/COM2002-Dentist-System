@@ -1,10 +1,10 @@
 package com2002;
 
+import com2002.db.Database;
+
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import com2002.db.Database;
 
 public class SQL {
 
