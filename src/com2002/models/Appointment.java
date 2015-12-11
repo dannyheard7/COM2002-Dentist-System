@@ -6,11 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 
 public class Appointment {
     
@@ -191,16 +189,16 @@ public class Appointment {
      * Adds a specified treatment to the appointment
      * @return boolean value representing result
      */
-    public boolean addTreatment(Treatment t) {
+    /*public boolean addTreatment(Treatment t) {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         
         try {
             stmt = conn.prepareStatement("INSERT INTO AppointmentTreatment ("
-                    + "appointmentId, treatmentID) VALUES (?, ?)");
+                    + "appointmentId, n) VALUES (?, ?)");
             
             stmt.setInt(1, id);
-            stmt.setInt(2, t.getTreatmentID());
+            stmt.setString(2, t.getName());
             
             stmt.executeUpdate();
         } catch(SQLException e) {
@@ -211,7 +209,7 @@ public class Appointment {
 	}
         
         return true;
-    }
+    } */
     
     /**
      * Returns an array list of treatments associated with this appointment
@@ -223,14 +221,14 @@ public class Appointment {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT treatmentID FROM AppointmentTreatment"
+            stmt = conn.prepareStatement("SELECT name FROM AppointmentTreatment"
                     + " WHERE appointmentID = ?");
 
             stmt.setInt(1, this.id);
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                treatments.add(new Treatment(rs.getInt("treatmentID")));
+                treatments.add(new Treatment(rs.getString("name"), this));
             }
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -251,14 +249,14 @@ public class Appointment {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT treatmentID FROM AppointmentTreatment"
+            stmt = conn.prepareStatement("SELECT name FROM AppointmentTreatment"
                     + " WHERE appointmentID = ? AND paid = 0");
 
             stmt.setInt(1, this.id);
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                treatments.add(new Treatment(rs.getInt("treatmentID")));
+                treatments.add(new Treatment(rs.getString("name"), this));
             }
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -278,10 +276,10 @@ public class Appointment {
         
         try {
             stmt = conn.prepareStatement("UPDATE AppointmentTreatment SET paid = 1 "
-                    + "WHERE appointmentID = ? AND treatmentID = ?");
+                    + "WHERE name = ? AND treatmentID = ?");
             
             stmt.setInt(1, id);
-            stmt.setInt(2, t.getTreatmentID());
+            stmt.setString(2, t.getName());
             
             stmt.executeUpdate();
         } catch(SQLException e) {

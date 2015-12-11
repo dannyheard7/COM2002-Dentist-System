@@ -7,12 +7,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.hasItem;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class AppointmentTest {
 
@@ -66,14 +63,14 @@ public class AppointmentTest {
         assertThat(appointments, hasItem(appointment));
     }
 
-    @Test
-    public void testAddTreatment() {
+   /* @Test
+   public void testAddTreatment() {
         Treatment t = new Treatment("Tooth Extraction", new BigDecimal("150.10"));
         appointment.addTreatment(t);
         
         ArrayList<Treatment> treatments = appointment.getTreatments();
         assertThat(treatments, hasItem(t));
-    }
+    } */
     
     @Test
     public void testLoadAppointment() {
