@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 
 public class Appointment {
     
-    private int id, staffID, patientID;
+    private int id, staffID, patientID, patientSeen;
     private Date startTime, endTime;
 
     public Appointment(int id) {
@@ -36,7 +36,7 @@ public class Appointment {
         
         try {
             stmt = conn.prepareStatement("INSERT INTO Appointment (startTime, "
-                    + "endTime, staffID, patientID) VALUES (?, ?, ?, ?)", 
+                    + "endTime, staffID, patientID, patientSeen) VALUES (?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -45,6 +45,7 @@ public class Appointment {
             stmt.setObject(2, sdf.format(endTime));
             stmt.setInt(3, staff.getId());
             stmt.setInt(4, patient.getPatientID());
+            stmt.setInt(5, 0);
             
             stmt.executeUpdate();
             

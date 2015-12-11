@@ -62,6 +62,7 @@ public class TableCreator {
                 "  endTime DATETIME NOT NULL," +
                 "  staffID INT NOT NULL," +
                 "  patientID INT," +
+                    " patientSeen TINYINT," +
                 "  PRIMARY KEY (appointmentID)," +
                 "  FOREIGN KEY (patientID) REFERENCES Patient(patientID)," +
                 "  FOREIGN KEY (staffID) REFERENCES Staff(staffID)," +
