@@ -44,9 +44,11 @@ public class Appointment {
             stmt = conn.prepareStatement("INSERT INTO Appointment (startTime, "
                     + "endTime, staffID, patientID) VALUES (?, ?, ?, ?)", 
                     PreparedStatement.RETURN_GENERATED_KEYS);
+
+            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
-            stmt.setDate(1, new java.sql.Date(startTime.getTime()));
-            stmt.setDate(2, new java.sql.Date(endTime.getTime()));
+            stmt.setObject(1, sdf.format(startTime));
+            stmt.setObject(2, sdf.format(endTime));
             stmt.setInt(3, staffID);
             stmt.setInt(4, patientID);
             
@@ -81,11 +83,9 @@ public class Appointment {
                     PreparedStatement.RETURN_GENERATED_KEYS);
             
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String sTime = sdf.format(startTime);
-            String eTime = sdf.format(endTime);
 
-            stmt.setObject(1, sTime);
-            stmt.setObject(2, eTime);
+            stmt.setObject(1, sdf.format(startTime));
+            stmt.setObject(2, sdf.format(endTime));
             stmt.setInt(3, staffID);
 
             stmt.executeUpdate();

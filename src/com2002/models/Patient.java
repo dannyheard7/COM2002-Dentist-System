@@ -86,9 +86,11 @@ public class Patient {
         try {
             stmt = conn.prepareStatement("SELECT * FROM Patient WHERE forename = ? and surname = ? and doB = ?");
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
             stmt.setString(1, forename);
             stmt.setString(2, surname);
-            stmt.setDate(3, new java.sql.Date(dob.getTime()));
+            stmt.setObject(3, sdf.format(dob));
             ResultSet rs = stmt.executeQuery();
 
             if(rs.next()) {

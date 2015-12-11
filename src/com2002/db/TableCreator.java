@@ -26,7 +26,7 @@ public class TableCreator {
                 " title VARCHAR(10), " +
                 " forename VARCHAR(40), " +
                 " surname VARCHAR(40), " +
-                " doB DATETIME, " +
+                " doB DATE, " +
                 " contactNo VARCHAR(30), " +
                 " PRIMARY KEY ( patientID ))";
             
@@ -45,7 +45,7 @@ public class TableCreator {
                 " remainingTreatments INT, " +
                     "remainingCheckUps INT, " +
                     "remainingHygiene INT, " +
-                " renewDate DATETIME NOT NULL, " +
+                " renewDate DATE NOT NULL, " +
                 " FOREIGN KEY (patientID) REFERENCES Patient(patientID), " +
                 " FOREIGN KEY (planName) REFERENCES Plan(name), " +
                 " PRIMARY KEY ( planName, patientID ))";
@@ -119,16 +119,20 @@ public class TableCreator {
      * Drops all tables in the database for schema changes
      */
     public static void dropAll() {
+        Connection con =  Database.getConnection();
+        Statement stmt = null;
+
         try {
-            Connection con =  Database.getConnection();
-            Statement stmt = con.createStatement(); // create from open connection
+            stmt = con.createStatement(); // create from open connection
         
             String clear = "DROP TABLE IF EXISTS PatientAddress,Address,"
                     + "PatientPlan,Plan,AppointmentTreatment,Treatment,"
                     + "Appointment,Staff,Patient;"; 
-        stmt.executeUpdate(clear);
+            stmt.executeUpdate(clear);
         } catch(SQLException e) {
             System.out.println(e.toString());
+        } finally {
+            Database.closeStatement(con, stmt);
         }
     }
     

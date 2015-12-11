@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
@@ -20,14 +21,14 @@ public class AppointmentTest {
     @BeforeClass
     public static void setup() {
         new Staff("hygienist");
-        new Patient("Ms", "Beth", "Lum", new java.util.Date(), "070");
+        new Patient("Ms", "Beth", "Lum", new Date(), "070");
     }
 
     @Before
     public void before() {
         staff = new Staff(1);
         patient = new Patient(1);
-        tester = new Appointment(patient.getPatientID(), new java.util.Date(), new java.util.Date(), staff.getId());
+        tester = new Appointment(patient.getPatientID(), new Date(), new Date(), staff.getId());
     }
 
     @After
@@ -49,7 +50,7 @@ public class AppointmentTest {
     
     @Test
     public void testGetAppointmentsOnDate() {
-        ArrayList<Appointment> appointments = Appointment.getAppointmentsOnDate(new java.util.Date());
+        ArrayList<Appointment> appointments = Appointment.getAppointmentsOnDate(new Date());
 
         assertThat(appointments, hasItem(tester));
     }
