@@ -8,43 +8,71 @@ import java.sql.*;
 
 public class Treatment {
 
-    private int treatmentID;
+    private int appointmentID;
     private BigDecimal cost;
+    private boolean paid;
     private String name;
-    private Connection conn;
 
 
-    public Treatment(int treatmentID){
-        treatmentByID(treatmentID);
+    public Treatment(String name, Appointment appointment){
+        load(name, appointment);
     }
 
-    public Treatment(String name, BigDecimal cost) {
-        create(name, cost);
+    public Treatment(Appointment appointment, String name, BigDecimal cost) {
+        create(appointment, name, cost);
     }
 
     /**
      * Creates a new patient record in the database
      */
-    private boolean create(String name, BigDecimal cost){
-        this.name = name;
-        this.cost = cost;
-        conn = Database.getConnection();
+    private boolean create(Appointment appointment, String name, BigDecimal cost){
+        Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("INSERT INTO Treatment (name, "
-                            + "cost) VALUES ( ?, ?)",
-                    PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt = conn.prepareStatement("INSERT INTO Treatment (name, cost "
+                            + "appointmentID) VALUES (?, ?, ?)");
 
             stmt.setString(1, name);
             stmt.setBigDecimal(2, cost);
+            stmt.setInt(3, appointment.getID());
 
             stmt.executeUpdate();
-
-            ResultSet rs = stmt.getGeneratedKeys();
-            if(rs.next()) { this.treatmentID = rs.getInt(1);}
-
         } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        this.name = name;
+        this.cost = cost;
+        this.paid = false;
+        this.appointmentID = appointment.getID();
+
+        return true;
+    }
+
+    /**
+     * Load the patient given the treatment name and the appointment it belongs to
+     * @param name - the name of the treatment
+     */
+    private boolean load(String name, Appointment appointment) {
+        PreparedStatement stmt = null;
+        Connection conn = Database.getConnection();
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM Treatment WHERE name = ?"
+                    + "AND appointmentID = ? LIMIT 1");
+
+            stmt.setString(1, name);
+            stmt.setInt(2, appointment.getID());
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                this.cost = rs.getBigDecimal("cost");
+                this.paid = rs.getBoolean("paid");
+            }
+        } catch(SQLException e) {
             System.out.println(e.toString());
             return false;
         }  finally {
@@ -54,39 +82,6 @@ public class Treatment {
         return true;
     }
 
-    /**
-     * Load the patient given a Patient's ID number
-     * @param id - the id of the patient
-     */
-    private boolean treatmentByID(int id) {
-        PreparedStatement stmt = null;
-        conn = Database.getConnection();
-        try {
-            stmt = conn.prepareStatement("SELECT * FROM Treatment WHERE treatmentID = ? LIMIT 1");
-
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if(rs.next()) {
-                this.treatmentID = rs.getInt("treatmentID");
-                this.name = rs.getString("name");
-                this.cost = rs.getBigDecimal("cost");
-
-            }
-        } catch(SQLException e) {
-            System.out.println(e.toString());
-            return false;
-        }  finally {
-                Database.closeStatement(conn, stmt);
-        }
-
-        return true;
-    }
-
-    public int getID() {
-        return treatmentID;
-    }
-
     // Basic get methods.
     public String getName() {
         return name;
@@ -94,8 +89,8 @@ public class Treatment {
     public BigDecimal getCost() {
         return cost;
     }
-    public int getTreatmentID() {
-        return treatmentID;
+    public Appointment getAppointment() {
+        return new Appointment(appointmentID);
     }
     
     public boolean equals(Object other) {
@@ -103,9 +98,35 @@ public class Treatment {
             return false;
         } else {
             Treatment otherTreat = (Treatment) other;
-            return treatmentID == otherTreat.getID();
+            return appointmentID == otherTreat.getAppointment().getID() && name == otherTreat.getName();
         }
     }
+    
+    /**
+     * Mark a given treatment as paid
+     */
+    public boolean pay() {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = conn.prepareStatement("UPDATE AppointmentTreatment SET paid = 1 "
+                    + "WHERE appointmentID = ? AND name= ?");
+            
+            stmt.setInt(1, appointmentID);
+            stmt.setString(2, name);
+            
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+	}
+        
+        return true;
+    }
+    
 
 
 }

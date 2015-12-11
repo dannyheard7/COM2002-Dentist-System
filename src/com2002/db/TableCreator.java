@@ -68,19 +68,13 @@ public class TableCreator {
                 "  FOREIGN KEY (staffID) REFERENCES Staff(staffID)," +
                 "  UNIQUE KEY (startTime, staffID) " +
                 ")";
-
-            String createTreatmentTable = "CREATE TABLE IF NOT EXISTS Treatment " +
-                "(treatmentID INT not NULL AUTO_INCREMENT, " +
-                " name VARCHAR(30), " +
-                " cost DECIMAL(5, 2), " +
-                " PRIMARY KEY ( treatmentID ))";
-
-            String createAppointTreatmentTable = "CREATE TABLE IF NOT EXISTS  AppointmentTreatment " +
-                "(treatmentID INTEGER not NULL, " +
+            
+            String createTreatmentTable = "CREATE TABLE IF NOT EXISTS  Treatment " +
+                "(name VARCHAR(30), " +
+                " cost DECIMAL(5, 2)," +
                 " appointmentID INTEGER not NULL, " +
                 " paid TINYINT(1) NOT NULL DEFAULT 1, " +
-                " PRIMARY KEY (treatmentID, appointmentID), " +
-                " FOREIGN KEY (treatmentID) REFERENCES Treatment(treatmentID), " +
+                " PRIMARY KEY (appointmentID, name), " +
                 " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";
             
             String createAddressTable = "CREATE TABLE IF NOT EXISTS Address (" +
@@ -107,7 +101,6 @@ public class TableCreator {
             stmt.executeUpdate(createStaffTable);
             stmt.executeUpdate(createAppointmentTable);
             stmt.executeUpdate(createTreatmentTable);
-            stmt.executeUpdate(createAppointTreatmentTable);
             stmt.executeUpdate(createAddressTable);
             stmt.executeUpdate(createPatientAddressTable);
            
