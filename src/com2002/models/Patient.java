@@ -78,11 +78,12 @@ public class Patient {
         ArrayList<Patient> lis = new ArrayList();
 
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Patient WHERE forename = ? and surname = ? and doB = ?");
+            stmt = conn.prepareStatement("SELECT * FROM Patient WHERE "
+                    + "LOWER(forename) = ? and LOWER(surname) = ? and doB = ?");
 
 
-            stmt.setString(1, forename);
-            stmt.setString(2, surname);
+            stmt.setString(1, forename.toLowerCase());
+            stmt.setString(2, surname.toLowerCase());
             stmt.setObject(3, dob);
             ResultSet rs = stmt.executeQuery();
 
