@@ -30,6 +30,8 @@ public class PatientPlan {
     }
 
     public PatientPlan(int patientID, String planName, Date renewDate) {
+
+        deletePatientPlan(patientID);
         create(patientID, planName, renewDate);
     }
 
@@ -72,8 +74,8 @@ public class PatientPlan {
         return true;
     }
 
-    public boolean deletePatientPlan(){
-        Plan p = new Plan(planName);
+    private boolean deletePatientPlan(int patientID){
+        this.patientID = patientID;
         conn = Database.getConnection();
         PreparedStatement stmt = null;
 
@@ -89,7 +91,12 @@ public class PatientPlan {
         }  finally {
             Database.closeStatement(conn, stmt);
         }
-
+        this.remainCheckups = 0;
+        this.remainHygiene = 0;
+        this.remainTreatments = 0;
+        this.patientID = 0;
+        this.planName = "";
+        this.renewDate = null;
         return true;
     }
 
