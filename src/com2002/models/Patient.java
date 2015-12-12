@@ -49,12 +49,11 @@ public class Patient {
                     + "forename, surname, doB, contactNo) VALUES ( ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
-            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
-            String dt = sdf.format(dob);
+
             stmt.setString(1, title);
             stmt.setString(2, forename);
             stmt.setString(3, surname);
-            stmt.setObject(4, dt); // what is with this??
+            stmt.setObject(4, dob); // what is with this??
             stmt.setString(5, contactNo);
 
             stmt.executeUpdate();
