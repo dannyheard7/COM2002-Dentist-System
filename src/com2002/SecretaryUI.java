@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /*
@@ -32,6 +33,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     private Calendar calendar;
     private String weekStart;
     private String weekEnd;
+    private String displayMonth;
     private String displayYear;
     private String dateActual;
     private final Date today;
@@ -52,19 +54,27 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         initComponents();
         this.setLocationRelativeTo(null);
-        updateUI();
+
+        updateNav();
+        updateDays();
+        updateDayButtons();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        updateTimetable();
 
     }
 
     public void updateNav(){
-        DateFormat dFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
+        DateFormat dFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
 
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        weekStart = dFormat.format(calendar.getTime());
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        weekEnd = dFormat.format(calendar.getTime());
+        displayMonth = dFormat.format(calendar.getTime());
+        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
 
-        weekDates.setText(weekStart + "-" + weekEnd);
+        weekStart = dFormat2.format(calendar.getTime());
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        weekEnd = dFormat2.format(calendar.getTime());
+
+        weekDates.setText(displayMonth + "  Week: " + weekStart + " - " + weekEnd);
 
         DateFormat yFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
         displayYear = yFormat.format(calendar.getTime());
@@ -89,6 +99,31 @@ public class SecretaryUI extends javax.swing.JFrame {
     public void updateDayButtons(){
 
 
+        recolourButtons();
+
+        ArrayList<Integer> apts = new ArrayList<>();
+
+        for(int i=0; i<5; i++){
+
+            ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
+
+            apts.add(dayApts.size());
+
+        }
+
+
+        day1B.setText(String.valueOf(apts.get(0)));
+        day2B.setText(String.valueOf(apts.get(1)));
+        day3B.setText(String.valueOf(apts.get(2)));
+        day4B.setText(String.valueOf(apts.get(3)));
+        day5B.setText(String.valueOf(apts.get(4)));
+
+
+
+    }
+
+    public void recolourButtons(){
+
 
         day1B.setBackground(Color.LIGHT_GRAY);
         day2B.setBackground(Color.LIGHT_GRAY);
@@ -96,20 +131,12 @@ public class SecretaryUI extends javax.swing.JFrame {
         day4B.setBackground(Color.LIGHT_GRAY);
         day5B.setBackground(Color.LIGHT_GRAY);
 
-        ArrayList<Integer> apts = new ArrayList<>();
-
         int trueDay = 0;
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
 
-            ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
-
-            apts.add(dayApts.size());
-
             DateFormat tDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String tempDate = tDate.format(calendar.getTime());
-            System.out.println(tempDate);
-            System.out.println(dateActual);
             if(tempDate.equals(dateActual)){
                 trueDay = i+1;
             }
@@ -134,14 +161,6 @@ public class SecretaryUI extends javax.swing.JFrame {
                 break;
         }
 
-        day1B.setText(String.valueOf(apts.get(0)));
-        day2B.setText(String.valueOf(apts.get(1)));
-        day3B.setText(String.valueOf(apts.get(2)));
-        day4B.setText(String.valueOf(apts.get(3)));
-        day5B.setText(String.valueOf(apts.get(4)));
-
-
-
     }
 
 
@@ -156,16 +175,22 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateHourSlot(appointmentSlot7);
         updateHourSlot(appointmentSlot8);
 
-
-
+//        timetableWrapper.invalidate();
+//        timetableWrapper.repaint();
 
     }
 
 
     public void updateHourSlot(JPanel slot){
+
+        slot.removeAll();
         // Add appointment buttons to the slot where slot is a JPanel
+        JButton test = new JButton("TEST");
 
-
+        slot.add(test);
+        slot.invalidate();
+        slot.revalidate();
+        slot.repaint();
 
 
 
@@ -175,7 +200,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateNav();
         updateDays();
         updateDayButtons();
-        //updateTimetable();
+        updateTimetable();
     }
 
 
@@ -277,9 +302,9 @@ public class SecretaryUI extends javax.swing.JFrame {
                         .addGroup(navWrapperLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(prevWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(107, 107, 107)
-                                .addComponent(weekDates, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(80, 80, 80)
+                                .addGap(63, 63, 63)
+                                .addComponent(weekDates, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(yearDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                                 .addComponent(nextWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -301,18 +326,43 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         day1B.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         day1B.setText("jButton1");
+        day1B.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                day1BActionPerformed(evt);
+            }
+        });
 
         day2B.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         day2B.setText("jButton1");
+        day2B.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                day2BActionPerformed(evt);
+            }
+        });
 
         day3B.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         day3B.setText("jButton1");
+        day3B.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                day3BActionPerformed(evt);
+            }
+        });
 
         day4B.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         day4B.setText("jButton1");
+        day4B.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                day4BActionPerformed(evt);
+            }
+        });
 
         day5B.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         day5B.setText("jButton1");
+        day5B.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                day5BActionPerformed(evt);
+            }
+        });
 
         date1L.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         date1L.setText("jLabel1");
@@ -383,16 +433,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         timeLBL1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL1.setText("9:00");
 
-        javax.swing.GroupLayout appointmentSlot1Layout = new javax.swing.GroupLayout(appointmentSlot1);
-        appointmentSlot1.setLayout(appointmentSlot1Layout);
-        appointmentSlot1Layout.setHorizontalGroup(
-                appointmentSlot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot1Layout.setVerticalGroup(
-                appointmentSlot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot1Layout = new javax.swing.GroupLayout(hourSlot1);
         hourSlot1.setLayout(hourSlot1Layout);
@@ -408,29 +449,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot1Layout.setVerticalGroup(
                 hourSlot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot1Layout.createSequentialGroup()
-                                .addGroup(hourSlot1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot1Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot1Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL1)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL1)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         timeLBL2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL2.setText("10:00");
 
-        javax.swing.GroupLayout appointmentSlot2Layout = new javax.swing.GroupLayout(appointmentSlot2);
-        appointmentSlot2.setLayout(appointmentSlot2Layout);
-        appointmentSlot2Layout.setHorizontalGroup(
-                appointmentSlot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot2Layout.setVerticalGroup(
-                appointmentSlot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot2Layout = new javax.swing.GroupLayout(hourSlot2);
         hourSlot2.setLayout(hourSlot2Layout);
@@ -446,29 +477,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot2Layout.setVerticalGroup(
                 hourSlot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot2Layout.createSequentialGroup()
-                                .addGroup(hourSlot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot2Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot2Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL2)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL2)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         timeLBL3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL3.setText("11:00");
 
-        javax.swing.GroupLayout appointmentSlot3Layout = new javax.swing.GroupLayout(appointmentSlot3);
-        appointmentSlot3.setLayout(appointmentSlot3Layout);
-        appointmentSlot3Layout.setHorizontalGroup(
-                appointmentSlot3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot3Layout.setVerticalGroup(
-                appointmentSlot3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot3Layout = new javax.swing.GroupLayout(hourSlot3);
         hourSlot3.setLayout(hourSlot3Layout);
@@ -484,29 +505,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot3Layout.setVerticalGroup(
                 hourSlot3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot3Layout.createSequentialGroup()
-                                .addGroup(hourSlot3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot3Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot3Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL3)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL3)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot3Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         timeLBL4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL4.setText("12:00");
 
-        javax.swing.GroupLayout appointmentSlot4Layout = new javax.swing.GroupLayout(appointmentSlot4);
-        appointmentSlot4.setLayout(appointmentSlot4Layout);
-        appointmentSlot4Layout.setHorizontalGroup(
-                appointmentSlot4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot4Layout.setVerticalGroup(
-                appointmentSlot4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot4Layout = new javax.swing.GroupLayout(hourSlot4);
         hourSlot4.setLayout(hourSlot4Layout);
@@ -522,29 +533,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot4Layout.setVerticalGroup(
                 hourSlot4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot4Layout.createSequentialGroup()
-                                .addGroup(hourSlot4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot4Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot4Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL4)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL4)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         timeLBL5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL5.setText("13:00");
 
-        javax.swing.GroupLayout appointmentSlot5Layout = new javax.swing.GroupLayout(appointmentSlot5);
-        appointmentSlot5.setLayout(appointmentSlot5Layout);
-        appointmentSlot5Layout.setHorizontalGroup(
-                appointmentSlot5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot5Layout.setVerticalGroup(
-                appointmentSlot5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot5Layout = new javax.swing.GroupLayout(hourSlot5);
         hourSlot5.setLayout(hourSlot5Layout);
@@ -560,29 +561,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot5Layout.setVerticalGroup(
                 hourSlot5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot5Layout.createSequentialGroup()
-                                .addGroup(hourSlot5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot5Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot5Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL5)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL5)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot5Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         timeLBL6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL6.setText("14:00");
 
-        javax.swing.GroupLayout appointmentSlot6Layout = new javax.swing.GroupLayout(appointmentSlot6);
-        appointmentSlot6.setLayout(appointmentSlot6Layout);
-        appointmentSlot6Layout.setHorizontalGroup(
-                appointmentSlot6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot6Layout.setVerticalGroup(
-                appointmentSlot6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot6Layout = new javax.swing.GroupLayout(hourSlot6);
         hourSlot6.setLayout(hourSlot6Layout);
@@ -598,29 +589,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot6Layout.setVerticalGroup(
                 hourSlot6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot6Layout.createSequentialGroup()
-                                .addGroup(hourSlot6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot6Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot6Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL6)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL6)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot6Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         timeLBL7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL7.setText("15:00");
 
-        javax.swing.GroupLayout appointmentSlot7Layout = new javax.swing.GroupLayout(appointmentSlot7);
-        appointmentSlot7.setLayout(appointmentSlot7Layout);
-        appointmentSlot7Layout.setHorizontalGroup(
-                appointmentSlot7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot7Layout.setVerticalGroup(
-                appointmentSlot7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot7Layout = new javax.swing.GroupLayout(hourSlot7);
         hourSlot7.setLayout(hourSlot7Layout);
@@ -636,29 +617,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot7Layout.setVerticalGroup(
                 hourSlot7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot7Layout.createSequentialGroup()
-                                .addGroup(hourSlot7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot7Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot7Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL7)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL7)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot7Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         timeLBL8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL8.setText("16:00");
 
-        javax.swing.GroupLayout appointmentSlot8Layout = new javax.swing.GroupLayout(appointmentSlot8);
-        appointmentSlot8.setLayout(appointmentSlot8Layout);
-        appointmentSlot8Layout.setHorizontalGroup(
-                appointmentSlot8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        appointmentSlot8Layout.setVerticalGroup(
-                appointmentSlot8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 53, Short.MAX_VALUE)
-        );
+        appointmentSlot8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout hourSlot8Layout = new javax.swing.GroupLayout(hourSlot8);
         hourSlot8.setLayout(hourSlot8Layout);
@@ -674,14 +645,13 @@ public class SecretaryUI extends javax.swing.JFrame {
         hourSlot8Layout.setVerticalGroup(
                 hourSlot8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(hourSlot8Layout.createSequentialGroup()
-                                .addGroup(hourSlot8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(hourSlot8Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(appointmentSlot8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(hourSlot8Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addComponent(timeLBL8)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(timeLBL8)
+                                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(hourSlot8Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(appointmentSlot8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         javax.swing.GroupLayout timetableWrapperLayout = new javax.swing.GroupLayout(timetableWrapper);
@@ -823,7 +793,7 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addComponent(lookupPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(38, 38, 38)
                                 .addComponent(bookAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(495, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -841,9 +811,9 @@ public class SecretaryUI extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(controlMaster, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(calendarMaster, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(controlMaster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(calendarMaster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -855,18 +825,11 @@ public class SecretaryUI extends javax.swing.JFrame {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, +7);
 
-//
-//            calendarMaster.removeAll();
-//            navWrapper.removeAll();
-//            weekWrapper.removeAll();
-//            timetableWrapper.removeAll();
-//
-//            calendarMaster.repaint();
-//            calendarMaster.revalidate();
-
-
-
-        updateUI();
+        updateNav();
+        updateDays();
+        updateDayButtons();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        updateTimetable();
     }
 
     private void prevWeekActionPerformed(java.awt.event.ActionEvent evt) {
@@ -875,7 +838,11 @@ public class SecretaryUI extends javax.swing.JFrame {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, -7);
 
-        updateUI();
+        updateNav();
+        updateDays();
+        updateDayButtons();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        updateTimetable();
     }
 
     private void goToButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -887,11 +854,18 @@ public class SecretaryUI extends javax.swing.JFrame {
             Date goToDate = fmt.parse(goToString);
 
             calendar.setTime(goToDate);
+
+            updateNav();
+            updateDays();
+            updateDayButtons();
+            calendar.setTime(goToDate);
+            updateTimetable();
+
         } catch (ParseException ex) {
             Logger.getLogger(SecretaryUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        updateUI();
+
 
 
 
@@ -908,7 +882,12 @@ public class SecretaryUI extends javax.swing.JFrame {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
         searchDate.setText("dd/mm/yyyy");
-        updateUI();
+
+        updateNav();
+        updateDays();
+        updateDayButtons();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        updateTimetable();
 
 
         // Reset the date to today
@@ -925,8 +904,10 @@ public class SecretaryUI extends javax.swing.JFrame {
 
     private void bookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        BookAppointment bookAppointment = new BookAppointment();
-        bookAppointment.setVisible(true);
+
+        BookAppointment book = new BookAppointment();
+        book.setVisible(true);
+
         // Open the book appointment GUI, do NOT close the current GUI
     }
 
@@ -934,6 +915,51 @@ public class SecretaryUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         searchDate.setText("");
     }
+
+
+
+    private void day1BActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        updateTimetable();
+        recolourButtons();
+        day1B.setBackground(Color.GREEN);
+
+    }
+
+    private void day2BActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+        updateTimetable();
+        recolourButtons();
+        day2B.setBackground(Color.GREEN);
+    }
+
+    private void day3BActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        updateTimetable();
+        recolourButtons();
+        day3B.setBackground(Color.GREEN);
+    }
+
+    private void day4BActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        updateTimetable();
+        recolourButtons();
+        day4B.setBackground(Color.GREEN);
+    }
+
+    private void day5BActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        updateTimetable();
+        recolourButtons();
+        day5B.setBackground(Color.GREEN);
+    }
+
+
 
     /**
      * @param args the command line arguments

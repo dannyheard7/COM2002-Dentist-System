@@ -70,7 +70,7 @@ public class OutstandingCosts extends javax.swing.JFrame {
         Btn_OutstandingCosts_ModifyTotal = new javax.swing.JButton();
         Btn_OutstandingCosts_Cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Outstanding Costs");
 
         Lbl_OutstandingCosts_Treatments.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N

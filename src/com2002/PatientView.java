@@ -64,7 +64,7 @@ public class PatientView extends javax.swing.JFrame {
         Btn_PatientView_OutstandingCosts = new javax.swing.JButton();
         Btn_PatientView_Cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Patient");
 
         Lbl_PatientView_PatientID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
