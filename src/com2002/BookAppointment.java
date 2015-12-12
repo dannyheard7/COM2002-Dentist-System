@@ -47,21 +47,36 @@ public class BookAppointment extends javax.swing.JFrame {
 
         Lbl_BookAppointment_Date.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_BookAppointment_Date.setText("Date");
-
+        
         TxtFld_BookAppointment_Date.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TxtFld_BookAppointment_Date.setText("dd/mm/yyyy");
+        TxtFld_BookAppointment_Date.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TxtFld_BookAppointment_Date.setText("");
+            }
+        });
 
         Lbl_BookAppointment_Start.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_BookAppointment_Start.setText("Start Time");       
 
         TxtFld_BookAppointment_Start.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TxtFld_BookAppointment_Start.setText("hh:mm");
+        TxtFld_BookAppointment_Start.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TxtFld_BookAppointment_Start.setText("");
+            }
+        });
 
         Lbl_BookAppointment_End.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_BookAppointment_End.setText("End Time");
 
         TxtFld_BookAppointment_End.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TxtFld_BookAppointment_End.setText("hh:mm");
+        TxtFld_BookAppointment_End.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TxtFld_BookAppointment_End.setText("");
+            }
+        }); 
 
         Lbl_BookAppointment_AppType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_BookAppointment_AppType.setText("Partner");
@@ -174,7 +189,7 @@ public class BookAppointment extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
     private void Btn_BookAppointment_FindPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_FindPatientActionPerformed
         // TODO add your handling code here:
@@ -198,7 +213,7 @@ public class BookAppointment extends javax.swing.JFrame {
         return patientIDTrue && dateTrue && startTimeTrue && endTimeTrue;
     }
     
-    private void Btn_BookAppointment_SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_SubmitActionPerformed
+    private void Btn_BookAppointment_SubmitActionPerformed(java.awt.event.ActionEvent evt) {                                                           
         String date = TxtFld_BookAppointment_Date.getText();
         String startTime = TxtFld_BookAppointment_Start.getText();
         String endTime = TxtFld_BookAppointment_End.getText();

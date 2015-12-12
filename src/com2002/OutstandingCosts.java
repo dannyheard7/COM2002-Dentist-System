@@ -26,9 +26,9 @@ public class OutstandingCosts extends javax.swing.JFrame {
     }
 
     public void setPatient(Patient patient) {
-        ArrayList<Appointment> app = Appointment.findPatientsAppointments(patient);
-        for(int i = 0;i<app.size();i++){
-            ArrayList<Treatment> treatments = app.get(i).getUnpaidTreatments();
+        ArrayList<Appointment> appointments = Appointment.findPatientsAppointments(patient);
+        for(Appointment app: appointments){
+            ArrayList<Treatment> treatments = app.getUnpaidTreatments();
             ArrayList<String> treatmentNames = new ArrayList<>();
             ArrayList<BigDecimal> costs = new ArrayList<>();
             for(int j=0;j<treatments.size();j++){
