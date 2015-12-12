@@ -180,7 +180,7 @@ public class LookUpPatient extends javax.swing.JFrame {
                 }
                 else {
                     //TODO error message?
-                    System.out.println(patients.get(i).getForename());
+                    System.out.println(patients.get(i).getSurname());
                 }
             }
 
