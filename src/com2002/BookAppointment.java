@@ -43,7 +43,7 @@ public class BookAppointment extends javax.swing.JFrame {
         Btn_BookAppointment_Submit = new javax.swing.JButton();
         Btn_BookAppointment_Cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Book Appointment");
 
         Lbl_BookAppointment_Date.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N

@@ -24,6 +24,7 @@ public class PatientView extends javax.swing.JFrame {
     }
 
     public void setPatient(Patient patient) {
+        patientObj = patient;
         patientID = patient.getPatientID();
         title = patient.getTitle();
         forename = patient.getForename();
@@ -63,7 +64,7 @@ public class PatientView extends javax.swing.JFrame {
         Btn_PatientView_OutstandingCosts = new javax.swing.JButton();
         Btn_PatientView_Cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Patient");
 
         Lbl_PatientView_PatientID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -209,6 +210,7 @@ public class PatientView extends javax.swing.JFrame {
 
     private void Btn_PatientView_OutstandingCostsActionPerformed(java.awt.event.ActionEvent evt) {
         OutstandingCosts outstanding = new OutstandingCosts();
+        outstanding.setPatient(patientObj);
         outstanding.setVisible(true);
     }
 
@@ -275,5 +277,6 @@ public class PatientView extends javax.swing.JFrame {
     private String surname;
     private String dateOfBirth;
     private String contactNo;
+    private Patient patientObj;
     // End of variables declaration
 }

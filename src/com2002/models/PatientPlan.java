@@ -30,6 +30,8 @@ public class PatientPlan {
     }
 
     public PatientPlan(int patientID, String planName, Date renewDate) {
+
+        deletePatientPlan(patientID);
         create(patientID, planName, renewDate);
     }
 
@@ -53,14 +55,13 @@ public class PatientPlan {
             stmt = conn.prepareStatement("INSERT INTO PatientPlan (patientID, planName, "
                     + "remainingTreatments, remainingCheckUps, remainingHygiene, renewDate) VALUES (?, ?, ?, ?, ?, ?)");
 
-            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
 
             stmt.setInt(1, patientID);
             stmt.setString(2, planName);
             stmt.setInt(3, remainTreatments);
             stmt.setInt(4, remainCheckups);
             stmt.setInt(5, remainHygiene);
-            stmt.setObject(6, sdf.format(renewDate));
+            stmt.setObject(6, renewDate);
 
             stmt.executeUpdate();
         } catch(SQLException e) {
@@ -70,6 +71,32 @@ public class PatientPlan {
             Database.closeStatement(conn, stmt);
         }
 
+        return true;
+    }
+
+    private boolean deletePatientPlan(int patientID){
+        this.patientID = patientID;
+        conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("DELETE FROM PatientPlan WHERE patientID = ?;");
+
+            stmt.setInt(1, patientID);
+
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        this.remainCheckups = 0;
+        this.remainHygiene = 0;
+        this.remainTreatments = 0;
+        this.patientID = 0;
+        this.planName = "";
+        this.renewDate = null;
         return true;
     }
 
@@ -92,6 +119,8 @@ public class PatientPlan {
                 this.patientID = rs.getInt("patientID");
                 this.planName = rs.getString("planName");
                 this.remainTreatments = rs.getInt("remainingTreatments");
+                this.remainCheckups = rs.getInt("remainCheckups");
+                this.remainHygiene = rs.getInt("remainHygiene");
                 this.renewDate = rs.getDate("renewDate");
             }
         } catch(SQLException e) {
@@ -155,9 +184,9 @@ public class PatientPlan {
     }
 
     // TODO arraylist of patients on each plan - based on plan name.
-    private ArrayList patientPlanByName(String planName) {
+    public static ArrayList<Patient> patientPlanByName(String planName) {
         PreparedStatement stmt = null;
-        conn = Database.getConnection();
+        Connection conn = Database.getConnection();
 
         ArrayList lis = new ArrayList();
 

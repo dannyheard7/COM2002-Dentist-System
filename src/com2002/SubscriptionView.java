@@ -13,6 +13,8 @@ package com2002;
 import com2002.models.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SubscriptionView extends javax.swing.JFrame {
 
@@ -45,7 +47,7 @@ public class SubscriptionView extends javax.swing.JFrame {
         Btn_SubscriptionView_Ok = new javax.swing.JButton();
         Btn_SubscriptionView_Cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Patient Plan");
 
         Lbl_SubscriptionView_Plan.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -124,6 +126,11 @@ public class SubscriptionView extends javax.swing.JFrame {
     private void Btn_SubscriptionView_OkActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         // return the plan selected in the SQL
+        String planName = Combo_SubscriptionView_Plan.getSelectedItem().toString();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 1);
+        Date nextYear = cal.getTime();
+        PatientPlan plan = new PatientPlan(patientID,planName,nextYear);
         setVisible(false);
     }
 

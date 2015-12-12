@@ -66,7 +66,7 @@ public class AppointmentTest {
 
     @Test
    public void testAddTreatment() {
-        appointment.addTreatment("Tooth Extraction", new BigDecimal("150.10"));
+        appointment.addTreatment("Tooth Extraction", new BigDecimal(150.10));
         Treatment t = new Treatment(appointment, "Tooth Extraction");
         
         ArrayList<Treatment> treatments = appointment.getTreatments();
