@@ -1,14 +1,20 @@
 package com2002.db;
 
+import com2002.models.*;
+
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
+import java.util.Date;
 
 public class TableCreator {
 
     public static void main(String[] args) {
         dropAll();
         createSchema();
+        testData();
     }
     
     /**
@@ -74,7 +80,7 @@ public class TableCreator {
                 "(name VARCHAR(30), " +
                 " cost DECIMAL(5, 2)," +
                 " appointmentID INTEGER not NULL, " +
-                " paid TINYINT(1) NOT NULL DEFAULT 1, " +
+                " paid TINYINT(1) NOT NULL DEFAULT 0, " +
                 " PRIMARY KEY (appointmentID, name), " +
                 " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";
             
@@ -131,6 +137,29 @@ public class TableCreator {
         } finally {
             Database.closeStatement(con, stmt);
         }
+    }
+
+    /**
+     * Creates entries in the table
+     */
+    public static void testData(){
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 2);
+        Date twoDaysStart = cal.getTime();
+        cal.add(Calendar.MINUTE, 20);
+        Date twoDaysEnd = cal.getTime();
+        Patient p = new Patient("Ms","Beth","Lum", new Date(),"07504988541");
+        Patient a = new Patient("Dr","Abby","Smells", new Date(),"GOFUCKURSELF");
+        new Address(40,"Street","Plymouth","South","pl157dy");
+        new Address(7,"Lesbury Road","Newcastle","North","ne65lb");
+        a.addAddress(new Address(7,"ne65lb"));
+        p.addAddress(new Address(40, "pl157dy"));
+        Appointment app = new Appointment(p,twoDaysStart,twoDaysEnd,new Staff("Dentist"));
+        app.addTreatment("Tooth Extraction", new BigDecimal(150.10));
+
+
+
     }
     
    
