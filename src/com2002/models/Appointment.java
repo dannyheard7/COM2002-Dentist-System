@@ -120,8 +120,8 @@ public class Appointment {
             
             if(rs.next()) { 
                 this.id = rs.getInt("appointmentID"); 
-                this.startTime = rs.getDate("startTime");
-                this.endTime = rs.getDate("endTime");
+                this.startTime = rs.getTimestamp("startTime");
+                this.endTime = rs.getTimestamp("endTime");
                 this.staffID = rs.getInt("staffID");
 
                 this.patientID = rs.getInt("patientID");
