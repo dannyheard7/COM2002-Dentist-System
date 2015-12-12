@@ -104,6 +104,8 @@ public class SecretaryUI extends javax.swing.JFrame {
         ArrayList<Integer> apts = new ArrayList<>();
 
         for(int i=0; i<5; i++){
+            calendar.set(Calendar.DAY_OF_WEEK, (i+2));
+
 
             ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
 
@@ -166,14 +168,38 @@ public class SecretaryUI extends javax.swing.JFrame {
 
     public void updateTimetable(){
 
-        updateHourSlot(appointmentSlot1);
-        updateHourSlot(appointmentSlot2);
-        updateHourSlot(appointmentSlot3);
-        updateHourSlot(appointmentSlot4);
-        updateHourSlot(appointmentSlot5);
-        updateHourSlot(appointmentSlot6);
-        updateHourSlot(appointmentSlot7);
-        updateHourSlot(appointmentSlot8);
+        ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
+
+        ArrayList<Appointment> slot1apts = new ArrayList<>();
+        ArrayList<Appointment> slot2apts = new ArrayList<>();
+        ArrayList<Appointment> slot3apts = new ArrayList<>();
+        ArrayList<Appointment> slot4apts = new ArrayList<>();
+        ArrayList<Appointment> slot5apts = new ArrayList<>();
+        ArrayList<Appointment> slot6apts = new ArrayList<>();
+        ArrayList<Appointment> slot7apts = new ArrayList<>();
+        ArrayList<Appointment> slot8apts = new ArrayList<>();
+
+        for (int i=0; i<dayApts.size(); i++){
+            DateFormat time = new SimpleDateFormat("HH:mm:ss");
+            Appointment singleApt = dayApts.get(i);
+            Date startTime = singleApt.getStartTime();
+            Date endTime = singleApt.getEndTime();
+            String st = time.format(startTime);
+            Patient testp = singleApt.getPatient();
+            String test = testp.getForename();
+            System.out.println(test);
+            System.out.println(st);
+        }
+
+
+//        updateHourSlot(appointmentSlot1);
+//        updateHourSlot(appointmentSlot2);
+//        updateHourSlot(appointmentSlot3);
+//        updateHourSlot(appointmentSlot4);
+//        updateHourSlot(appointmentSlot5);
+//        updateHourSlot(appointmentSlot6);
+//        updateHourSlot(appointmentSlot7);
+//        updateHourSlot(appointmentSlot8);
 
 //        timetableWrapper.invalidate();
 //        timetableWrapper.repaint();
@@ -181,7 +207,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
 
-    public void updateHourSlot(JPanel slot){
+    public void updateHourSlot(JPanel slot, ArrayList<Appointment> Apts){
 
         slot.removeAll();
         // Add appointment buttons to the slot where slot is a JPanel
