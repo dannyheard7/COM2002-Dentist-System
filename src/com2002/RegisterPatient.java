@@ -281,10 +281,10 @@ public class RegisterPatient extends javax.swing.JFrame {
         String dobString = TxtFld_RegisterPatient_Dob.getText();
         String contactNo = TxtFld_RegisterPatient_Contact.getText();
         int houseNo = Integer.parseInt(TxtFld_RegisterPatient_House.getText().trim());
-        String street = TxtFld_RegisterPatient_House.getText();
-        String city = TxtFld_RegisterPatient_House.getText();
-        String district = TxtFld_RegisterPatient_House.getText();
-        String postcode = TxtFld_RegisterPatient_House.getText();
+        String street = TxtFld_RegisterPatient_Street.getText();
+        String city = TxtFld_RegisterPatient_City.getText();
+        String district = TxtFld_RegisterPatient_District.getText();
+        String postcode = TxtFld_RegisterPatient_Postcode.getText();
 
         if (validate(title, forename, surname, dobString, contactNo, street, city, district, postcode)) {
             try {
