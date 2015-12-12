@@ -48,7 +48,8 @@ public class TableCreator {
                 " renewDate DATE NOT NULL, " +
                 " FOREIGN KEY (patientID) REFERENCES Patient(patientID), " +
                 " FOREIGN KEY (planName) REFERENCES Plan(name), " +
-                " PRIMARY KEY ( planName, patientID ))";
+                " PRIMARY KEY ( planName, patientID ), "+
+                    "UNIQUE KEY ( patientID ))";
             
             String createStaffTable = "CREATE TABLE IF NOT EXISTS Staff (" +
                 "  staffID INT NOT NULL AUTO_INCREMENT," +
