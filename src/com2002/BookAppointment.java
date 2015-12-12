@@ -5,6 +5,16 @@
  */
 package com2002;
 
+import com2002.models.Staff;
+import com2002.models.Appointment;
+import com2002.models.Patient;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author aca14ams
@@ -72,10 +82,10 @@ public class BookAppointment extends javax.swing.JFrame {
         });
 
         Lbl_BookAppointment_AppType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        Lbl_BookAppointment_AppType.setText("Appointment Type");
+        Lbl_BookAppointment_AppType.setText("Partner");
 
         Combo_BookAppointment_AppType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        Combo_BookAppointment_AppType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Check-Up", "Hygiene", "Treatment" }));
+        Combo_BookAppointment_AppType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dentist", "Hygienist" }));
 
         Lbl_BookAppointment_PatientID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_BookAppointment_PatientID.setText("Patient ID");
@@ -198,15 +208,49 @@ public class BookAppointment extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtFld_BookAppointment_EndActionPerformed
 
+    private boolean validate(String patientID, String date, String startTime, String endTime) {
+        boolean patientIDTrue = patientID.matches("\\d*");
+        boolean dateTrue = !date.isEmpty() && date.matches("([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/(\\d{4})");
+        boolean startTimeTrue = !startTime.isEmpty() && startTime.matches("(([0-1][0-9])|(2[0-3])):([0-5]\\d)");
+        boolean endTimeTrue = !endTime.isEmpty() && endTime.matches("(([0-1][0-9])|(2[0-3])):([0-5]\\d)");
+        return patientIDTrue && dateTrue && startTimeTrue && endTimeTrue;
+    }
+    
     private void Btn_BookAppointment_SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_SubmitActionPerformed
-        // TODO add inputted info to the database
-        //Success Message:
+        String date = TxtFld_BookAppointment_Date.getText();
+        String startTime = TxtFld_BookAppointment_Start.getText();
+        String endTime = TxtFld_BookAppointment_End.getText();
+        String patientID = TxtFld_BookAppointment_PatientID.getText();
+        String partner = (String)Combo_BookAppointment_AppType.getSelectedItem();
+        
+        if (validate(patientID, date, startTime, endTime)) {        
+            try {
+                DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy H:m");
+                Date startDate = fmt.parse(date + " " + startTime);
+                Date endDate = fmt.parse(date + " " + endTime);
+                Staff staff = Staff.getStaffWithPosition(partner).get(0);
+                
+                if (patientID.isEmpty()) {
+                    new Appointment(startDate, endDate, staff);
+                } else {
+                    int patientId = Integer.parseInt(patientID);
+                    new Appointment(new Patient(patientId), startDate, endDate, staff);
+                }
+                
+                showSuccess();
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            } 
+        } else {
+            JOptionPane.showMessageDialog(this, "Inputs aren't valid");
+        }
+        
+    }
+    
+    private void showSuccess() {
         BookAppointmentPanel.removeAll();
         Lbl_BookAppointment_Success = new javax.swing.JLabel();
         Btn_BookAppointment_OK = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Book Appointment");
 
         Lbl_BookAppointment_Success.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Lbl_BookAppointment_Success.setText("Appointment booked successfully.");
@@ -251,8 +295,7 @@ public class BookAppointment extends javax.swing.JFrame {
         );
 
         pack();
-
-    }//GEN-LAST:event_Btn_BookAppointment_SubmitActionPerformed
+    }
 
     private void Btn_BookAppointment_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_OKActionPerformed
         // TODO add your handling code here:

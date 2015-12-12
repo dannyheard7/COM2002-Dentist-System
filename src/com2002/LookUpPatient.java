@@ -166,8 +166,6 @@ public class LookUpPatient extends javax.swing.JFrame {
     }
 
     private void Btn_LookUpPatient_SubmitActionPerformed(java.awt.event.ActionEvent evt) {
-       
-
         String forename = TxtFld_LookUpPatient_Forename.getText();
         String surname = TxtFld_LookUpPatient_Surname.getText();  
         String dobString = TxtFld_LookUpPatient_Dob.getText();
