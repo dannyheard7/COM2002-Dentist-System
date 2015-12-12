@@ -33,6 +33,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     private Calendar calendar;
     private String weekStart;
     private String weekEnd;
+    private String displayMonth;
     private String displayYear;
     private String dateActual;
     private final Date today;
@@ -63,14 +64,17 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     public void updateNav(){
-        DateFormat dFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
+        DateFormat dFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
 
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        weekStart = dFormat.format(calendar.getTime());
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        weekEnd = dFormat.format(calendar.getTime());
+        displayMonth = dFormat.format(calendar.getTime());
+        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
 
-        weekDates.setText(weekStart + "-" + weekEnd);
+        weekStart = dFormat2.format(calendar.getTime());
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        weekEnd = dFormat2.format(calendar.getTime());
+
+        weekDates.setText(displayMonth + "  Week: " + weekStart + " - " + weekEnd);
 
         DateFormat yFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
         displayYear = yFormat.format(calendar.getTime());
@@ -298,9 +302,9 @@ public class SecretaryUI extends javax.swing.JFrame {
                         .addGroup(navWrapperLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(prevWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(107, 107, 107)
-                                .addComponent(weekDates, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(80, 80, 80)
+                                .addGap(63, 63, 63)
+                                .addComponent(weekDates, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(yearDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                                 .addComponent(nextWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
