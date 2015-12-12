@@ -278,6 +278,7 @@ public class RegisterPatient extends javax.swing.JFrame {
         String title = TxtFld_RegisterPatient_Title.getText();
         String forename = TxtFld_RegisterPatient_Forename.getText();
         String surname = TxtFld_RegisterPatient_Surname.getText();
+        //TODO set placeholder text for this ABBY, dd/mm/yyyy to minimise errors.
         String dobString = TxtFld_RegisterPatient_Dob.getText();
         String contactNo = TxtFld_RegisterPatient_Contact.getText();
         int houseNo = Integer.parseInt(TxtFld_RegisterPatient_House.getText().trim());
