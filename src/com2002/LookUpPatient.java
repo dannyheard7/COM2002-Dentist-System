@@ -7,6 +7,7 @@ package com2002;
  */
 
 import com2002.models.Patient;
+import com2002.models.Address;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 /**
  *
  * @author aca14ams
@@ -153,41 +155,46 @@ public class LookUpPatient extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
+    
+    private boolean validate(String forename, String surname, String dob, String postcode) {
+        boolean forenameTrue = !forename.isEmpty() && forename.length() <= 40;
+        boolean surnameTrue = !surname.isEmpty() && surname.length() <= 40;
+        boolean dobTrue = !dob.isEmpty() && dob.matches("\\d{2}/\\d{2}/\\d{4}$");
+        boolean postcodeTrue = !postcode.isEmpty() && postcode.length() <= 8;
+        return forenameTrue && surnameTrue && dobTrue && postcodeTrue;
+    }
 
     private void Btn_LookUpPatient_SubmitActionPerformed(java.awt.event.ActionEvent evt) {
-        PatientView view = new PatientView();
+       
 
         String forename = TxtFld_LookUpPatient_Forename.getText();
-        System.out.println(forename);
-        String surname = TxtFld_LookUpPatient_Surname.getText();
-        System.out.println(surname);
+        String surname = TxtFld_LookUpPatient_Surname.getText();  
         String dobString = TxtFld_LookUpPatient_Dob.getText();
-        System.out.println(dobString);
         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
         String postcode = TxtFld_LookUpPatient_Postcode.getText();
-        System.out.println(postcode);
-        try {
-            //TODO IT WORKS IT WORKS - NEED TO VALIDATE INPUTS HOWEVER
-            Date dob = fmt.parse(dobString);
-            System.out.println(dob);
-            ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
-            System.out.println(patients.size());
-            for (int i=0;i<patients.size();i++) {
-                if (postcode.equals(patients.get(i).getAddress().getPostcode())) {
-                    view.setPatient(patients.get(i));
-                    System.out.println(patients.get(i).getForename());
+        
+        if (validate(forename, surname, dobString, postcode)) {     
+            try {
+                Date dob = fmt.parse(dobString);
+                ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
+          
+                for (Patient patient : patients) {
+                    if (postcode.equals(patient.getAddress().getPostcode())) {
+                        PatientView view = new PatientView();
+                        view.setPatient(patient);
+                        view.setVisible(true);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(this, "No patient");
+                    }
                 }
-                else {
-                    //TODO error message?
-                    System.out.println(patients.get(i).getSurname());
-                }
-            }
 
-        } catch (ParseException ex) {
-            Logger.getLogger(SecretaryUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Inputs aren't valid");
         }
-        view.setVisible(true);
-//       setVisible(false);
     }
 
     private void Btn_LookUpPatient_Submit1ActionPerformed(java.awt.event.ActionEvent evt) {

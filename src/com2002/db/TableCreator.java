@@ -72,7 +72,7 @@ public class TableCreator {
             
             String createTreatmentTable = "CREATE TABLE IF NOT EXISTS  Treatment " +
                 "(name VARCHAR(30), " +
-                " cost DECIMAL(4, 2)," +
+                " cost DECIMAL(5, 2)," +
                 " appointmentID INTEGER not NULL, " +
                 " paid TINYINT(1) NOT NULL DEFAULT 1, " +
                 " PRIMARY KEY (appointmentID, name), " +
