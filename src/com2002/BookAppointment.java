@@ -200,7 +200,64 @@ public class BookAppointment extends javax.swing.JFrame {
 
     private void Btn_BookAppointment_SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_SubmitActionPerformed
         // TODO add inputted info to the database
+        //Success Message:
+        BookAppointmentPanel.removeAll();
+        Lbl_BookAppointment_Success = new javax.swing.JLabel();
+        Btn_BookAppointment_OK = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Book Appointment");
+
+        Lbl_BookAppointment_Success.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Lbl_BookAppointment_Success.setText("Appointment booked successfully.");
+        Lbl_BookAppointment_Success.setToolTipText("");
+
+        Btn_BookAppointment_OK.setText("OK");
+        Btn_BookAppointment_OK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_BookAppointment_OKActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout BookAppointmentPanelLayout = new javax.swing.GroupLayout(BookAppointmentPanel);
+        BookAppointmentPanel.setLayout(BookAppointmentPanelLayout);
+        BookAppointmentPanelLayout.setHorizontalGroup(
+                BookAppointmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(BookAppointmentPanelLayout.createSequentialGroup()
+                                .addGap(111, 111, 111)
+                                .addComponent(Btn_BookAppointment_OK)
+                                .addContainerGap(120, Short.MAX_VALUE))
+                        .addComponent(Lbl_BookAppointment_Success, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BookAppointmentPanelLayout.setVerticalGroup(
+                BookAppointmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(BookAppointmentPanelLayout.createSequentialGroup()
+                                .addGap(61, 61, 61)
+                                .addComponent(Lbl_BookAppointment_Success, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Btn_BookAppointment_OK)
+                                .addContainerGap(92, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(BookAppointmentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(BookAppointmentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+
     }//GEN-LAST:event_Btn_BookAppointment_SubmitActionPerformed
+
+    private void Btn_BookAppointment_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_OKActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+    }//GEN-LAST:event_Btn_BookAppointment_OKActionPerformed
 
     private void Btn_BookAppointment_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_CancelActionPerformed
         // TODO add your handling code here:
@@ -257,5 +314,7 @@ public class BookAppointment extends javax.swing.JFrame {
     private javax.swing.JTextField TxtFld_BookAppointment_End;
     private javax.swing.JTextField TxtFld_BookAppointment_PatientID;
     private javax.swing.JTextField TxtFld_BookAppointment_Start;
+    private javax.swing.JButton Btn_BookAppointment_OK;
+    private javax.swing.JLabel Lbl_BookAppointment_Success;
     // End of variables declaration//GEN-END:variables
 }
