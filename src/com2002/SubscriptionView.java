@@ -10,6 +10,8 @@ package com2002;
  *
  * @author aca14ams
  */
+import com2002.models.*;
+
 public class SubscriptionView extends javax.swing.JFrame {
 
     /**
@@ -41,7 +43,9 @@ public class SubscriptionView extends javax.swing.JFrame {
         Lbl_SubscriptionView_Plan.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_SubscriptionView_Plan.setText("Plan");
 
+        //TODO change string to ls.toArray() where ls is an array list of all PatientPlan names
         Combo_SubscriptionView_Plan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        //Combo_SubscriptionView_Plan.setModel(new javax.swing.DefaultComboBoxModel(listOfPlans.toArray()));
 
         Btn_SubscriptionView_Ok.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Btn_SubscriptionView_Ok.setText("OK");
