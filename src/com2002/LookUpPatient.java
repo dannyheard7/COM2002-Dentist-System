@@ -66,6 +66,11 @@ public class LookUpPatient extends javax.swing.JFrame {
         Lbl_LookUpPatient_Dob.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_LookUpPatient_Dob.setText("Date of Birth");
         TxtFld_LookUpPatient_Dob.setText("dd/mm/yyyy");
+        TxtFld_LookUpPatient_Dob.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lookUpPatientMouseClicked(evt);
+            }
+        });
 
         Lbl_LookUpPatient_Postcode.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_LookUpPatient_Postcode.setText("Postcode");
@@ -197,9 +202,11 @@ public class LookUpPatient extends javax.swing.JFrame {
     }
 
     private void Btn_LookUpPatient_Submit1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        //take to calendar
         setVisible(false);
+    }
+
+    private void lookUpPatientMouseClicked(java.awt.event.MouseEvent evt) {
+        TxtFld_LookUpPatient_Dob.setText("");
     }
 
     /**
