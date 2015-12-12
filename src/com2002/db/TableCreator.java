@@ -62,7 +62,7 @@ public class TableCreator {
                 "  endTime DATETIME NOT NULL," +
                 "  staffID INT NOT NULL," +
                 "  patientID INT," +
-                    " patientSeen TINYINT," +
+                    " patientSeen TINYINT(1)," +
                 "  PRIMARY KEY (appointmentID)," +
                 "  FOREIGN KEY (patientID) REFERENCES Patient(patientID)," +
                 "  FOREIGN KEY (staffID) REFERENCES Staff(staffID)," +
@@ -71,7 +71,7 @@ public class TableCreator {
             
             String createTreatmentTable = "CREATE TABLE IF NOT EXISTS  Treatment " +
                 "(name VARCHAR(30), " +
-                " cost DECIMAL(5, 2)," +
+                " cost DECIMAL(4, 2)," +
                 " appointmentID INTEGER not NULL, " +
                 " paid TINYINT(1) NOT NULL DEFAULT 1, " +
                 " PRIMARY KEY (appointmentID, name), " +

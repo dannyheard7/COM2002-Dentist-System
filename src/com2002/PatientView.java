@@ -21,12 +21,6 @@ public class PatientView extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
 
-        TxtFld_PatientView_PatientID.setText(""+patientID);
-        TxtFld_PatientView_Title.setText(title);
-        TxtFld_PatientView_Forename.setText(forename);
-        TxtFld_PatientView_Surname.setText(surname);
-        TxtFld_PatientView_Dob.setText(dateOfBirth);
-        TxtFld_PatientView_Contact.setText(contactNo);
     }
 
     public void setPatient(Patient patient) {
@@ -36,6 +30,12 @@ public class PatientView extends javax.swing.JFrame {
         surname = patient.getSurname();
         dateOfBirth = patient.getDateOfBirth().toString();
         contactNo = patient.getContactNo();
+        TxtFld_PatientView_PatientID.setText(""+patientID);
+        TxtFld_PatientView_Title.setText(title);
+        TxtFld_PatientView_Forename.setText(forename);
+        TxtFld_PatientView_Surname.setText(surname);
+        TxtFld_PatientView_Dob.setText(dateOfBirth);
+        TxtFld_PatientView_Contact.setText(contactNo);
     }
     /**
      * This method is called from within the constructor to initialize the form.

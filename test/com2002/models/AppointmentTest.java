@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -63,14 +64,14 @@ public class AppointmentTest {
         assertThat(appointments, hasItem(appointment));
     }
 
-   /* @Test
+    @Test
    public void testAddTreatment() {
-        Treatment t = new Treatment("Tooth Extraction", new BigDecimal("150.10"));
-        appointment.addTreatment(t);
+        appointment.addTreatment("Tooth Extraction", new BigDecimal("150.10"));
+        Treatment t = new Treatment(appointment, "Tooth Extraction");
         
         ArrayList<Treatment> treatments = appointment.getTreatments();
         assertThat(treatments, hasItem(t));
-    } */
+    }
     
     @Test
     public void testLoadAppointment() {

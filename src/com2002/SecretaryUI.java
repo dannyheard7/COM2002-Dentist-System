@@ -925,7 +925,8 @@ public class SecretaryUI extends javax.swing.JFrame {
 
     private void bookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-
+        BookAppointment bookAppointment = new BookAppointment();
+        bookAppointment.setVisible(true);
         // Open the book appointment GUI, do NOT close the current GUI
     }
 

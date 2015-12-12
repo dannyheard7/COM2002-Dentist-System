@@ -6,6 +6,8 @@ package com2002;
  * and open the template in the editor.
  */
 
+import com2002.models.Patient;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com2002.models.*;
 
 /**
  *
@@ -155,28 +156,37 @@ public class LookUpPatient extends javax.swing.JFrame {
 
     private void Btn_LookUpPatient_SubmitActionPerformed(java.awt.event.ActionEvent evt) {
         PatientView view = new PatientView();
-        view.setVisible(true);
 
         String forename = TxtFld_LookUpPatient_Forename.getText();
+        System.out.println(forename);
         String surname = TxtFld_LookUpPatient_Surname.getText();
+        System.out.println(surname);
         String dobString = TxtFld_LookUpPatient_Dob.getText();
+        System.out.println(dobString);
         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
         String postcode = TxtFld_LookUpPatient_Postcode.getText();
+        System.out.println(postcode);
         try {
+            //TODO IT WORKS IT WORKS - NEED TO VALIDATE INPUTS HOWEVER
             Date dob = fmt.parse(dobString);
+            System.out.println(dob);
             ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
+            System.out.println(patients.size());
             for (int i=0;i<patients.size();i++) {
-                if (postcode == patients.get(i).getAddress().getPostcode()) {
+                if (postcode.equals(patients.get(i).getAddress().getPostcode())) {
                     view.setPatient(patients.get(i));
+                    System.out.println(patients.get(i).getForename());
                 }
                 else {
                     //TODO error message?
+                    System.out.println(patients.get(i).getSurname());
                 }
             }
 
         } catch (ParseException ex) {
             Logger.getLogger(SecretaryUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        view.setVisible(true);
 //       setVisible(false);
     }
 

@@ -10,6 +10,10 @@ package com2002;
  *
  * @author aca14ams
  */
+import com2002.models.*;
+
+import java.util.ArrayList;
+
 public class SubscriptionView extends javax.swing.JFrame {
 
     /**
@@ -18,6 +22,12 @@ public class SubscriptionView extends javax.swing.JFrame {
     public SubscriptionView() {
         initComponents();
         setLocationRelativeTo(null);
+    }
+
+    public void setPatient(Patient patient) {
+        patientID = patient.getPatientID();
+        PatientPlan plan = new PatientPlan(patientID);
+        Combo_SubscriptionView_Plan.setSelectedItem(plan.getPlanName());
     }
 
     /**
@@ -41,7 +51,13 @@ public class SubscriptionView extends javax.swing.JFrame {
         Lbl_SubscriptionView_Plan.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_SubscriptionView_Plan.setText("Plan");
 
-        Combo_SubscriptionView_Plan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        //TODO change string to ls.toArray() where ls is an array list of all PatientPlan names
+        ArrayList<Plan> plans = Plan.getAllPlans();
+        ArrayList<String> planNames = new ArrayList<>();
+        for (int i=0;i<plans.size();i++){
+            planNames.add(plans.get(i).getName());
+        }
+        Combo_SubscriptionView_Plan.setModel(new javax.swing.DefaultComboBoxModel(planNames.toArray()));
 
         Btn_SubscriptionView_Ok.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Btn_SubscriptionView_Ok.setText("OK");
@@ -156,5 +172,6 @@ public class SubscriptionView extends javax.swing.JFrame {
     private javax.swing.JComboBox Combo_SubscriptionView_Plan;
     private javax.swing.JLabel Lbl_SubscriptionView_Plan;
     private javax.swing.JPanel SubscriptionViewPanel;
+    private int patientID;
     // End of variables declaration
 }

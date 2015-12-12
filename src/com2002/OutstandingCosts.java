@@ -5,6 +5,8 @@ package com2002;
  * and open the template in the editor.
  */
 
+import com2002.models.Patient;
+
 /**
  *
  * @author aca14ams
@@ -55,6 +57,7 @@ public class OutstandingCosts extends javax.swing.JFrame {
         Lbl_OutstandingCosts_TotalCalculation.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_OutstandingCosts_TotalCalculation.setText(".............");
 
+        //TODO populate list with array list of outstanding costs using .toArray()
         Lst_OutstandingCosts_Cost.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lst_OutstandingCosts_Cost.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -63,6 +66,7 @@ public class OutstandingCosts extends javax.swing.JFrame {
         });
         scrlPane_OutstandingCosts_Cost.setViewportView(Lst_OutstandingCosts_Cost);
 
+        //TODO populate list with array list of treatments using .toArray()
         Lst_OutstandingCosts_Treatments.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lst_OutstandingCosts_Treatments.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -206,5 +210,6 @@ public class OutstandingCosts extends javax.swing.JFrame {
     private javax.swing.JPanel OutstandingCostsPanel;
     private javax.swing.JScrollPane scrlPane_OutstandingCosts_Cost;
     private javax.swing.JScrollPane scrlPane_OutstandingCosts_Treatments;
+    private int patientID;
     // End of variables declaration
 }

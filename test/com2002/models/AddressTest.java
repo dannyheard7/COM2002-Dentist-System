@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +15,7 @@ public class AddressTest {
 
     @BeforeClass
     public static void setup() {
-        new Address(40, "Highfield", "Launceston", "Cornwall", "pl157dy");
+        new Address(40, "Highfield", "Trezaise", "Cornwall", "pl157dy");
     }
 
     @Before
@@ -31,5 +33,13 @@ public class AddressTest {
         Address tester = new Address(address.getHouseNo(), address.getPostcode());
 
         assertEquals(address, tester);
+    }
+
+    @Test
+    public void testAddPatientAddress() {
+        Patient patient = new Patient("Ms", "Beth", "Lum", new Date(), "070");
+        patient.addAddress(address);
+
+        assertEquals(patient.getAddress(), address);
     }
 }
