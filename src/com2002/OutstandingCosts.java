@@ -5,6 +5,8 @@ package com2002;
  * and open the template in the editor.
  */
 
+import com2002.models.Patient;
+
 /**
  *
  * @author aca14ams
@@ -208,5 +210,6 @@ public class OutstandingCosts extends javax.swing.JFrame {
     private javax.swing.JPanel OutstandingCostsPanel;
     private javax.swing.JScrollPane scrlPane_OutstandingCosts_Cost;
     private javax.swing.JScrollPane scrlPane_OutstandingCosts_Treatments;
+    private int patientID;
     // End of variables declaration
 }

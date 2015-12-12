@@ -156,7 +156,6 @@ public class LookUpPatient extends javax.swing.JFrame {
 
     private void Btn_LookUpPatient_SubmitActionPerformed(java.awt.event.ActionEvent evt) {
         PatientView view = new PatientView();
-        view.setVisible(true);
 
         String forename = TxtFld_LookUpPatient_Forename.getText();
         System.out.println(forename);
@@ -187,6 +186,7 @@ public class LookUpPatient extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(SecretaryUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        view.setVisible(true);
 //       setVisible(false);
     }
 
