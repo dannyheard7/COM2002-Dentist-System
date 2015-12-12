@@ -47,7 +47,7 @@ public class SubscriptionView extends javax.swing.JFrame {
         Btn_SubscriptionView_Ok = new javax.swing.JButton();
         Btn_SubscriptionView_Cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Patient Plan");
 
         Lbl_SubscriptionView_Plan.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N

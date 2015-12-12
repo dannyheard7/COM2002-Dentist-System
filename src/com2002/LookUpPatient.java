@@ -53,7 +53,8 @@ public class LookUpPatient extends javax.swing.JFrame {
         Btn_LookUpPatient_Submit = new javax.swing.JButton();
         Btn_LookUpPatient_Submit1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lookup Patient");
 
         Lbl_LookUpPatient_Forename.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
