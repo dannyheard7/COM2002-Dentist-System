@@ -24,12 +24,6 @@ public class Plan {
     }
 
     private boolean create(String planName, BigDecimal monthlyCost, int checkUps, int hygieneCount, int treatments) {
-        this.name = planName;
-        this.monthlyCost = monthlyCost;
-        this.checkUps = checkUps;
-        this.hygieneCount = hygieneCount;
-        this.treatments = treatments;
-
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
@@ -50,6 +44,12 @@ public class Plan {
         }  finally {
             Database.closeStatement(conn, stmt);
         }
+        
+        this.name = planName;
+        this.monthlyCost = monthlyCost;
+        this.checkUps = checkUps;
+        this.hygieneCount = hygieneCount;
+        this.treatments = treatments;
 
         return true;
     }
@@ -87,6 +87,19 @@ public class Plan {
     public int getHygieneCount() { return this.hygieneCount; }
     public int getTreatments() { return this.treatments; }
     
+    @Override
+    public boolean equals(Object other){
+        if((other == null) || (getClass() != other.getClass())){
+            return false;
+        } else {
+            Plan otherPlan = (Plan) other;
+            return name.equals(otherPlan.getName());
+        }
+    }
+    
+    /**
+     * Returns an array list of all the plans in the database
+    */
     public static ArrayList<Plan> getAllPlans() {
         ArrayList<Plan> plans = new ArrayList<>();
         

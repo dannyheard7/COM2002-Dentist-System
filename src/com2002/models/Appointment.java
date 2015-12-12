@@ -344,9 +344,9 @@ public class Appointment {
 
 
     /**
-     * Returns arraylist of appointment objects,
+     * Returns an array list of a specified patient's appointments for a given staff member
      */
-    public static ArrayList<Appointment> findPatientsAppointments(int patientID, String staff ){
+    public static ArrayList<Appointment> findPatientsAppointments(Patient patient, String staff ){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
         ArrayList<Staff> lis = Staff.getStaffWithPosition(staff);
@@ -356,7 +356,7 @@ public class Appointment {
         try {
             stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE patientID = ? AND partnerID = ?");
 
-            stmt.setInt(1, patientID);
+            stmt.setInt(1, patient.getPatientID());
             stmt.setInt(2, staffID);
             ResultSet rs = stmt.executeQuery();
 
@@ -372,5 +372,33 @@ public class Appointment {
         return list;
 
     }
+    
+    /**
+     * Returns an array list of a specified patient's appointments
+     */
+    public static ArrayList<Appointment> findPatientsAppointments(Patient patient){
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        ArrayList<Appointment> list = new ArrayList<>();
+        try {
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE patientID = ?");
+
+            stmt.setInt(1, patient.getPatientID());
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                list.add(new Appointment(rs.getInt("appointmentID")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+
+        return list;
+
+    }
+
 
 }
