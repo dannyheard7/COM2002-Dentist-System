@@ -5,7 +5,11 @@ package com2002;
  * and open the template in the editor.
  */
 
-import com2002.models.Patient;
+import com2002.models.*;
+import com2002.models.PatientPlan;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,6 +23,30 @@ public class OutstandingCosts extends javax.swing.JFrame {
     public OutstandingCosts() {
         initComponents();
         setLocationRelativeTo(null);
+    }
+
+    public void setPatient(Patient patient) {
+        ArrayList<Appointment> app = Appointment.findPatientsAppointments(patient);
+        for(int i = 0;i<app.size();i++){
+            ArrayList<Treatment> treatments = app.get(i).getUnpaidTreatments();
+            ArrayList<String> treatmentNames = new ArrayList<>();
+            ArrayList<BigDecimal> costs = new ArrayList<>();
+            for(int j=0;j<treatments.size();j++){
+                String treatmentName = (treatments.get(j)).getName();
+                BigDecimal cost = (treatments.get(j)).getCost();
+                treatmentNames.add(treatmentName);
+                costs.add(cost);
+            }
+            Lst_OutstandingCosts_Treatments.setModel(new javax.swing.AbstractListModel() {
+                public int getSize() { return treatmentNames.size(); }
+                public Object getElementAt(int i) { return treatmentNames.get(i); }
+            });
+            Lst_OutstandingCosts_Cost.setModel(new javax.swing.AbstractListModel() {
+                public int getSize() { return costs.size(); }
+                public Object getElementAt(int i) { return costs.get(i); }
+            });
+        }
+
     }
 
     /**
@@ -59,20 +87,20 @@ public class OutstandingCosts extends javax.swing.JFrame {
 
         //TODO populate list with array list of outstanding costs using .toArray()
         Lst_OutstandingCosts_Cost.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        Lst_OutstandingCosts_Cost.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+//        Lst_OutstandingCosts_Cost.setModel(new javax.swing.AbstractListModel() {
+//            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+//            public int getSize() { return strings.length; }
+//            public Object getElementAt(int i) { return strings[i]; }
+//        });
         scrlPane_OutstandingCosts_Cost.setViewportView(Lst_OutstandingCosts_Cost);
 
         //TODO populate list with array list of treatments using .toArray()
         Lst_OutstandingCosts_Treatments.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        Lst_OutstandingCosts_Treatments.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+//        Lst_OutstandingCosts_Treatments.setModel(new javax.swing.AbstractListModel() {
+//            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+//            public int getSize() { return strings.length; }
+//            public Object getElementAt(int i) { return strings[i]; }
+//        });
         scrlPane_OutstandingCosts_Treatments.setViewportView(Lst_OutstandingCosts_Treatments);
 
         Btn_OutstandingCosts_ModifyTotal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N

@@ -24,6 +24,7 @@ public class PatientView extends javax.swing.JFrame {
     }
 
     public void setPatient(Patient patient) {
+        patientObj = patient;
         patientID = patient.getPatientID();
         title = patient.getTitle();
         forename = patient.getForename();
@@ -209,6 +210,7 @@ public class PatientView extends javax.swing.JFrame {
 
     private void Btn_PatientView_OutstandingCostsActionPerformed(java.awt.event.ActionEvent evt) {
         OutstandingCosts outstanding = new OutstandingCosts();
+        outstanding.setPatient(patientObj);
         outstanding.setVisible(true);
     }
 
@@ -275,5 +277,6 @@ public class PatientView extends javax.swing.JFrame {
     private String surname;
     private String dateOfBirth;
     private String contactNo;
+    private Patient patientObj;
     // End of variables declaration
 }
