@@ -81,7 +81,7 @@ public class PatientPlan {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("DELETE FROM PatientPlan WHERE patientID = ?;");
+            stmt = conn.prepareStatement("DELETE FROM PatientPlan WHERE patientID = ?");
 
             stmt.setInt(1, patientID);
 
@@ -192,7 +192,7 @@ public class PatientPlan {
         ArrayList lis = new ArrayList();
 
         try {
-            stmt = conn.prepareStatement("SELECT * FROM PatientPlan WHERE patientID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM PatientPlan WHERE planName = ?");
 
             stmt.setString(1, planName);
             ResultSet rs = stmt.executeQuery();

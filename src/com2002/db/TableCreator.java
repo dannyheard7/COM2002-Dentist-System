@@ -159,11 +159,14 @@ public class TableCreator {
         a.addAddress(new Address(7, "ne65lb"));
         p.addAddress(new Address(40, "pl157dy"));
         Appointment app = new Appointment(p,twoDaysStart,twoDaysEnd,new Staff("Dentist"));
+        new Staff("Hygienist");
         app.addTreatment("Tooth Extraction", new BigDecimal(150.10));
         new Plan("NHS Free", new BigDecimal(0.0), 3, 2, 1);
         new Plan("None cos u smell", new BigDecimal(0.0), 3, 2, 1);
-        new PatientPlan(p.getPatientID(),"NHS Free",plusYear);
+        new PatientPlan(p.getPatientID(),"NHS Free", plusYear);
         new PatientPlan(a.getPatientID(), "None cos u smell", plusYear);
+//        new PatientPlan(p.getPatientID(),"None cos u smell",plusYear);
+        System.out.println((PatientPlan.patientPlanByName("NHS Free").get(0).getForename()));
 
 
 
