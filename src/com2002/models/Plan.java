@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Plan {
 
@@ -85,4 +86,26 @@ public class Plan {
     public int getCheckUps() { return this.checkUps; }
     public int getHygieneCount() { return this.hygieneCount; }
     public int getTreatments() { return this.treatments; }
+    
+    public static ArrayList<Plan> getAllPlans() {
+        ArrayList<Plan> plans = new ArrayList<>();
+        
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT name FROM Plan");
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                plans.add(new Plan(rs.getString("name")));
+            }
+        } catch(SQLException e) {
+            System.out.println(e.toString());
+        }  finally {
+            Database.closeStatement(conn, stmt);
+        }
+        
+        return plans;
+    }
 }
