@@ -159,19 +159,28 @@ public class LookUpPatient extends javax.swing.JFrame {
         view.setVisible(true);
 
         String forename = TxtFld_LookUpPatient_Forename.getText();
+        System.out.println(forename);
         String surname = TxtFld_LookUpPatient_Surname.getText();
+        System.out.println(surname);
         String dobString = TxtFld_LookUpPatient_Dob.getText();
+        System.out.println(dobString);
         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
         String postcode = TxtFld_LookUpPatient_Postcode.getText();
+        System.out.println(postcode);
         try {
+            //TODO - THIS DOESNT WORK. look into date pickers.
             Date dob = fmt.parse(dobString);
+            System.out.println(dob);
             ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
+            System.out.println(patients.size());
             for (int i=0;i<patients.size();i++) {
                 if (postcode.equals(patients.get(i).getAddress().getPostcode())) {
                     view.setPatient(patients.get(i));
+                    System.out.println(patients.get(i).getForename());
                 }
                 else {
                     //TODO error message?
+                    System.out.println(patients.get(i).getForename());
                 }
             }
 

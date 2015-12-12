@@ -72,19 +72,18 @@ public class Patient {
         return true;
     }
 
-    public static ArrayList findPatients(String forename, String surname, Date dob){
+    public static ArrayList<Patient> findPatients(String forename, String surname, Date dob){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
-        ArrayList lis = new ArrayList();
+        ArrayList<Patient> lis = new ArrayList();
 
         try {
             stmt = conn.prepareStatement("SELECT * FROM Patient WHERE forename = ? and surname = ? and doB = ?");
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             stmt.setString(1, forename);
             stmt.setString(2, surname);
-            stmt.setObject(3, sdf.format(dob));
+            stmt.setObject(3, dob);
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {

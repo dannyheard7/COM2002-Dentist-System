@@ -343,6 +343,9 @@ public class Appointment {
     }
 
 
+    /**
+     * Returns arraylist of appointment objects,
+     */
     public static ArrayList<Appointment> findPatientsAppointments(int patientID, String staff ){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
