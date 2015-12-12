@@ -30,6 +30,7 @@ public class SubscriptionView extends javax.swing.JFrame {
         patientID = patient.getPatientID();
         PatientPlan plan = new PatientPlan(patientID);
         Combo_SubscriptionView_Plan.setSelectedItem(plan.getPlanName());
+        System.out.println(plan.getPlanName()+"  "+patientID);
     }
 
     /**

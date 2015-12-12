@@ -31,9 +31,9 @@ public class Address {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Address WHERE houseNo = ? AND postcode = ? LIMIT 1");
+            stmt = conn.prepareStatement("SELECT * FROM Address WHERE houseNo = ? AND LOWER(postcode) = ? LIMIT 1");
             stmt.setInt(1, houseNo);
-            stmt.setString(2, postcode);
+            stmt.setString(2, postcode.toLowerCase());
             ResultSet rs = stmt.executeQuery();
 
             if(rs.next()) {
@@ -70,7 +70,7 @@ public class Address {
             stmt.setString(2, street);
             stmt.setString(3, city);
             stmt.setString(4, district);
-            stmt.setString(5, postcode);
+            stmt.setString(5, postcode.replace(" ", ""));
 
             stmt.executeUpdate();
         } catch(SQLException e) {

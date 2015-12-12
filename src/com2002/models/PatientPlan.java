@@ -113,15 +113,16 @@ public class PatientPlan {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-            if (!rs.first()){
-                return false;
-            }
+
+//            if (!rs.first()){
+//                return false;
+//            }
             if(rs.next()) {
                 this.patientID = rs.getInt("patientID");
                 this.planName = rs.getString("planName");
                 this.remainTreatments = rs.getInt("remainingTreatments");
-                this.remainCheckups = rs.getInt("remainCheckups");
-                this.remainHygiene = rs.getInt("remainHygiene");
+                this.remainCheckups = rs.getInt("remainingCheckups");
+                this.remainHygiene = rs.getInt("remainingHygiene");
                 this.renewDate = rs.getDate("renewDate");
             }
         } catch(SQLException e) {

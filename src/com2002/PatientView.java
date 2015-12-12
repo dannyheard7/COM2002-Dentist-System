@@ -205,6 +205,7 @@ public class PatientView extends javax.swing.JFrame {
 
     private void Btn_PatientView_ViewPatientPlanActionPerformed(java.awt.event.ActionEvent evt) {
         SubscriptionView plan = new SubscriptionView();
+        plan.setPatient(patientObj);
         plan.setVisible(true);
     }
 

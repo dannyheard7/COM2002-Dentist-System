@@ -147,6 +147,7 @@ public class TableCreator {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 2);
         Date twoDaysStart = cal.getTime();
+//        System.out.println(twoDaysStart.toString());
         cal.add(Calendar.MINUTE, 20);
         Date twoDaysEnd = cal.getTime();
         Calendar cal2 = Calendar.getInstance();
@@ -159,6 +160,7 @@ public class TableCreator {
         a.addAddress(new Address(7, "ne65lb"));
         p.addAddress(new Address(40, "pl157dy"));
         Appointment app = new Appointment(p,twoDaysStart,twoDaysEnd,new Staff("Dentist"));
+//        System.out.println(Appointment.getAppointmentsOnDate(twoDaysStart).get(0).getStartTime());
         new Staff("Hygienist");
         app.addTreatment("Tooth Extraction", new BigDecimal(150.10));
         new Plan("NHS Free", new BigDecimal(0.0), 3, 2, 1);
@@ -166,7 +168,9 @@ public class TableCreator {
         new PatientPlan(p.getPatientID(),"NHS Free", plusYear);
         new PatientPlan(a.getPatientID(), "None cos u smell", plusYear);
 //        new PatientPlan(p.getPatientID(),"None cos u smell",plusYear);
-        System.out.println((PatientPlan.patientPlanByName("NHS Free").get(0).getForename()));
+//        System.out.println(p.getPatientID());
+//        System.out.println(new PatientPlan(p.getPatientID()).getPlanName());
+//        System.out.println((PatientPlan.patientPlanByName("NHS Free").get(0).getForename()));
 
 
 
