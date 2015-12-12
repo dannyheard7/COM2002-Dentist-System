@@ -3,6 +3,8 @@ package com2002;
 import com2002.models.*;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -267,6 +269,17 @@ public class SecretaryUI extends javax.swing.JFrame {
             String st = time.format(startTime);
             String et = time.format(endTime);
             JButton appointment = new JButton(st + "-" + et + " " + forename + " " + surname);
+
+            appointment.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e)
+                {
+                    AppointmentView appointmentDetails = new AppointmentView();
+                    appointmentDetails.setVisible(true);
+                    appointmentDetails.setAppointment(currentApt);
+                }
+            });
+
             slot.add(appointment);
         }
 
