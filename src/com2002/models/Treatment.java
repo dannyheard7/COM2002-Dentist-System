@@ -13,9 +13,8 @@ public class Treatment {
     private boolean paid;
     private String name;
 
-
-    public Treatment(String name, Appointment appointment){
-        load(name, appointment);
+    public Treatment(Appointment appointment, String name){
+        load(appointment, name);
     }
 
     public Treatment(Appointment appointment, String name, BigDecimal cost) {
@@ -30,8 +29,7 @@ public class Treatment {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("INSERT INTO Treatment (name, cost "
-                            + "appointmentID) VALUES (?, ?, ?)");
+            stmt = conn.prepareStatement("INSERT INTO Treatment (name, cost, appointmentID) VALUES (?, ?, ?)");
 
             stmt.setString(1, name);
             stmt.setBigDecimal(2, cost);
@@ -57,7 +55,7 @@ public class Treatment {
      * Load the patient given the treatment name and the appointment it belongs to
      * @param name - the name of the treatment
      */
-    private boolean load(String name, Appointment appointment) {
+    private boolean load(Appointment appointment, String name) {
         PreparedStatement stmt = null;
         Connection conn = Database.getConnection();
         try {
@@ -71,6 +69,8 @@ public class Treatment {
             if(rs.next()) {
                 this.cost = rs.getBigDecimal("cost");
                 this.paid = rs.getBoolean("paid");
+                this.appointmentID = appointment.getID();
+                this.name = name;
             }
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -92,26 +92,26 @@ public class Treatment {
     public Appointment getAppointment() {
         return new Appointment(appointmentID);
     }
+    public boolean isPaid() { return paid; }
 
     public boolean equals(Object other) {
         if((other == null) || (getClass() != other.getClass())){
             return false;
         } else {
             Treatment otherTreat = (Treatment) other;
-            return appointmentID == otherTreat.getAppointment().getID() && name == otherTreat.getName();
+            return appointmentID == otherTreat.getAppointment().getID() && name.equals(otherTreat.getName());
         }
     }
 
     /**
-     * Mark a given treatment as paid
+     * Mark this treatment as paid
      */
     public boolean pay() {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("UPDATE AppointmentTreatment SET paid = 1 "
-                    + "WHERE appointmentID = ? AND name= ?");
+            stmt = conn.prepareStatement("UPDATE Treatment SET paid = 1 WHERE appointmentID = ? AND name = ?");
 
             stmt.setInt(1, appointmentID);
             stmt.setString(2, name);
@@ -122,11 +122,9 @@ public class Treatment {
             return false;
         }  finally {
             Database.closeStatement(conn, stmt);
-	}
+	    }
 
         return true;
     }
-
-
 
 }

@@ -157,8 +157,7 @@ public class Patient {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("INSERT INTO PatientAddress ("
-                    + "patientId, houseNo, postcode) VAUES (?, ?, ?)");
+            stmt = conn.prepareStatement("INSERT INTO PatientAddress (patientId, houseNo, postcode) VALUES (?, ?, ?)");
 
             stmt.setInt(1, patientID);
             stmt.setInt(2, a.getHouseNo());

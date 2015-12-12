@@ -2,6 +2,7 @@ package com2002.models;
 
 import com2002.db.Database;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -165,7 +166,7 @@ public class Appointment {
 
         try {  
             // May need to do a batch somehow
-            stmt = conn.prepareStatement("DELETE FROM AppointmentTreatment WHERE appointmentID = ?");
+            stmt = conn.prepareStatement("DELETE FROM Treatment WHERE appointmentID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
             
@@ -189,27 +190,9 @@ public class Appointment {
      * Adds a specified treatment to the appointment
      * @return boolean value representing result
      */
-    /*public boolean addTreatment(Treatment t) {
-        Connection conn = Database.getConnection();
-        PreparedStatement stmt = null;
-        
-        try {
-            stmt = conn.prepareStatement("INSERT INTO AppointmentTreatment ("
-                    + "appointmentId, n) VALUES (?, ?)");
-            
-            stmt.setInt(1, id);
-            stmt.setString(2, t.getName());
-            
-            stmt.executeUpdate();
-        } catch(SQLException e) {
-            System.out.println(e.toString());
-            return false;
-        }  finally {
-            Database.closeStatement(conn, stmt);
-	}
-        
-        return true;
-    } */
+    public void addTreatment(String name, BigDecimal cost) {
+        new Treatment(this, name, cost);
+    }
     
     /**
      * Returns an array list of treatments associated with this appointment
@@ -221,14 +204,13 @@ public class Appointment {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT name FROM AppointmentTreatment"
-                    + " WHERE appointmentID = ?");
+            stmt = conn.prepareStatement("SELECT name FROM Treatment WHERE appointmentID = ?");
 
             stmt.setInt(1, this.id);
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                treatments.add(new Treatment(rs.getString("name"), this));
+                treatments.add(new Treatment(this, rs.getString("name")));
             }
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -249,14 +231,13 @@ public class Appointment {
         PreparedStatement stmt = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT name FROM AppointmentTreatment"
-                    + " WHERE appointmentID = ? AND paid = 0");
+            stmt = conn.prepareStatement("SELECT name FROM Treatment WHERE appointmentID = ? AND paid = 0");
 
             stmt.setInt(1, this.id);
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                treatments.add(new Treatment(rs.getString("name"), this));
+                treatments.add(new Treatment(this, rs.getString("name")));
             }
         } catch(SQLException e) {
             System.out.println(e.toString());
@@ -265,31 +246,6 @@ public class Appointment {
         }
         
         return treatments;
-    }
-    
-    /**
-     * Mark a given treatment as paid
-     */
-    public boolean payTreatment(Treatment t) {
-        Connection conn = Database.getConnection();
-        PreparedStatement stmt = null;
-        
-        try {
-            stmt = conn.prepareStatement("UPDATE AppointmentTreatment SET paid = 1 "
-                    + "WHERE name = ? AND treatmentID = ?");
-            
-            stmt.setInt(1, id);
-            stmt.setString(2, t.getName());
-            
-            stmt.executeUpdate();
-        } catch(SQLException e) {
-            System.out.println(e.toString());
-            return false;
-        }  finally {
-            Database.closeStatement(conn, stmt);
-	}
-        
-        return true;
     }
     
     /**
@@ -357,7 +313,6 @@ public class Appointment {
 
         return true;
     }
-
 
     /**
      * Returns an array list of appointments on a specified date for a specified staff member

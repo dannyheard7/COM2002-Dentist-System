@@ -6,6 +6,8 @@ package com2002;
  * and open the template in the editor.
  */
 
+import com2002.models.Patient;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com2002.models.*;
 
 /**
  *
@@ -166,7 +167,7 @@ public class LookUpPatient extends javax.swing.JFrame {
             Date dob = fmt.parse(dobString);
             ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
             for (int i=0;i<patients.size();i++) {
-                if (postcode == patients.get(i).getAddress().getPostcode()) {
+                if (postcode.equals(patients.get(i).getAddress().getPostcode())) {
                     view.setPatient(patients.get(i));
                 }
                 else {
