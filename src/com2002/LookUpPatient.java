@@ -168,7 +168,7 @@ public class LookUpPatient extends javax.swing.JFrame {
         String postcode = TxtFld_LookUpPatient_Postcode.getText();
         System.out.println(postcode);
         try {
-            //TODO - THIS DOESNT WORK. look into date pickers.
+            //TODO IT WORKS IT WORKS - NEED TO VALIDATE INPUTS HOWEVER
             Date dob = fmt.parse(dobString);
             System.out.println(dob);
             ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
