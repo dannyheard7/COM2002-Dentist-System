@@ -1,14 +1,13 @@
 package com2002;
 
-import com2002.models.Staff;
 import com2002.models.Appointment;
 import com2002.models.Patient;
+import com2002.models.Staff;
 
+import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -141,9 +140,9 @@ public class BookAppointment extends javax.swing.JFrame {
                                                 .addGap(0, 0, Short.MAX_VALUE))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BookAppointmentPanelLayout.createSequentialGroup()
                                                 .addGap(0, 0, Short.MAX_VALUE)
-                                                .addComponent(Btn_BookAppointment_Cancel)))
-                                                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(Btn_BookAppointment_Submit)
+                                                .addComponent(Btn_BookAppointment_Cancel)))
                                 .addContainerGap())
         );
         BookAppointmentPanelLayout.setVerticalGroup(
@@ -172,8 +171,8 @@ public class BookAppointment extends javax.swing.JFrame {
                                         .addComponent(Lbl_BookAppointment_PatientID))
                                 .addGap(18, 18, 18)
                                 .addGroup(BookAppointmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(Btn_BookAppointment_Cancel)
-                                        .addComponent(Btn_BookAppointment_Submit))
+                                        .addComponent(Btn_BookAppointment_Submit)
+                                        .addComponent(Btn_BookAppointment_Cancel))
                                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -297,11 +296,13 @@ public class BookAppointment extends javax.swing.JFrame {
     private void Btn_BookAppointment_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_OKActionPerformed
         // TODO add your handling code here:
         setVisible(false);
+        dispose();
     }//GEN-LAST:event_Btn_BookAppointment_OKActionPerformed
 
     private void Btn_BookAppointment_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_CancelActionPerformed
         // TODO add your handling code here:
         setVisible(false);
+        dispose();
     }//GEN-LAST:event_Btn_BookAppointment_CancelActionPerformed
 
     /**

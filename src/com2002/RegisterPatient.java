@@ -6,9 +6,7 @@
 package com2002;
 
 import com2002.models.Address;
-import com2002.models.Appointment;
 import com2002.models.Patient;
-import com2002.models.Staff;
 
 import javax.swing.*;
 import java.text.DateFormat;
@@ -360,6 +358,7 @@ public class RegisterPatient extends javax.swing.JFrame {
     private void Btn_RegisterPatient_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_OKActionPerformed
         // TODO add your handling code here:
         setVisible(false);
+        dispose();
     }//GEN-LAST:event_Btn_BookAppointment_OKActionPerformed
 
     /**

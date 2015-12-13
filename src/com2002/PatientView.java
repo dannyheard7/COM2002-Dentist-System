@@ -212,12 +212,12 @@ public class PatientView extends javax.swing.JFrame {
     private void Btn_PatientView_OutstandingCostsActionPerformed(java.awt.event.ActionEvent evt) {
         OutstandingCosts outstanding = new OutstandingCosts();
         outstanding.setPatient(patientObj);
-        outstanding.setVisible(true);
     }
 
     private void Btn_PatientView_CancelActionPerformed(java.awt.event.ActionEvent evt) {
         //TODO code
         setVisible(false);
+        dispose();
     }
 
     /**

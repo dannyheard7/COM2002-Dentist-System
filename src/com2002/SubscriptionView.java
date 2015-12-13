@@ -133,10 +133,12 @@ public class SubscriptionView extends javax.swing.JFrame {
         Date nextYear = cal.getTime();
         PatientPlan plan = new PatientPlan(patientID,planName,nextYear);
         setVisible(false);
+        dispose();
     }
 
     private void Btn_SubscriptionView_CancelActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
+        dispose();
     }
 
     /**

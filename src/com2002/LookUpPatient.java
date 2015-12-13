@@ -7,17 +7,12 @@ package com2002;
  */
 
 import com2002.models.Patient;
-import com2002.models.Address;
 
+import javax.swing.*;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.JOptionPane;
 /**
  *
  * @author aca14ams
@@ -193,6 +188,10 @@ public class LookUpPatient extends javax.swing.JFrame {
                     }
                 }
 
+                if (patients.size() == 0) {
+                    JOptionPane.showMessageDialog(this, "No patient");
+                }
+
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
@@ -203,6 +202,7 @@ public class LookUpPatient extends javax.swing.JFrame {
 
     private void Btn_LookUpPatient_Submit1ActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
+        dispose();
     }
 
     private void lookUpPatientMouseClicked(java.awt.event.MouseEvent evt) {

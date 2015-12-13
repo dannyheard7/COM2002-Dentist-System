@@ -94,6 +94,11 @@ public class Treatment {
     }
     public boolean isPaid() { return paid; }
 
+    @Override
+    public String toString() {
+        return name + " - £" + cost.toString();
+    }
+
     public boolean equals(Object other) {
         if((other == null) || (getClass() != other.getClass())){
             return false;
