@@ -6,11 +6,17 @@ package com2002;
  * and open the template in the editor.
  */
 
+import javax.swing.*;
+
 /**
  *
  * @author aca14ams
  */
 public class EmployeeSelection extends javax.swing.JFrame {
+
+    private JButton secretaryButton;
+    private JButton dentistButton;
+    private JButton button3;
 
     /**
      * Creates new form EmployeeSelection

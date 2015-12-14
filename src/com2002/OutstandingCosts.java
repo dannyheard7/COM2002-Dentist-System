@@ -41,7 +41,7 @@ public class OutstandingCosts {
         markPaidButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!unpaidList.isSelectionEmpty()) {
+                if (!unpaidList.isSelectionEmpty()) {
                     Treatment t = (Treatment) unpaidList.getSelectedValue();
 
                     if (t.pay()) {
