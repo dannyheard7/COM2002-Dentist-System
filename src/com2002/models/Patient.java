@@ -9,12 +9,11 @@ import java.util.Date;
  * Created by HarryH on 04/12/2015.
  */
 public class Patient {
-    
+
     private int patientID;
     private String title, forename, surname, contactNo;
     private Date dateOfBirth;
     private Connection conn;
-
 
     public Patient (int patientID){
         patientByID(patientID);
@@ -23,10 +22,6 @@ public class Patient {
     public Patient(String title, String forename, String surname, Date dob, String contactNo) {
         create(title, forename, surname, dob, contactNo);
     }
-
-//    public Patient(String forename, String surname, Date dob){
-//        findPatients(forename, surname, dob);
-//    }
 
     /**
      * Creates a new patient record in the database
@@ -125,8 +120,7 @@ public class Patient {
 
         return true;
     }
-
-
+    
     // Basic get methods.
     public int getPatientID() {
         return patientID;
