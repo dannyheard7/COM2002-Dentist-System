@@ -11,15 +11,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author aca14ams
- */
 public class BookAppointment extends javax.swing.JFrame {
 
-    /**
-     * Creates new form BookAppointment
-     */
     public BookAppointment() {
         initComponents();
         setLocationRelativeTo(null);

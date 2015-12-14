@@ -14,6 +14,7 @@ public class AppointmentView extends javax.swing.JFrame {
 
     public AppointmentView() {
         initComponents();
+        this.setLocationRelativeTo(null);    
     }
 
     /**
@@ -279,6 +280,8 @@ public class AppointmentView extends javax.swing.JFrame {
         else{
             TxtFld_AppointmentView_Type.setText("Treatment");
         }
+        
+        this.setTitle("Appointment: " + dateStr + " " + startTime + " - " + endTime + ", " + staff);
     }
 
     private void Btn_AppointmentView_OKActionPerformed(java.awt.event.ActionEvent evt) {

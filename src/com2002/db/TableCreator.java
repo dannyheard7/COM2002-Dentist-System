@@ -86,7 +86,7 @@ public class TableCreator {
                 " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";
             
             String createAddressTable = "CREATE TABLE IF NOT EXISTS Address (" +
-                "houseNo INT NOT NULL," +
+                "houseNo INT(6) NOT NULL," +
                 "  street VARCHAR(30), " +
                 "  city VARCHAR(30), " +
                 "  district VARCHAR(30), " +
