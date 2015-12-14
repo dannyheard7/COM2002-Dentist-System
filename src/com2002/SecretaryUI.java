@@ -1057,6 +1057,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         // Open the book appointment GUI, do NOT close the current GUI
     }
 
+
     private void searchDateMouseClicked(java.awt.event.MouseEvent evt) {
         
         searchDate.setText("");
