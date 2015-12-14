@@ -19,6 +19,7 @@ public class RecordVisit extends javax.swing.JFrame {
 
     public RecordVisit() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
