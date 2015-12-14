@@ -30,8 +30,8 @@ public class PatientPlan {
     }
 
     public PatientPlan(int patientID, String planName, Date renewDate) {
-
-        deletePatientPlan(patientID);
+        this.patientID = patientID;
+        deletePatientPlan();
         create(patientID, planName, renewDate);
 
     }
@@ -75,8 +75,7 @@ public class PatientPlan {
         return true;
     }
 
-    private boolean deletePatientPlan(int patientID){
-        this.patientID = patientID;
+    public boolean deletePatientPlan(){  
         conn = Database.getConnection();
         PreparedStatement stmt = null;
 
@@ -151,6 +150,7 @@ public class PatientPlan {
 
         return true;
     }
+    
     private boolean updateCheckUps(){
         PreparedStatement stmt = null;
         conn = Database.getConnection();
@@ -168,6 +168,7 @@ public class PatientPlan {
         return true;
 
     }
+    
     private boolean updateHygiene(){
         PreparedStatement stmt = null;
         conn = Database.getConnection();
@@ -210,7 +211,6 @@ public class PatientPlan {
 
         return lis;
     }
-
 
     // Basic get methods.
     public int getPatientID() {return patientID;}

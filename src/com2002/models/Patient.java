@@ -194,4 +194,8 @@ public class Patient {
 
         return address;
     }
+    
+    public PatientPlan getPlan() {
+        return new PatientPlan(this.patientID);
+    }
 }

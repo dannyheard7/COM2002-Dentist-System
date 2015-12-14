@@ -16,8 +16,13 @@ public class SubscriptionView extends javax.swing.JFrame {
     public void setPatient(Patient patient) {
         this.patientObj = patient;
         
-        PatientPlan plan = new PatientPlan(patientObj.getPatientID());
-        Combo_SubscriptionView_Plan.setSelectedItem(plan.getPlanName());
+        PatientPlan plan = patientObj.getPlan(); 
+        Combo_SubscriptionView_Plan.setSelectedItem("No Plan");
+        
+        if (plan.getPlanName() != null) {
+            Combo_SubscriptionView_Plan.setSelectedItem(plan.getPlanName());
+        }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -42,6 +47,7 @@ public class SubscriptionView extends javax.swing.JFrame {
         for (int i=0;i<plans.size();i++){
             planNames.add(plans.get(i).getName());
         }
+        planNames.add("No Plan");
         Combo_SubscriptionView_Plan.setModel(new javax.swing.DefaultComboBoxModel(planNames.toArray()));
 
         Btn_SubscriptionView_Ok.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -109,10 +115,17 @@ public class SubscriptionView extends javax.swing.JFrame {
     private void Btn_SubscriptionView_OkActionPerformed(java.awt.event.ActionEvent evt) {
         // return the plan selected in the SQL
         String planName = Combo_SubscriptionView_Plan.getSelectedItem().toString();
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 1);
-        Date nextYear = cal.getTime();
-        PatientPlan plan = new PatientPlan(patientObj.getPatientID(), planName, nextYear);
+        
+        if (planName.equals("No Plan")) {
+            patientObj.getPlan().deletePatientPlan();
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.YEAR, 1);
+            Date nextYear = cal.getTime();
+            
+            new PatientPlan(patientObj.getPatientID(), planName, nextYear);
+        }
+        
         setVisible(false);
         dispose();
     }
