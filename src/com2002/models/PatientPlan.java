@@ -177,7 +177,6 @@ public class PatientPlan {
         return true;
     }
 
-    // TODO arraylist of patients on each plan - based on plan name.
     public static ArrayList<Patient> patientPlanByName(String planName) {
         PreparedStatement stmt = null;
         Connection conn = Database.getConnection();

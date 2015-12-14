@@ -52,11 +52,6 @@ public class EmployeeSelection extends javax.swing.JFrame {
         });
 
         Btn_EmployeeSelection_Partner.setText("Partner");
-        Btn_EmployeeSelection_Partner.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Btn_EmployeeSelection_PartnerActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout EmployeeSelectionPanelLayout = new javax.swing.GroupLayout(EmployeeSelectionPanel);
         EmployeeSelectionPanel.setLayout(EmployeeSelectionPanelLayout);
@@ -93,14 +88,9 @@ public class EmployeeSelection extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    private void Btn_EmployeeSelection_PartnerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
 
-
-    }
 
     private void Btn_EmployeeSelection_SecretaryActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         SecretaryUI secui = new SecretaryUI();
         secui.setVisible(true);
         this.setVisible(false);

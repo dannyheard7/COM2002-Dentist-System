@@ -9,9 +9,7 @@ import java.util.Date;
  * Created by HarryH on 04/12/2015.
  */
 public class Patient {
-
-    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE - check assignment to see if its on the sheet.
-
+    
     private int patientID;
     private String title, forename, surname, contactNo;
     private Date dateOfBirth;
@@ -127,8 +125,6 @@ public class Patient {
 
         return true;
     }
-
-    // TODO decide another way to return a patient - how much is enough to uniquely identify them. So we can get the ID.....
 
 
     // Basic get methods.
