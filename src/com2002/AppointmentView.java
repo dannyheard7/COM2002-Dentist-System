@@ -260,7 +260,7 @@ public class AppointmentView extends javax.swing.JFrame {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         startTime = timeFormat.format(start);
         endTime = timeFormat.format(end);
-        dateStr = dateFormat.format(date);
+        dateStr = dateFormat.format(start);
         staff = app.getStaff().getPosition();
         TxtFld_AppointmentView_Title.setText(title);
         TxtFld_AppointmentView_Forename.setText(forename);
@@ -272,7 +272,7 @@ public class AppointmentView extends javax.swing.JFrame {
         TxtFld_AppointmentView_End.setText(endTime);
         TxtFld_AppointmentView_Partner.setText(staff);
         if (end.getTime() - start.getTime() == 1200000){
-            if (staff == "Dentist"){
+            if (staff.trim() == "Dentist"){
                 TxtFld_AppointmentView_Type.setText("Check-Up");
             }
             else {
@@ -363,7 +363,6 @@ public class AppointmentView extends javax.swing.JFrame {
     private String startTime;
     private String endTime;
     private String staff;
-    private Date date;
     private Date start;
     private Date end;
     private Patient patient;
