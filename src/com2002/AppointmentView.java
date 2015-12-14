@@ -58,7 +58,7 @@ public class AppointmentView extends javax.swing.JFrame {
         TxtFld_AppointmentView_Type = new javax.swing.JTextField();
         Lbl_AppointmentView_Type = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         TxtFld_AppointmentView_Date.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -249,7 +249,6 @@ public class AppointmentView extends javax.swing.JFrame {
     public void setAppointment(Appointment app) {
         appointmentObj = app;
         patient = app.getPatient();
-        patientID = patient.getPatientID();
         title = patient.getTitle();
         forename = patient.getForename();
         surname = patient.getSurname();
@@ -257,20 +256,23 @@ public class AppointmentView extends javax.swing.JFrame {
         contactNo = patient.getContactNo();
         start = app.getStartTime();
         end = app.getEndTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         startTime = timeFormat.format(start);
         endTime = timeFormat.format(end);
+        dateStr = dateFormat.format(start);
         staff = app.getStaff().getPosition();
         TxtFld_AppointmentView_Title.setText(title);
         TxtFld_AppointmentView_Forename.setText(forename);
         TxtFld_AppointmentView_Surname.setText(surname);
         TxtFld_AppointmentView_Dob.setText(dateOfBirth);
         TxtFld_AppointmentView_Contact.setText(contactNo);
+        TxtFld_AppointmentView_Date.setText(dateStr);
         TxtFld_AppointmentView_Start.setText(startTime);
         TxtFld_AppointmentView_End.setText(endTime);
         TxtFld_AppointmentView_Partner.setText(staff);
         if (end.getTime() - start.getTime() == 1200000){
-            if (staff == "Dentist"){
+            if (staff.trim() == "Dentist"){
                 TxtFld_AppointmentView_Type.setText("Check-Up");
             }
             else {
@@ -289,6 +291,8 @@ public class AppointmentView extends javax.swing.JFrame {
     private void Btn_AppointmentView_CancelActionPerformed(java.awt.event.ActionEvent evt) {
         appointmentObj.cancel();
         setVisible(false);
+//        SecretaryUI secUI = new SecretaryUI();
+//        secUI.exUpUI();
     }
 
     /**
@@ -350,12 +354,12 @@ public class AppointmentView extends javax.swing.JFrame {
     private javax.swing.JTextField TxtFld_AppointmentView_Surname;
     private javax.swing.JTextField TxtFld_AppointmentView_Title;
     private javax.swing.JTextField TxtFld_AppointmentView_Type;
-    private int patientID;
     private String title;
     private String forename;
     private String surname;
     private String dateOfBirth;
     private String contactNo;
+    private String dateStr;
     private String startTime;
     private String endTime;
     private String staff;
