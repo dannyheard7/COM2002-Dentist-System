@@ -27,7 +27,6 @@ public class OutstandingCosts {
 
     public OutstandingCosts() {
         final JFrame frame = new JFrame("Outstanding Costs");
-        frame.setLocationRelativeTo(null);
         frame.setContentPane(MainPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
