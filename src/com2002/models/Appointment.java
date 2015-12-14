@@ -115,8 +115,6 @@ public class Appointment {
      * Checks if a given start and end datetime overlaps any other appointment for a staff member
     */
     public boolean checkOverlap(Patient patient, Date startTime, Date endTime, Staff staff) {
-        
-        
         for (Appointment a : Appointment.getAppointmentsOnDate(startTime)) {
             System.out.println(a.getStartTime());
             System.out.println(a.getEndTime());
