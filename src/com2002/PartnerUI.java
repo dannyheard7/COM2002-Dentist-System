@@ -125,7 +125,6 @@ public class PartnerUI extends javax.swing.JFrame {
             ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
             ArrayList<Appointment> specificApts = new ArrayList<>();
 
-            System.out.println(currentPartner);
             for (int j=0; j<dayApts.size(); j++){
                 if (dayApts.get(j).getStaff().getPosition().equals(currentPartner)){
                     specificApts.add(dayApts.get(j));

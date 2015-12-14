@@ -14,7 +14,7 @@ public class AppointmentView extends javax.swing.JFrame {
 
     public AppointmentView() {
         initComponents();
-        this.setLocationRelativeTo(null);    
+        setLocationRelativeTo(null);
     }
 
     /**
