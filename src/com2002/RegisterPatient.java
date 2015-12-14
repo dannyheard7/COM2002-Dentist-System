@@ -56,8 +56,10 @@ public class RegisterPatient extends javax.swing.JFrame {
         TxtFld_RegisterPatient_Surname.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         TxtFld_RegisterPatient_Dob.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        TxtFld_RegisterPatient_Dob.setText("dd/mm/yyyy");
         TxtFld_RegisterPatient_Dob.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {    
+                TxtFld_RegisterPatient_Dob.setText("");
             }
         });
 
@@ -232,11 +234,12 @@ public class RegisterPatient extends javax.swing.JFrame {
         boolean forenameTrue = !forename.isEmpty() && forename.length() <= 40;
         boolean surnameTrue = !surname.isEmpty() && surname.length() <= 40;
         boolean dobTrue = !dob.isEmpty() && dob.matches("\\d{2}/\\d{2}/\\d{4}$");
-        boolean contactNoTrue = !contactNo.isEmpty() && (contactNo.length() == 11 ||contactNo.length() == 13);
+        boolean contactNoTrue = !contactNo.isEmpty() && contactNo.length() <= 15 && contactNo.matches("\\d*");
         boolean streetTrue = !street.isEmpty() && street.length() <= 30;
         boolean cityTrue = !city.isEmpty() && city.length() <= 30;
         boolean districtTrue = !district.isEmpty() && district.length() <= 30;
         boolean postcodeTrue = !postcode.isEmpty() && postcode.length() <= 8;
+        
         return titleTrue && forenameTrue && surnameTrue && dobTrue && contactNoTrue && streetTrue && cityTrue && districtTrue && postcodeTrue;
     }
 

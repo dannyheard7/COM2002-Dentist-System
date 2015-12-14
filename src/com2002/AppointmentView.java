@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com2002;
 
 import com2002.models.Appointment;
@@ -12,15 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author Abigail
- */
 public class AppointmentView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AppointmentView
-     */
     public AppointmentView() {
         initComponents();
     }
@@ -286,51 +274,17 @@ public class AppointmentView extends javax.swing.JFrame {
 
     private void Btn_AppointmentView_OKActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
+        dispose();
     }
 
     private void Btn_AppointmentView_CancelActionPerformed(java.awt.event.ActionEvent evt) {
         appointmentObj.cancel();
         setVisible(false);
+        dispose();
 //        SecretaryUI secUI = new SecretaryUI();
 //        secUI.exUpUI();
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AppointmentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AppointmentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AppointmentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AppointmentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AppointmentView().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify
     private javax.swing.JPanel AppointmentViewPanel;
     private javax.swing.JToggleButton Btn_AppointmentView_Cancel;
     private javax.swing.JToggleButton Btn_AppointmentView_OK;
@@ -367,5 +321,4 @@ public class AppointmentView extends javax.swing.JFrame {
     private Date end;
     private Patient patient;
     private Appointment appointmentObj;
-    // End of variables declaration
 }
