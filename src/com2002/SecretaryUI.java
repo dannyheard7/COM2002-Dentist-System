@@ -62,7 +62,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateDayButtons();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
-
+        recolourButtons(calendar.getTime());
     }
 
     public void updateNav(){
@@ -152,19 +152,19 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         switch (trueDay) {
             case 1:
-                day1B.setBackground(Color.RED);
+                day1B.setBackground(new Color(0,153,51));
                 break;
             case 2:
-                day2B.setBackground(Color.RED);
+                day2B.setBackground(new Color(0,153,51));
                 break;
             case 3:
-                day3B.setBackground(Color.RED);
+                day3B.setBackground(new Color(0,153,51));
                 break;
             case 4:
-                day4B.setBackground(Color.RED);
+                day4B.setBackground(new Color(0,153,51));
                 break;
             case 5:
-                day5B.setBackground(Color.RED);
+                day5B.setBackground(new Color(0,153,51));
                 break;
             default:
                 break;
@@ -175,19 +175,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         System.out.println(dayInWeek);
         switch (dayInWeek-1) {
             case 1:
-                day1B.setBackground(Color.GREEN);
+                day1B.setBackground(Color.GRAY);
                 break;
             case 2:
-                day2B.setBackground(Color.GREEN);
+                day2B.setBackground(Color.GRAY);
                 break;
             case 3:
-                day3B.setBackground(Color.GREEN);
+                day3B.setBackground(Color.GRAY);
                 break;
             case 4:
-                day4B.setBackground(Color.GREEN);
+                day4B.setBackground(Color.GRAY);
                 break;
             case 5:
-                day5B.setBackground(Color.GREEN);
+                day5B.setBackground(Color.GRAY);
                 break;
         }
 
@@ -277,7 +277,7 @@ public class SecretaryUI extends javax.swing.JFrame {
                     AppointmentView appointmentDetails = new AppointmentView();
                     appointmentDetails.setVisible(true);
                     appointmentDetails.setAppointment(currentApt);
-              }
+                }
             });
 
             slot.add(appointment);
@@ -367,7 +367,7 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         calendarMaster.setBackground(new java.awt.Color(255, 255, 255));
 
-        navWrapper.setBackground(new java.awt.Color(204, 204, 255));
+        navWrapper.setBackground(new java.awt.Color(204, 204, 204));
 
         nextWeek.setText("Next Week");
         nextWeek.addActionListener(new java.awt.event.ActionListener() {
@@ -418,7 +418,7 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        weekWrapper.setBackground(new java.awt.Color(204, 204, 255));
+        weekWrapper.setBackground(new java.awt.Color(204, 204, 204));
 
         day1B.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         day1B.setText("jButton1");
@@ -524,7 +524,9 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addGap(23, 23, 23))
         );
 
-        timetableWrapper.setBackground(new java.awt.Color(204, 204, 255));
+        timetableWrapper.setBackground(new java.awt.Color(153, 153, 153));
+
+        hourSlot1.setBackground(new java.awt.Color(204, 204, 204));
 
         timeLBL1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL1.setText("9:00");
@@ -554,6 +556,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
+        hourSlot2.setBackground(new java.awt.Color(204, 204, 204));
+
         timeLBL2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL2.setText("10:00");
 
@@ -581,6 +585,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addComponent(appointmentSlot2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
+
+        hourSlot3.setBackground(new java.awt.Color(204, 204, 204));
 
         timeLBL3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL3.setText("11:00");
@@ -610,6 +616,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
+        hourSlot4.setBackground(new java.awt.Color(204, 204, 204));
+
         timeLBL4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL4.setText("12:00");
 
@@ -637,6 +645,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addComponent(appointmentSlot4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
+
+        hourSlot5.setBackground(new java.awt.Color(204, 204, 204));
 
         timeLBL5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL5.setText("13:00");
@@ -666,6 +676,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
+        hourSlot6.setBackground(new java.awt.Color(204, 204, 204));
+
         timeLBL6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL6.setText("14:00");
 
@@ -694,6 +706,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
+        hourSlot7.setBackground(new java.awt.Color(204, 204, 204));
+
         timeLBL7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL7.setText("15:00");
 
@@ -721,6 +735,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addComponent(appointmentSlot7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
+
+        hourSlot8.setBackground(new java.awt.Color(204, 204, 204));
 
         timeLBL8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLBL8.setText("16:00");
@@ -786,7 +802,7 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addComponent(hourSlot7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(hourSlot8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout calendarMasterLayout = new javax.swing.GroupLayout(calendarMaster);
@@ -811,7 +827,7 @@ public class SecretaryUI extends javax.swing.JFrame {
                                 .addComponent(navWrapper, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(weekWrapper, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(timetableWrapper, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -872,11 +888,11 @@ public class SecretaryUI extends javax.swing.JFrame {
                         .addGroup(controlMasterLayout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addGroup(controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lookupPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(resetDate, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                 .addGroup(controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(bookAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(lookupPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(registerPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(controlMasterLayout.createSequentialGroup()
                                                         .addComponent(searchDate)
@@ -893,11 +909,11 @@ public class SecretaryUI extends javax.swing.JFrame {
                                         .addComponent(searchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(resetDate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(99, 99, 99)
-                                .addComponent(lookupPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
+                                .addGap(90, 90, 90)
                                 .addComponent(bookAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
+                                .addGap(18, 18, 18)
+                                .addComponent(lookupPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21)
                                 .addComponent(registerPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -990,6 +1006,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateDayButtons();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
+        recolourButtons(calendar.getTime());
 
 
         // Reset the date to today
