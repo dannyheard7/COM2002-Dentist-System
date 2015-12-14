@@ -339,7 +339,7 @@ public class Appointment {
 
         try {
             stmt = conn.prepareStatement("UPDATE Appointment SET patientSeen = ? "
-                    + "WHERE appointmentID="+getID());
+                    + "WHERE appointmentID = ?");
             stmt.setBoolean(1, b);
             stmt.setInt(2, id);
 

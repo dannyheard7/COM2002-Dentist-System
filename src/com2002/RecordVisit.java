@@ -231,6 +231,7 @@ public class RecordVisit extends javax.swing.JFrame {
 
     private void Btn_RecordVisit_OKActionPerformed(java.awt.event.ActionEvent evt) {
         setVisible(false);
+        dispose();
     }
 
     private void Btn_RecordVisit_CancelActionPerformed(java.awt.event.ActionEvent evt) {
