@@ -51,7 +51,7 @@ public class PartnerUI extends javax.swing.JFrame {
             currentPartner = "Dentist";
         }
         else{
-            currentPartner = "Hygenist";
+            currentPartner = "Hygienist";
         }
 
 
