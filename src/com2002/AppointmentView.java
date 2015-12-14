@@ -5,13 +5,6 @@
  */
 package com2002;
 
-import com2002.models.Appointment;
-import com2002.models.Patient;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  *
  * @author Abigail
@@ -246,49 +239,12 @@ public class AppointmentView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    public void setAppointment(Appointment app) {
-        appointmentObj = app;
-        patient = app.getPatient();
-        patientID = patient.getPatientID();
-        title = patient.getTitle();
-        forename = patient.getForename();
-        surname = patient.getSurname();
-        dateOfBirth = patient.getDateOfBirth().toString();
-        contactNo = patient.getContactNo();
-        start = app.getStartTime();
-        end = app.getEndTime();
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        startTime = timeFormat.format(start);
-        endTime = timeFormat.format(end);
-        staff = app.getStaff().getPosition();
-        TxtFld_AppointmentView_Title.setText(title);
-        TxtFld_AppointmentView_Forename.setText(forename);
-        TxtFld_AppointmentView_Surname.setText(surname);
-        TxtFld_AppointmentView_Dob.setText(dateOfBirth);
-        TxtFld_AppointmentView_Contact.setText(contactNo);
-        TxtFld_AppointmentView_Start.setText(startTime);
-        TxtFld_AppointmentView_End.setText(endTime);
-        TxtFld_AppointmentView_Partner.setText(staff);
-        if (end.getTime() - start.getTime() == 1200000){
-            if (staff == "Dentist"){
-                TxtFld_AppointmentView_Type.setText("Check-Up");
-            }
-            else {
-                TxtFld_AppointmentView_Type.setText("Hygiene");
-            }
-        }
-        else{
-            TxtFld_AppointmentView_Type.setText("Treatment");
-        }
-    }
-
     private void Btn_AppointmentView_OKActionPerformed(java.awt.event.ActionEvent evt) {
-        setVisible(false);
+        // TODO add your handling code here:
     }
 
     private void Btn_AppointmentView_CancelActionPerformed(java.awt.event.ActionEvent evt) {
-        appointmentObj.cancel();
-        setVisible(false);
+        // TODO add your handling code here:
     }
 
     /**
@@ -350,18 +306,5 @@ public class AppointmentView extends javax.swing.JFrame {
     private javax.swing.JTextField TxtFld_AppointmentView_Surname;
     private javax.swing.JTextField TxtFld_AppointmentView_Title;
     private javax.swing.JTextField TxtFld_AppointmentView_Type;
-    private int patientID;
-    private String title;
-    private String forename;
-    private String surname;
-    private String dateOfBirth;
-    private String contactNo;
-    private String startTime;
-    private String endTime;
-    private String staff;
-    private Date start;
-    private Date end;
-    private Patient patient;
-    private Appointment appointmentObj;
     // End of variables declaration
 }
