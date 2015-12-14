@@ -57,11 +57,12 @@ public class RegisterPatient extends javax.swing.JFrame {
 
         TxtFld_RegisterPatient_Dob.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TxtFld_RegisterPatient_Dob.setText("dd/mm/yyyy");
-        TxtFld_RegisterPatient_Dob.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {    
+        TxtFld_RegisterPatient_Dob.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TxtFld_RegisterPatient_Dob.setText("");
             }
         });
+
 
         TxtFld_RegisterPatient_Contact.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -229,18 +230,21 @@ public class RegisterPatient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    private boolean validate(String title, String forename, String surname, String dob, String contactNo, String street, String city, String district, String postcode) {
+    private boolean validate(String title, String forename, String surname, String dob, String contactNo,
+            String houseNo, String street, String city, String district, String postcode) {
         boolean titleTrue = !title.isEmpty() && title.length() <= 10;
         boolean forenameTrue = !forename.isEmpty() && forename.length() <= 40;
         boolean surnameTrue = !surname.isEmpty() && surname.length() <= 40;
         boolean dobTrue = !dob.isEmpty() && dob.matches("\\d{2}/\\d{2}/\\d{4}$");
         boolean contactNoTrue = !contactNo.isEmpty() && contactNo.length() <= 15 && contactNo.matches("\\d*");
+        boolean houseNoTrue = !houseNo.isEmpty() && houseNo.length() <= 6 && houseNo.matches("\\d+");
         boolean streetTrue = !street.isEmpty() && street.length() <= 30;
         boolean cityTrue = !city.isEmpty() && city.length() <= 30;
         boolean districtTrue = !district.isEmpty() && district.length() <= 30;
         boolean postcodeTrue = !postcode.isEmpty() && postcode.length() <= 8;
         
-        return titleTrue && forenameTrue && surnameTrue && dobTrue && contactNoTrue && streetTrue && cityTrue && districtTrue && postcodeTrue;
+        return titleTrue && forenameTrue && surnameTrue && dobTrue && contactNoTrue && houseNoTrue && 
+                streetTrue && cityTrue && districtTrue && postcodeTrue;
     }
 
     private void Btn_RegisterPatient_SubmitActionPerformed(java.awt.event.ActionEvent evt) {
@@ -248,16 +252,18 @@ public class RegisterPatient extends javax.swing.JFrame {
         String forename = TxtFld_RegisterPatient_Forename.getText();
         String surname = TxtFld_RegisterPatient_Surname.getText();
         
-        //TODO set placeholder text for this ABBY, dd/mm/yyyy to minimise errors.
         String dobString = TxtFld_RegisterPatient_Dob.getText();
-        String contactNo = TxtFld_RegisterPatient_Contact.getText();
-        int houseNo = Integer.parseInt(TxtFld_RegisterPatient_House.getText().trim());
+        String contactNo = TxtFld_RegisterPatient_Contact.getText();  
+        String houseNoString = TxtFld_RegisterPatient_House.getText().trim();
         String street = TxtFld_RegisterPatient_Street.getText();
         String city = TxtFld_RegisterPatient_City.getText();
         String district = TxtFld_RegisterPatient_District.getText();
         String postcode = TxtFld_RegisterPatient_Postcode.getText();
 
-        if (validate(title, forename, surname, dobString, contactNo, street, city, district, postcode)) {
+        if (validate(title, forename, surname, dobString, contactNo, houseNoString, street,
+                city, district, postcode)) {
+            int houseNo = Integer.parseInt(houseNoString);
+            
             try {
                 DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
                 Date dob = fmt.parse(dobString);

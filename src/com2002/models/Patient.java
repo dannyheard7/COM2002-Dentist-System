@@ -10,13 +10,10 @@ import java.util.Date;
  */
 public class Patient {
 
-    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE - check assignment to see if its on the sheet.
-
     private int patientID;
     private String title, forename, surname, contactNo;
     private Date dateOfBirth;
     private Connection conn;
-
 
     public Patient (int patientID){
         patientByID(patientID);
@@ -25,10 +22,6 @@ public class Patient {
     public Patient(String title, String forename, String surname, Date dob, String contactNo) {
         create(title, forename, surname, dob, contactNo);
     }
-
-//    public Patient(String forename, String surname, Date dob){
-//        findPatients(forename, surname, dob);
-//    }
 
     /**
      * Creates a new patient record in the database
@@ -127,9 +120,6 @@ public class Patient {
 
         return true;
     }
-
-    // TODO decide another way to return a patient - how much is enough to uniquely identify them. So we can get the ID.....
-
 
     // Basic get methods.
     public int getPatientID() {

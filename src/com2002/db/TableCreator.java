@@ -86,7 +86,7 @@ public class TableCreator {
                 " FOREIGN KEY ( appointmentID ) REFERENCES Appointment(appointmentID))";
             
             String createAddressTable = "CREATE TABLE IF NOT EXISTS Address (" +
-                "houseNo INT NOT NULL," +
+                "houseNo INT(6) NOT NULL," +
                 "  street VARCHAR(30), " +
                 "  city VARCHAR(30), " +
                 "  district VARCHAR(30), " +
@@ -165,6 +165,7 @@ public class TableCreator {
         app.addTreatment("Tooth Extraction", new BigDecimal(150.10));
         new Plan("NHS Free", new BigDecimal(0.0), 3, 2, 1);
         new Plan("For Ballers", new BigDecimal(0.0), 3, 2, 1);
+
         new PatientPlan(p.getPatientID(),"NHS Free", plusYear);
 //        new PatientPlan(a.getPatientID(), "For Ballers", plusYear);
 

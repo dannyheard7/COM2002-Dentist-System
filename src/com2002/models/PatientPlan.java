@@ -30,7 +30,6 @@ public class PatientPlan {
 
     }
 
-
     /**
      * Creates a new patient plan record in the database
      */
@@ -177,7 +176,6 @@ public class PatientPlan {
         return true;
     }
 
-    // TODO arraylist of patients on each plan - based on plan name.
     public static ArrayList<Patient> patientPlanByName(String planName) {
         PreparedStatement stmt = null;
         Connection conn = Database.getConnection();
@@ -210,7 +208,5 @@ public class PatientPlan {
     public int getRemainHygiene(){return remainHygiene;}
     public int getRemainTreatments() {return remainTreatments;}
     public Date renewDate() {return renewDate;}
-
-
-
+    
 }

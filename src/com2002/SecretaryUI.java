@@ -961,7 +961,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void nextWeekActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, +7);
 
@@ -974,7 +974,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     private void prevWeekActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
 
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, -7);
@@ -988,7 +988,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     private void goToButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
 
         String goToString = searchDate.getText();
         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -1012,7 +1012,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     private void resetDateActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
 
         calendar.setTime(today);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -1032,7 +1032,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     private void lookupPatientActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
 
         // Open the lookup patient GUI, do NOT close the current GUI
         LookUpPatient lookup = new LookUpPatient();
@@ -1040,7 +1040,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     private void bookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
 
 
         BookAppointment book = new BookAppointment();
@@ -1058,14 +1058,14 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     private void searchDateMouseClicked(java.awt.event.MouseEvent evt) {
-        // TODO add your handling code here:
+        
         searchDate.setText("");
     }
 
 
 
     private void day1BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
@@ -1074,35 +1074,31 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     private void day2BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
     private void day3BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
     private void day4BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
     private void day5BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
     private void registerPatientActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         RegisterPatient register = new RegisterPatient();
         register.setVisible(true);
     }

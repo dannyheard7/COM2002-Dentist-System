@@ -41,7 +41,6 @@ public class SubscriptionView extends javax.swing.JFrame {
         Lbl_SubscriptionView_Plan.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         Lbl_SubscriptionView_Plan.setText("Plan");
 
-        //TODO change string to ls.toArray() where ls is an array list of all PatientPlan names
         ArrayList<Plan> plans = Plan.getAllPlans();
         ArrayList<String> planNames = new ArrayList<>();
         for (int i=0;i<plans.size();i++){
