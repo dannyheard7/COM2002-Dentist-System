@@ -8,13 +8,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-/**
- * Created by HarryH on 04/12/2015.
- */
-
 public class PatientPlan {
-
-    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE
 
     private int patientID, remainTreatments, remainCheckups, remainHygiene;
     private String planName;
@@ -113,9 +107,6 @@ public class PatientPlan {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-//            if (!rs.first()){
-//                return false;
-//            }
             if(rs.next()) {
                 this.patientID = rs.getInt("patientID");
                 this.planName = rs.getString("planName");

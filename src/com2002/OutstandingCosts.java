@@ -41,12 +41,14 @@ public class OutstandingCosts {
         markPaidButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Treatment t = (Treatment) unpaidList.getSelectedValue();
+                if(!unpaidList.isSelectionEmpty()) {
+                    Treatment t = (Treatment) unpaidList.getSelectedValue();
 
-                if (t.pay()) {
-                    BigDecimal totalCost = new BigDecimal(totalCostField.getText().replace("£", ""));
-                    listModel.removeElement(t);
-                    totalCostField.setText("£" + totalCost.subtract(t.getCost()).toString());
+                    if (t.pay()) {
+                        BigDecimal totalCost = new BigDecimal(totalCostField.getText().replace("£", ""));
+                        listModel.removeElement(t);
+                        totalCostField.setText("£" + totalCost.subtract(t.getCost()).toString());
+                    }
                 }
             }
         });

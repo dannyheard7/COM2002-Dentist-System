@@ -237,11 +237,17 @@ public class AppointmentView extends javax.swing.JFrame {
     public void setAppointment(Appointment app) {
         appointmentObj = app;
         patient = app.getPatient();
-        title = patient.getTitle();
-        forename = patient.getForename();
-        surname = patient.getSurname();
-        dateOfBirth = patient.getDateOfBirth().toString();
-        contactNo = patient.getContactNo();
+        
+        title = forename = surname = contactNo = dateOfBirth = "";
+        
+        if (patient != null) {
+            title = patient.getTitle();
+            forename = patient.getForename();
+            surname = patient.getSurname();
+            dateOfBirth = patient.getDateOfBirth().toString();
+            contactNo = patient.getContactNo();
+        }
+        
         start = app.getStartTime();
         end = app.getEndTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
