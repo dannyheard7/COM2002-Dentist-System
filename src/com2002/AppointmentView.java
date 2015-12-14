@@ -272,7 +272,7 @@ public class AppointmentView extends javax.swing.JFrame {
         TxtFld_AppointmentView_End.setText(endTime);
         TxtFld_AppointmentView_Partner.setText(staff);
         if (end.getTime() - start.getTime() == 1200000){
-            if (staff.trim() == "Dentist"){
+            if (staff.equals("Dentist")){
                 TxtFld_AppointmentView_Type.setText("Check-Up");
             }
             else {
