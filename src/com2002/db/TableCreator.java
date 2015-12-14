@@ -155,7 +155,7 @@ public class TableCreator {
         Date plusYear = cal2.getTime();
         cal.add(Calendar.YEAR,1);
         Patient p = new Patient("Ms","Beth","Lum", new Date(),"07504988541");
-        Patient a = new Patient("Dr","Abby","Smells", new Date(),"GOFUCKURSELF");
+        Patient a = new Patient("Dr","John","Smith", new Date(),"01912401786");
         new Address(40,"Street","Plymouth","South","pl157dy");
         new Address(7,"Lesbury Road","Newcastle","North","ne65lb");
         a.addAddress(new Address(7, "ne65lb"));
@@ -166,7 +166,7 @@ public class TableCreator {
         new Plan("NHS Free", new BigDecimal(0.0), 3, 2, 1);
         new Plan("For Ballers", new BigDecimal(0.0), 3, 2, 1);
         new PatientPlan(p.getPatientID(),"NHS Free", plusYear);
-        new PatientPlan(a.getPatientID(), "For Ballers", plusYear);
+//        new PatientPlan(a.getPatientID(), "For Ballers", plusYear);
 
 //        Patient p = (new Patient(3));
 //        System.out.println(p.getForename()+" "+ p.getSurname() +" "+p.getAddress().getPostcode() +" "+ p.getDateOfBirth().toString());

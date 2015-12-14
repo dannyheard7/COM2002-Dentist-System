@@ -8,13 +8,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-/**
- * Created by HarryH on 04/12/2015.
- */
-
 public class PatientPlan {
-
-    // TODO IMPLEMENT UPDATE METHOD FOR DATA IN THE TABLE
 
     private int patientID, remainTreatments, remainCheckups, remainHygiene;
     private String planName;
@@ -30,8 +24,8 @@ public class PatientPlan {
     }
 
     public PatientPlan(int patientID, String planName, Date renewDate) {
-
-        deletePatientPlan(patientID);
+        this.patientID = patientID;
+        deletePatientPlan();
         create(patientID, planName, renewDate);
 
     }
@@ -75,8 +69,7 @@ public class PatientPlan {
         return true;
     }
 
-    private boolean deletePatientPlan(int patientID){
-        this.patientID = patientID;
+    public boolean deletePatientPlan(){  
         conn = Database.getConnection();
         PreparedStatement stmt = null;
 
@@ -114,9 +107,6 @@ public class PatientPlan {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-//            if (!rs.first()){
-//                return false;
-//            }
             if(rs.next()) {
                 this.patientID = rs.getInt("patientID");
                 this.planName = rs.getString("planName");
@@ -151,6 +141,7 @@ public class PatientPlan {
 
         return true;
     }
+    
     private boolean updateCheckUps(){
         PreparedStatement stmt = null;
         conn = Database.getConnection();
@@ -168,6 +159,7 @@ public class PatientPlan {
         return true;
 
     }
+    
     private boolean updateHygiene(){
         PreparedStatement stmt = null;
         conn = Database.getConnection();
@@ -210,7 +202,6 @@ public class PatientPlan {
 
         return lis;
     }
-
 
     // Basic get methods.
     public int getPatientID() {return patientID;}
