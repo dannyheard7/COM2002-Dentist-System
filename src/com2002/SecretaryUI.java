@@ -274,9 +274,9 @@ public class SecretaryUI extends javax.swing.JFrame {
 
                 public void actionPerformed(ActionEvent e)
                 {
-//                    AppointmentView appointmentDetails = new AppointmentView();
-//                    appointmentDetails.setVisible(true);
-//                    appointmentDetails.setAppointment(currentApt);
+                    AppointmentView appointmentDetails = new AppointmentView();
+                    appointmentDetails.setVisible(true);
+                    appointmentDetails.setAppointment(currentApt);
               }
             });
 
