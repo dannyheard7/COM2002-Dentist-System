@@ -297,6 +297,8 @@ public class BookAppointment extends javax.swing.JFrame {
         // TODO add your handling code here:
         setVisible(false);
         dispose();
+//        SecretaryUI secUI = new SecretaryUI();
+//        secUI.exUpUI();
     }//GEN-LAST:event_Btn_BookAppointment_OKActionPerformed
 
     private void Btn_BookAppointment_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_CancelActionPerformed
