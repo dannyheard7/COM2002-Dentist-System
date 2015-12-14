@@ -1,9 +1,7 @@
 package com2002.models;
 
 import com2002.db.Database;
-
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
