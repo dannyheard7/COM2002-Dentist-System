@@ -43,6 +43,7 @@ public class TableCreator {
                 "  hygieneCount INT NOT NULL," +
                 "  treatmentCount INT NOT NULL," +
                 "  PRIMARY KEY (name)" +
+                    "UNIQUE KEY ( name )"+
                 ")";
 
             String createPatientPlanTable = "CREATE TABLE IF NOT EXISTS PatientPlan " +

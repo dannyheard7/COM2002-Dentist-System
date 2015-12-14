@@ -137,7 +137,9 @@ public class RecordTreatment extends javax.swing.JFrame {
             } else if ((treatment.toLowerCase().equals("hygiene")) && remainHygiene >0) {
                 p.getPlan().updateHygiene();
                 cost = new BigDecimal(0);
-            } else if  (remainTreatments >0) {
+            } else if (treatment.toLowerCase().equals("cosmetic")) {
+                //do nothing as this doesnt cause treatments to go lower
+            }else if  (remainTreatments >0) {
                 p.getPlan().updateTreatments();
                 cost = new BigDecimal(0);
             }
