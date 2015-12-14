@@ -41,7 +41,7 @@ public class OutstandingCosts {
                 Treatment t = (Treatment) unpaidList.getSelectedValue();
 
                 if (t.pay()) {
-                    BigDecimal totalCost = new BigDecimal(totalCostField.getText());
+                    BigDecimal totalCost = new BigDecimal(totalCostField.getText().replace("£", ""));
                     listModel.removeElement(t);
                     totalCostField.setText("£" + totalCost.subtract(t.getCost()).toString());
                 }

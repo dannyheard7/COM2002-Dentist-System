@@ -191,24 +191,17 @@ public class BookAppointment extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void Btn_BookAppointment_FindPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_FindPatientActionPerformed
-        // TODO add your handling code here:
         LookUpPatient lookup = new LookUpPatient();
         lookup.setVisible(true);
-    }//GEN-LAST:event_Btn_BookAppointment_FindPatientActionPerformed
-
-    private void TxtFld_BookAppointment_DateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFld_BookAppointment_DateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TxtFld_BookAppointment_DateActionPerformed
-
-    private void TxtFld_BookAppointment_EndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFld_BookAppointment_EndActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TxtFld_BookAppointment_EndActionPerformed
+    }
 
     private boolean validate(String patientID, String date, String startTime, String endTime) {
+        String dateTimeRegex = "(([0-1][0-9])|(2[0-3])):([0-5]\\d)";
+        
         boolean patientIDTrue = patientID.matches("\\d*");
         boolean dateTrue = !date.isEmpty() && date.matches("([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/(\\d{4})");
-        boolean startTimeTrue = !startTime.isEmpty() && startTime.matches("(([0-1][0-9])|(2[0-3])):([0-5]\\d)");
-        boolean endTimeTrue = !endTime.isEmpty() && endTime.matches("(([0-1][0-9])|(2[0-3])):([0-5]\\d)");
+        boolean startTimeTrue = !startTime.isEmpty() && startTime.matches(dateTimeRegex);
+        boolean endTimeTrue = !endTime.isEmpty() && endTime.matches(dateTimeRegex);
         return patientIDTrue && dateTrue && startTimeTrue && endTimeTrue;
     }
     
@@ -225,15 +218,21 @@ public class BookAppointment extends javax.swing.JFrame {
                 Date startDate = fmt.parse(date + " " + startTime);
                 Date endDate = fmt.parse(date + " " + endTime);
                 Staff staff = Staff.getStaffWithPosition(partner).get(0);
+                Appointment a;
                 
                 if (patientID.isEmpty()) {
-                    new Appointment(startDate, endDate, staff);
+                    a = new Appointment(startDate, endDate, staff);
                 } else {
                     int patientId = Integer.parseInt(patientID);
-                    new Appointment(new Patient(patientId), startDate, endDate, staff);
+                    a = new Appointment(new Patient(patientId), startDate, endDate, staff);
                 }
                 
-                showSuccess();
+                if (a.getID() != 0) {
+                    showSuccess();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Appointments overlap!");
+                }
+                
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             } 
@@ -294,53 +293,15 @@ public class BookAppointment extends javax.swing.JFrame {
     }
 
     private void Btn_BookAppointment_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_OKActionPerformed
-        // TODO add your handling code here:
         setVisible(false);
         dispose();
-    }//GEN-LAST:event_Btn_BookAppointment_OKActionPerformed
-
-    private void Btn_BookAppointment_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_CancelActionPerformed
-        // TODO add your handling code here:
-        setVisible(false);
-        dispose();
-    }//GEN-LAST:event_Btn_BookAppointment_CancelActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BookAppointment().setVisible(true);
-            }
-        });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private void Btn_BookAppointment_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_BookAppointment_CancelActionPerformed
+        setVisible(false);
+        dispose();
+    }
+
     private javax.swing.JPanel BookAppointmentPanel;
     private javax.swing.JButton Btn_BookAppointment_Cancel;
     private javax.swing.JButton Btn_BookAppointment_FindPatient;
@@ -357,5 +318,4 @@ public class BookAppointment extends javax.swing.JFrame {
     private javax.swing.JTextField TxtFld_BookAppointment_Start;
     private javax.swing.JButton Btn_BookAppointment_OK;
     private javax.swing.JLabel Lbl_BookAppointment_Success;
-    // End of variables declaration//GEN-END:variables
 }

@@ -1,23 +1,8 @@
 package com2002;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author aca14ams
- */
 public class EmployeeSelection extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EmployeeSelection
-     */
     public EmployeeSelection() {
-
-
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -89,12 +74,9 @@ public class EmployeeSelection extends javax.swing.JFrame {
 
     private void Btn_EmployeeSelection_PartnerActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-
-
     }
 
     private void Btn_EmployeeSelection_SecretaryActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         SecretaryUI secui = new SecretaryUI();
         secui.setVisible(true);
         this.setVisible(false);
@@ -102,9 +84,6 @@ public class EmployeeSelection extends javax.swing.JFrame {
 
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -137,9 +116,7 @@ public class EmployeeSelection extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify
     private javax.swing.JButton Btn_EmployeeSelection_Partner;
     private javax.swing.JButton Btn_EmployeeSelection_Secretary;
     private javax.swing.JPanel EmployeeSelectionPanel;
-    // End of variables declaration
 }
