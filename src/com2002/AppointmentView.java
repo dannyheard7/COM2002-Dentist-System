@@ -8,6 +8,9 @@ package com2002;
 import com2002.models.Appointment;
 import com2002.models.Patient;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -272,7 +275,7 @@ public class AppointmentView extends javax.swing.JFrame {
         TxtFld_AppointmentView_End.setText(endTime);
         TxtFld_AppointmentView_Partner.setText(staff);
         if (end.getTime() - start.getTime() == 1200000){
-            if (staff.trim() == "Dentist"){
+            if (staff.equals("Dentist")){
                 TxtFld_AppointmentView_Type.setText("Check-Up");
             }
             else {
@@ -285,14 +288,15 @@ public class AppointmentView extends javax.swing.JFrame {
     }
 
     private void Btn_AppointmentView_OKActionPerformed(java.awt.event.ActionEvent evt) {
-        setVisible(false);
+        Window parent = SwingUtilities.getWindowAncestor(AppointmentViewPanel);
+        parent.dispatchEvent(new WindowEvent(parent , WindowEvent.WINDOW_CLOSING));
+
     }
 
     private void Btn_AppointmentView_CancelActionPerformed(java.awt.event.ActionEvent evt) {
         appointmentObj.cancel();
-        setVisible(false);
-//        SecretaryUI secUI = new SecretaryUI();
-//        secUI.exUpUI();
+        Window parent = SwingUtilities.getWindowAncestor(AppointmentViewPanel);
+        parent.dispatchEvent(new WindowEvent(parent , WindowEvent.WINDOW_CLOSING));
     }
 
     /**

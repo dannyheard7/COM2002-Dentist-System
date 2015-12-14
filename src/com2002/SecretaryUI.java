@@ -39,6 +39,7 @@ public class SecretaryUI extends javax.swing.JFrame {
     private String displayYear;
     private String dateActual;
     private final Date today;
+    private Date refdate;
 
     /**
      * Creates new form UI
@@ -100,6 +101,7 @@ public class SecretaryUI extends javax.swing.JFrame {
 
     public void updateDayButtons(){
 
+        refdate = calendar.getTime();
 
         recolourButtons(calendar.getTime());
 
@@ -196,6 +198,7 @@ public class SecretaryUI extends javax.swing.JFrame {
 
     public void updateTimetable(){
 
+        Date now = calendar.getTime();
         ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
 
         ArrayList<Appointment> slot1apts = new ArrayList<>();
@@ -240,43 +243,60 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         }
 
-
-        updateHourSlot(appointmentSlot1, slot1apts);
-        updateHourSlot(appointmentSlot2, slot2apts);
-        updateHourSlot(appointmentSlot3, slot3apts);
-        updateHourSlot(appointmentSlot4, slot4apts);
-        updateHourSlot(appointmentSlot5, slot5apts);
-        updateHourSlot(appointmentSlot6, slot6apts);
-        updateHourSlot(appointmentSlot7, slot7apts);
-        updateHourSlot(appointmentSlot8, slot8apts);
+        updateHourSlot(appointmentSlot1, slot1apts, now);
+        updateHourSlot(appointmentSlot2, slot2apts, now);
+        updateHourSlot(appointmentSlot3, slot3apts, now);
+        updateHourSlot(appointmentSlot4, slot4apts, now);
+        updateHourSlot(appointmentSlot5, slot5apts, now);
+        updateHourSlot(appointmentSlot6, slot6apts, now);
+        updateHourSlot(appointmentSlot7, slot7apts, now);
+        updateHourSlot(appointmentSlot8, slot8apts, now);
 
 
     }
 
 
-    public void updateHourSlot(JPanel slot, ArrayList<Appointment> apts){
+    public void updateHourSlot(JPanel slot, ArrayList<Appointment> apts, Date now){
 
         slot.removeAll();
 
         for (int i=0; i<apts.size(); i++){
             DateFormat time = new SimpleDateFormat("HH:mm");
             Appointment currentApt = apts.get(i);
-            Patient aptPatient = currentApt.getPatient();
-            String forename = aptPatient.getForename();
-            String surname = aptPatient.getSurname();
+            Patient aptPatient;
+            String forename;
+            String surname;
+            String practitioner = currentApt.getStaff().getPosition();
+            if (currentApt.getPatient()==null){
+                forename = "Time";
+                surname = "Off";
+            }
+            else {
+                aptPatient = currentApt.getPatient();
+                forename = aptPatient.getForename();
+                surname = aptPatient.getSurname();
+            }
             Date startTime = currentApt.getStartTime();
             Date endTime = currentApt.getEndTime();
             String st = time.format(startTime);
             String et = time.format(endTime);
-            JButton appointment = new JButton(st + "-" + et + " " + forename + " " + surname);
+            JButton appointment = new JButton("<html>" + st + "-" + et + " " + "<br />" + forename + " " + surname + "<br />" + practitioner + "</html>");
 
             appointment.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e)
                 {
                     AppointmentView appointmentDetails = new AppointmentView();
-                    appointmentDetails.setVisible(true);
                     appointmentDetails.setAppointment(currentApt);
+                    appointmentDetails.setVisible(true);
+                    appointmentDetails.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                            updateDayButtons();
+                            calendar.setTime(now);
+                            updateTimetable();
+                        }
+                    });
                 }
             });
 
@@ -291,9 +311,7 @@ public class SecretaryUI extends javax.swing.JFrame {
 
     }
 
-    public void updateUI(){
-        updateNav();
-        updateDays();
+    public void exUpUI(){
         updateDayButtons();
         updateTimetable();
     }
@@ -1024,8 +1042,17 @@ public class SecretaryUI extends javax.swing.JFrame {
     private void bookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
 
+
         BookAppointment book = new BookAppointment();
         book.setVisible(true);
+        book.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                updateDayButtons();
+                calendar.setTime(refdate);
+                updateTimetable();
+            }
+        });
 
         // Open the book appointment GUI, do NOT close the current GUI
     }
