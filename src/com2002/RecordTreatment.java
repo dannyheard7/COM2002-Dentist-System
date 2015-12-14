@@ -1,6 +1,7 @@
 package com2002;
 
 import com2002.models.Appointment;
+import com2002.models.Patient;
 import com2002.models.Treatment;
 
 import java.math.BigDecimal;
@@ -119,19 +120,36 @@ public class RecordTreatment extends javax.swing.JFrame {
     private void Btn_RecordTreatment_RecordActionPerformed(java.awt.event.ActionEvent evt) {
         String treatment = TxtFld_RecordTreatment_Treatment.getText();
         String costStr = TxtFld_RecordTreatment_Cost.getText();
+
         
         if (costStr.isEmpty()) {
             costStr = "0.0";
-        }     
-        
+        }
         if(validate(treatment, costStr)) {
             BigDecimal cost = new BigDecimal(costStr);
-            
+            Patient p = appObj.getPatient();
+            int remainCheckups = p.getPlan().getRemainCheckups();
+            int remainTreatments = p.getPlan().getRemainTreatments();
+            int remainHygiene = p.getPlan().getRemainHygiene();
+            if ((treatment.toLowerCase().equals("check-up") || treatment.toLowerCase().equals("checkup")) && remainCheckups > 0) {
+                p.getPlan().updateCheckUps();
+                cost = new BigDecimal(0);
+            } else if ((treatment.toLowerCase().equals("hygiene")) && remainHygiene >0) {
+                p.getPlan().updateHygiene();
+                cost = new BigDecimal(0);
+            } else if  (remainTreatments >0) {
+                p.getPlan().updateTreatments();
+                cost = new BigDecimal(0);
+            }
+
             new Treatment(appObj,treatment,cost);
             appObj.updatePatientSeen(true);
+
         } else {
             JOptionPane.showMessageDialog(this, "Inputs aren't valid");
         }
+
+
         
         setVisible(false);
         dispose();

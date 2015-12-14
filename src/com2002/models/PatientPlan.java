@@ -124,7 +124,7 @@ public class PatientPlan {
         return true;
     }
 
-    private boolean updateTreatments(){
+    public boolean updateTreatments(){
         PreparedStatement stmt = null;
         conn = Database.getConnection();
         try{
@@ -141,7 +141,7 @@ public class PatientPlan {
         return true;
     }
     
-    private boolean updateCheckUps(){
+    public boolean updateCheckUps(){
         PreparedStatement stmt = null;
         conn = Database.getConnection();
         try{
@@ -159,7 +159,7 @@ public class PatientPlan {
 
     }
     
-    private boolean updateHygiene(){
+    public boolean updateHygiene(){
         PreparedStatement stmt = null;
         conn = Database.getConnection();
         try{
@@ -208,5 +208,5 @@ public class PatientPlan {
     public int getRemainHygiene(){return remainHygiene;}
     public int getRemainTreatments() {return remainTreatments;}
     public Date renewDate() {return renewDate;}
-    
+
 }
