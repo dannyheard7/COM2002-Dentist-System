@@ -163,7 +163,7 @@ public class TableCreator {
         Appointment app = new Appointment(p,twoDaysStart,twoDaysEnd,new Staff("Dentist"));
         new Staff("Hygienist");
         app.addTreatment("Tooth Extraction", new BigDecimal(150.10));
-        new Plan("NHS Free", new BigDecimal(0.0), 3, 2, 1);
+        new Plan("NHS Free", new BigDecimal(0.0), 0, 0, 0);
         new Plan("For Ballers", new BigDecimal(0.0), 3, 2, 1);
 
         new PatientPlan(p.getPatientID(),"NHS Free", plusYear);
