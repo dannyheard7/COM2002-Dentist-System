@@ -29,7 +29,7 @@ import javax.swing.JPanel;
  *
  * @author Louis
  */
-public class SecretaryUI extends javax.swing.JFrame {
+public class PartnerUI extends javax.swing.JFrame {
 
 
     private Calendar calendar;
@@ -40,11 +40,20 @@ public class SecretaryUI extends javax.swing.JFrame {
     private String dateActual;
     private final Date today;
     private Date refdate;
+    private String currentPartner;
 
     /**
      * Creates new form UI
      */
-    public SecretaryUI() {
+    public PartnerUI(int number) {
+
+        if (number == 0){
+            currentPartner = "Dentist";
+        }
+        else{
+            currentPartner = "Hygenist";
+        }
+
 
         calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         Date now = new Date();
@@ -55,11 +64,10 @@ public class SecretaryUI extends javax.swing.JFrame {
         dateActual = dateAct.format(calendar.getTime());
 
 
+
         initComponents();
         this.setLocationRelativeTo(null);
-
-        uiType.setText("Viewing for Secretary");
-
+        uiType.setText("Viewing for " + currentPartner);
         updateNav();
         updateDays();
         updateDayButtons();
@@ -109,13 +117,22 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         ArrayList<Integer> apts = new ArrayList<>();
 
+
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
 
 
             ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
+            ArrayList<Appointment> specificApts = new ArrayList<>();
 
-            apts.add(dayApts.size());
+            System.out.println(currentPartner);
+            for (int j=0; j<dayApts.size(); j++){
+                if (dayApts.get(j).getStaff().getPosition().equals(currentPartner)){
+                    specificApts.add(dayApts.get(j));
+                }
+            }
+
+            apts.add(specificApts.size());
 
         }
 
@@ -212,12 +229,24 @@ public class SecretaryUI extends javax.swing.JFrame {
         ArrayList<Appointment> slot7apts = new ArrayList<>();
         ArrayList<Appointment> slot8apts = new ArrayList<>();
 
+        ArrayList<Appointment> specificApts = new ArrayList<>();
         for (int i=0; i<dayApts.size(); i++){
+            if (dayApts.get(i).getStaff().getPosition().equals(currentPartner)){
+                specificApts.add(dayApts.get(i));
+            }
+        }
+
+
+        for (int i=0; i<specificApts.size(); i++){
+
+
             DateFormat time = new SimpleDateFormat("HH");
-            Appointment singleApt = dayApts.get(i);
+            Appointment singleApt = specificApts.get(i);
             Date startTime = singleApt.getStartTime();
             Date endTime = singleApt.getEndTime();
             String st = time.format(startTime);
+
+
             if (st.equals("09")){
                 slot1apts.add(singleApt);
             }
@@ -287,17 +316,9 @@ public class SecretaryUI extends javax.swing.JFrame {
 
                 public void actionPerformed(ActionEvent e)
                 {
-                    AppointmentView appointmentDetails = new AppointmentView();
-                    appointmentDetails.setAppointment(currentApt);
-                    appointmentDetails.setVisible(true);
-                    appointmentDetails.addWindowListener(new java.awt.event.WindowAdapter() {
-                        @Override
-                        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                            updateDayButtons();
-                            calendar.setTime(now);
-                            updateTimetable();
-                        }
-                    });
+                    RecordVisit recvis = new RecordVisit();
+                    recvis.setRecordVisit(currentApt);
+                    recvis.setVisible(true);
                 }
             });
 
@@ -311,6 +332,11 @@ public class SecretaryUI extends javax.swing.JFrame {
 
 
     }
+
+
+
+
+
 
     /**
      * This method is called from within the constructor to initialise the form.
@@ -364,12 +390,9 @@ public class SecretaryUI extends javax.swing.JFrame {
         timeLBL8 = new javax.swing.JLabel();
         appointmentSlot8 = new javax.swing.JPanel();
         controlMaster = new javax.swing.JPanel();
-        lookupPatient = new javax.swing.JButton();
-        bookAppointment = new javax.swing.JButton();
         searchDate = new javax.swing.JTextField();
         goToButton = new javax.swing.JButton();
         resetDate = new javax.swing.JButton();
-        registerPatient = new javax.swing.JButton();
         uiType = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -491,8 +514,8 @@ public class SecretaryUI extends javax.swing.JFrame {
                         .addGroup(weekWrapperLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(weekWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(date1L, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(day1B, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+                                        .addComponent(day1B, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                                        .addComponent(date1L, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(weekWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(date2L, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -843,22 +866,6 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         controlMaster.setBackground(new java.awt.Color(255, 255, 255));
 
-        lookupPatient.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lookupPatient.setText("Lookup Patient");
-        lookupPatient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lookupPatientActionPerformed(evt);
-            }
-        });
-
-        bookAppointment.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        bookAppointment.setText("Book Appointment");
-        bookAppointment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookAppointmentActionPerformed(evt);
-            }
-        });
-
         searchDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         searchDate.setText("dd/mm/yyyy");
         searchDate.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -882,14 +889,6 @@ public class SecretaryUI extends javax.swing.JFrame {
             }
         });
 
-        registerPatient.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        registerPatient.setText("Register Patient");
-        registerPatient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registerPatientActionPerformed(evt);
-            }
-        });
-
         uiType.setText("jLabel1");
 
         javax.swing.GroupLayout controlMasterLayout = new javax.swing.GroupLayout(controlMaster);
@@ -899,21 +898,13 @@ public class SecretaryUI extends javax.swing.JFrame {
                         .addGroup(controlMasterLayout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addGroup(controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(lookupPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(bookAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(registerPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlMasterLayout.createSequentialGroup()
-                                                        .addGroup(controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addGroup(controlMasterLayout.createSequentialGroup()
-                                                                        .addComponent(searchDate)
-                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                                                .addGroup(controlMasterLayout.createSequentialGroup()
-                                                                        .addComponent(resetDate, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addGap(129, 129, 129)))
-                                                        .addComponent(goToButton)))
-                                        .addComponent(uiType, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(resetDate, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(controlMasterLayout.createSequentialGroup()
+                                                .addGroup(controlMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(uiType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(searchDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(goToButton)))
                                 .addContainerGap(29, Short.MAX_VALUE))
         );
         controlMasterLayout.setVerticalGroup(
@@ -927,13 +918,7 @@ public class SecretaryUI extends javax.swing.JFrame {
                                         .addComponent(searchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(resetDate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(90, 90, 90)
-                                .addComponent(bookAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lookupPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addComponent(registerPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(414, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1005,7 +990,7 @@ public class SecretaryUI extends javax.swing.JFrame {
             recolourButtons(goToDate);
 
         } catch (ParseException ex) {
-            Logger.getLogger(SecretaryUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartnerUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
@@ -1029,32 +1014,6 @@ public class SecretaryUI extends javax.swing.JFrame {
 
         // Reset the date to today
 
-    }
-
-    private void lookupPatientActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-
-        // Open the lookup patient GUI, do NOT close the current GUI
-        LookUpPatient lookup = new LookUpPatient();
-        lookup.setVisible(true);
-    }
-
-    private void bookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-
-
-        BookAppointment book = new BookAppointment();
-        book.setVisible(true);
-        book.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                updateDayButtons();
-                calendar.setTime(refdate);
-                updateTimetable();
-            }
-        });
-
-        // Open the book appointment GUI, do NOT close the current GUI
     }
 
     private void searchDateMouseClicked(java.awt.event.MouseEvent evt) {
@@ -1101,12 +1060,6 @@ public class SecretaryUI extends javax.swing.JFrame {
         recolourButtons(calendar.getTime());
     }
 
-    private void registerPatientActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        RegisterPatient register = new RegisterPatient();
-        register.setVisible(true);
-    }
-
 
 
     /**
@@ -1126,23 +1079,16 @@ public class SecretaryUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SecretaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SecretaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SecretaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SecretaryUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SecretaryUI().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify
@@ -1154,7 +1100,6 @@ public class SecretaryUI extends javax.swing.JFrame {
     private javax.swing.JPanel appointmentSlot6;
     private javax.swing.JPanel appointmentSlot7;
     private javax.swing.JPanel appointmentSlot8;
-    private javax.swing.JButton bookAppointment;
     private javax.swing.JPanel calendarMaster;
     private javax.swing.JPanel controlMaster;
     private javax.swing.JLabel date1L;
@@ -1176,11 +1121,9 @@ public class SecretaryUI extends javax.swing.JFrame {
     private javax.swing.JPanel hourSlot6;
     private javax.swing.JPanel hourSlot7;
     private javax.swing.JPanel hourSlot8;
-    private javax.swing.JButton lookupPatient;
     private javax.swing.JPanel navWrapper;
     private javax.swing.JButton nextWeek;
     private javax.swing.JButton prevWeek;
-    private javax.swing.JButton registerPatient;
     private javax.swing.JButton resetDate;
     private javax.swing.JTextField searchDate;
     private javax.swing.JLabel timeLBL1;

@@ -33,7 +33,9 @@ public class EmployeeSelection extends javax.swing.JFrame {
 
         EmployeeSelectionPanel = new javax.swing.JPanel();
         Btn_EmployeeSelection_Secretary = new javax.swing.JButton();
-        Btn_EmployeeSelection_Partner = new javax.swing.JButton();
+        Btn_EmployeeSelection_Dentist = new javax.swing.JButton();
+        Btn_EmployeeSelection_Hygenist = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Employee Selection");
@@ -45,51 +47,79 @@ public class EmployeeSelection extends javax.swing.JFrame {
             }
         });
 
-        Btn_EmployeeSelection_Partner.setText("Partner");
-        Btn_EmployeeSelection_Partner.addActionListener(new java.awt.event.ActionListener() {
+        Btn_EmployeeSelection_Dentist.setText("Dentist");
+        Btn_EmployeeSelection_Dentist.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Btn_EmployeeSelection_PartnerActionPerformed(evt);
+                Btn_EmployeeSelection_DentistActionPerformed(evt);
             }
         });
+
+        Btn_EmployeeSelection_Hygenist.setText("Hygenist");
+        Btn_EmployeeSelection_Hygenist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_EmployeeSelection_HygenistActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Choose Employee Type");
 
         javax.swing.GroupLayout EmployeeSelectionPanelLayout = new javax.swing.GroupLayout(EmployeeSelectionPanel);
         EmployeeSelectionPanel.setLayout(EmployeeSelectionPanelLayout);
         EmployeeSelectionPanelLayout.setHorizontalGroup(
                 EmployeeSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(EmployeeSelectionPanelLayout.createSequentialGroup()
-                                .addGap(29, 29, 29)
+                                .addContainerGap()
                                 .addComponent(Btn_EmployeeSelection_Secretary, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                                .addComponent(Btn_EmployeeSelection_Partner, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31))
+                                .addGap(31, 31, 31)
+                                .addComponent(Btn_EmployeeSelection_Dentist, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                .addComponent(Btn_EmployeeSelection_Hygenist, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EmployeeSelectionPanelLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(106, 106, 106))
         );
         EmployeeSelectionPanelLayout.setVerticalGroup(
                 EmployeeSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(EmployeeSelectionPanelLayout.createSequentialGroup()
-                                .addGap(76, 76, 76)
-                                .addGroup(EmployeeSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addContainerGap()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                                .addGroup(EmployeeSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(Btn_EmployeeSelection_Dentist, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(Btn_EmployeeSelection_Secretary, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(Btn_EmployeeSelection_Partner, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(81, Short.MAX_VALUE))
+                                        .addComponent(Btn_EmployeeSelection_Hygenist, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(EmployeeSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(EmployeeSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(EmployeeSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(EmployeeSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>
 
-    private void Btn_EmployeeSelection_PartnerActionPerformed(java.awt.event.ActionEvent evt) {
+    private void Btn_EmployeeSelection_DentistActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-
+        PartnerUI partui = new PartnerUI(0);
+        partui.setVisible(true);
+        this.setVisible(false);
+        this.dispose();
 
     }
 
@@ -100,6 +130,14 @@ public class EmployeeSelection extends javax.swing.JFrame {
         this.setVisible(false);
         this.dispose();
 
+    }
+
+    private void Btn_EmployeeSelection_HygenistActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        PartnerUI partui = new PartnerUI(1);
+        partui.setVisible(true);
+        this.setVisible(false);
+        this.dispose();
     }
 
     /**
@@ -138,8 +176,10 @@ public class EmployeeSelection extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify
-    private javax.swing.JButton Btn_EmployeeSelection_Partner;
+    private javax.swing.JButton Btn_EmployeeSelection_Dentist;
+    private javax.swing.JButton Btn_EmployeeSelection_Hygenist;
     private javax.swing.JButton Btn_EmployeeSelection_Secretary;
     private javax.swing.JPanel EmployeeSelectionPanel;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration
 }
