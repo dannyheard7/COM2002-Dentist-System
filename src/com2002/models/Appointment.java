@@ -19,8 +19,7 @@ public class Appointment {
     public Appointment(int id) {
         load(id);
     }
-
-    
+   
     public Appointment(Patient patient, Date startTime, Date endTime, Staff staff) {
         create(patient, startTime, endTime, staff);
     }
@@ -35,6 +34,10 @@ public class Appointment {
     private boolean create(Patient patient, Date startTime, Date endTime, Staff staff){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
+        
+        if (checkOverlap(patient, startTime, endTime, staff)) {
+            return false;
+        }    
         
         try {
             stmt = conn.prepareStatement("INSERT INTO Appointment (startTime, "
@@ -75,6 +78,10 @@ public class Appointment {
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
 
+        if (checkOverlap(new Patient(0), startTime, endTime, staff)) {
+            return false;
+        }
+        
         try {
             stmt = conn.prepareStatement("INSERT INTO Appointment (startTime, endTime, staffID) VALUES (?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
@@ -102,6 +109,39 @@ public class Appointment {
         this.endTime = endTime;
         
         return true;
+    }
+    
+    /**
+     * Checks if a given start and end datetime overlaps any other appointment for a staff member
+    */
+    public boolean checkOverlap(Patient patient, Date startTime, Date endTime, Staff staff) {
+        
+        
+        for (Appointment a : Appointment.getAppointmentsOnDate(startTime)) {
+            System.out.println(a.getStartTime());
+            System.out.println(a.getEndTime());
+            
+            System.out.println(startTime);
+            System.out.println(endTime);
+            
+            boolean overlaps = false;
+            
+            if (startTime.after(a.getStartTime()) && startTime.before(a.getEndTime())) {
+                overlaps = true;
+                
+            } else if (endTime.after(a.getStartTime()) && endTime.before(a.getEndTime())) {
+                overlaps = true;
+            } 
+            
+            if (overlaps == true && a.getPatient().getPatientID() == getID()) {
+                return true;
+            }
+            if (overlaps == true && a.getStaff().getId() == staff.getId()) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /** 
@@ -324,7 +364,7 @@ public class Appointment {
         ArrayList<Appointment> list = new ArrayList<>();
 
         try {
-            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startDate) = ? AND partnerID = ?");
+            stmt = conn.prepareStatement("SELECT appointmentID FROM Appointment WHERE DATE(startTime) = ? AND staffID = ?");
 
             stmt.setDate(1, new java.sql.Date(date.getTime()));
             stmt.setInt(2, staff.getId());
