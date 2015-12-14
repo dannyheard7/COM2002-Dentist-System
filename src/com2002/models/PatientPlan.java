@@ -30,7 +30,6 @@ public class PatientPlan {
 
     }
 
-
     /**
      * Creates a new patient plan record in the database
      */
@@ -209,7 +208,5 @@ public class PatientPlan {
     public int getRemainHygiene(){return remainHygiene;}
     public int getRemainTreatments() {return remainTreatments;}
     public Date renewDate() {return renewDate;}
-
-
-
+    
 }

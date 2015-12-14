@@ -120,7 +120,7 @@ public class Patient {
 
         return true;
     }
-    
+
     // Basic get methods.
     public int getPatientID() {
         return patientID;
