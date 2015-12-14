@@ -336,10 +336,12 @@ public class Appointment {
     public boolean updatePatientSeen(Boolean b){
         Connection conn = Database.getConnection();
         PreparedStatement stmt = null;
-        int patientSeen = b ? 1 : 0;
+
         try {
-            stmt = conn.prepareStatement("UPDATE Appointment SET patientSeen="+(patientSeen)+
-                    "WHERE appointmentID="+getID());
+            stmt = conn.prepareStatement("UPDATE Appointment SET patientSeen = ? "
+                    + "WHERE appointmentID="+getID());
+            stmt.setBoolean(1, b);
+            stmt.setInt(2, id);
 
             stmt.executeUpdate();
         } catch(SQLException e) {

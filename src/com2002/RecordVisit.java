@@ -1,9 +1,4 @@
 package com2002;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import com2002.models.Appointment;
 import com2002.models.Patient;
@@ -11,10 +6,6 @@ import com2002.models.Patient;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author Abigail
- */
 public class RecordVisit extends javax.swing.JFrame {
 
     public RecordVisit() {

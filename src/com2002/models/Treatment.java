@@ -59,7 +59,7 @@ public class Treatment {
         PreparedStatement stmt = null;
         Connection conn = Database.getConnection();
         try {
-            stmt = conn.prepareStatement("SELECT * FROM Treatment WHERE name = ?"
+            stmt = conn.prepareStatement("SELECT * FROM Treatment WHERE name = ? "
                     + "AND appointmentID = ? LIMIT 1");
 
             stmt.setString(1, name);

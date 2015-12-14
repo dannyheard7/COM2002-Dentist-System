@@ -127,7 +127,7 @@ public class RecordTreatment extends javax.swing.JFrame {
         if(validate(treatment, costStr)) {
             BigDecimal cost = new BigDecimal(costStr);
             
-            Treatment treatObj = new Treatment(appObj,treatment,cost);
+            new Treatment(appObj,treatment,cost);
             appObj.updatePatientSeen(true);
         } else {
             JOptionPane.showMessageDialog(this, "Inputs aren't valid");
