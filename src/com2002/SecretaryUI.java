@@ -65,6 +65,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateDayButtons();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
+        calendar.setTime(today);
         recolourButtons(calendar.getTime());
     }
 
@@ -1024,6 +1025,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateDayButtons();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
+        calendar.setTime(today);
         recolourButtons(calendar.getTime());
 
 
