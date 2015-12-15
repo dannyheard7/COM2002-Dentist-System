@@ -177,7 +177,6 @@ public class SecretaryUI extends javax.swing.JFrame {
         calendar.setTime(currentDate);
         int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
-        System.out.println(dayInWeek);
         switch (dayInWeek-1) {
             case 1:
                 day1B.setBackground(Color.GRAY);
