@@ -33,8 +33,7 @@ public class PatientPlan {
     /**
      * Creates a new patient plan record in the database
      */
-    private boolean create(int patientID, String planName,
-                          Date renewDate){
+    private boolean create(int patientID, String planName, Date renewDate){
         Plan p = new Plan(planName);
         this.patientID = patientID;
         this.planName = planName;
@@ -43,7 +42,8 @@ public class PatientPlan {
         this.remainHygiene = p.getHygieneCount();
         this.remainTreatments = p.getTreatments();
         conn = Database.getConnection();
-        PreparedStatement stmt = null;
+        PreparedStatement stmt = null;    
+       
 
         try {
             stmt = conn.prepareStatement("INSERT INTO PatientPlan (patientID, planName, "

@@ -126,17 +126,21 @@ public class Appointment {
             
             if (startTime.after(a.getStartTime()) && startTime.before(a.getEndTime())) {
                 overlaps = true;
-                
             } else if (endTime.after(a.getStartTime()) && endTime.before(a.getEndTime())) {
+                overlaps = true;
+            } else if (a.getStartTime().after(startTime) && a.getStartTime().before(endTime)) {
+                overlaps = true;
+                
+            } else if (a.getEndTime().after(startTime) && a.getEndTime().before(endTime)) {
                 overlaps = true;
             } 
             
-            if (overlaps == true && a.getPatient().getPatientID() == getID()) {
+            if (overlaps && a.getStaff().getId() == staff.getId()) {
+                return true;
+            } else if (overlaps && a.getPatient().getPatientID() == getID()) {
                 return true;
             }
-            if (overlaps == true && a.getStaff().getId() == staff.getId()) {
-                return true;
-            }
+            
         }
         
         return false;
