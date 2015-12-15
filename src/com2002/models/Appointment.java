@@ -433,7 +433,14 @@ public class Appointment {
         }
 
         return list;
-
+    }
+    
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        
+        return dateFormat.format(startTime) + " " + timeFormat.format(startTime) +
+                " - " + timeFormat.format(endTime) + " " + getStaff().getPosition();
     }
 
 

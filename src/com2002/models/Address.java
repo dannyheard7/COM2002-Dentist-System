@@ -32,6 +32,9 @@ public class Address {
 
         try {
             stmt = conn.prepareStatement("SELECT * FROM Address WHERE houseNo = ? AND LOWER(postcode) = ? LIMIT 1");
+            
+            postcode = postcode.replace(" ", "");
+            
             stmt.setInt(1, houseNo);
             stmt.setString(2, postcode.toLowerCase());
             ResultSet rs = stmt.executeQuery();

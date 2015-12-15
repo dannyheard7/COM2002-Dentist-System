@@ -174,6 +174,7 @@ public class LookUpPatient extends javax.swing.JFrame {
                 Date dob = fmt.parse(dobString);
                 ArrayList<Patient> patients = Patient.findPatients(forename,surname,dob);
                 int houseNo = Integer.parseInt(houseNoStr);
+                postcode = postcode.replace(" ", "");
                 for (Patient patient : patients) {
                     if (postcode.equals(patient.getAddress().getPostcode())&&(houseNo==(patient.getAddress().getHouseNo()))) {
                         PatientView view = new PatientView();
