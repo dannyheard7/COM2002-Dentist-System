@@ -19,25 +19,21 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+
+
+// Most of this is identical to the Secretary UI. That has been commented in detail, this will comment the differences
 public class PartnerUI extends javax.swing.JFrame {
 
-    private Calendar calendar;
-    private String weekStart;
-    private String weekEnd;
-    private String displayMonth;
-    private String displayYear;
-    private String dateActual;
-    private final Date today;
-    private Date refdate;
-    private String currentPartner;
-
     public PartnerUI(int number) {
+
+        // Depending on a constructor variable, define the type of UI, Dentist or Hygienist
         if (number == 0){
             currentPartner = "Dentist";
         }
         else{
             currentPartner = "Hygienist";
         }
+
 
         calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         Date now = new Date();
@@ -61,15 +57,13 @@ public class PartnerUI extends javax.swing.JFrame {
 
     public void updateNav(){
         DateFormat dFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
-
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         displayMonth = dFormat.format(calendar.getTime());
-        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
 
+        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
         weekStart = dFormat2.format(calendar.getTime());
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         weekEnd = dFormat2.format(calendar.getTime());
-
         weekDates.setText(displayMonth + "  Week: " + weekStart + " - " + weekEnd);
 
         DateFormat yFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
@@ -93,27 +87,24 @@ public class PartnerUI extends javax.swing.JFrame {
     }
 
     public void updateDayButtons(){
+
         refdate = calendar.getTime();
         recolourButtons(calendar.getTime());
-        ArrayList<Integer> apts = new ArrayList<>();
 
+        ArrayList<Integer> apts = new ArrayList<>();
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
 
 
             ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
             ArrayList<Appointment> specificApts = new ArrayList<>();
-
             for (int j=0; j<dayApts.size(); j++){
                 if (dayApts.get(j).getStaff().getPosition().equals(currentPartner)){
                     specificApts.add(dayApts.get(j));
                 }
             }
-
             apts.add(specificApts.size());
-
         }
-
         day1B.setText(String.valueOf(apts.get(0)));
         day2B.setText(String.valueOf(apts.get(1)));
         day3B.setText(String.valueOf(apts.get(2)));
@@ -127,11 +118,9 @@ public class PartnerUI extends javax.swing.JFrame {
         day3B.setBackground(Color.LIGHT_GRAY);
         day4B.setBackground(Color.LIGHT_GRAY);
         day5B.setBackground(Color.LIGHT_GRAY);
-
         int trueDay = 0;
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
-
             DateFormat tDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String tempDate = tDate.format(calendar.getTime());
             if(tempDate.equals(dateActual)){
@@ -158,9 +147,9 @@ public class PartnerUI extends javax.swing.JFrame {
             default:
                 break;
         }
+
         calendar.setTime(currentDate);
         int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
         switch (dayInWeek-1) {
             case 1:
                 day1B.setBackground(Color.GRAY);
@@ -181,6 +170,7 @@ public class PartnerUI extends javax.swing.JFrame {
     }
 
     public void updateTimetable(){
+
         Date now = calendar.getTime();
         ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
 
@@ -193,6 +183,7 @@ public class PartnerUI extends javax.swing.JFrame {
         ArrayList<Appointment> slot7apts = new ArrayList<>();
         ArrayList<Appointment> slot8apts = new ArrayList<>();
 
+        // Get Specific Appointments for either Partner
         ArrayList<Appointment> specificApts = new ArrayList<>();
         for (int i=0; i<dayApts.size(); i++){
             if (dayApts.get(i).getStaff().getPosition().equals(currentPartner)){
@@ -206,7 +197,6 @@ public class PartnerUI extends javax.swing.JFrame {
             Date startTime = singleApt.getStartTime();
             Date endTime = singleApt.getEndTime();
             String st = time.format(startTime);
-
 
             if (st.equals("09")){
                 slot1apts.add(singleApt);
@@ -232,9 +222,7 @@ public class PartnerUI extends javax.swing.JFrame {
             else if (st.equals("16")){
                 slot8apts.add(singleApt);
             }
-
         }
-
         updateHourSlot(appointmentSlot1, slot1apts, now);
         updateHourSlot(appointmentSlot2, slot2apts, now);
         updateHourSlot(appointmentSlot3, slot3apts, now);
@@ -244,6 +232,7 @@ public class PartnerUI extends javax.swing.JFrame {
         updateHourSlot(appointmentSlot7, slot7apts, now);
         updateHourSlot(appointmentSlot8, slot8apts, now);
     }
+
 
     public void updateHourSlot(JPanel slot, ArrayList<Appointment> apts, Date now){
         slot.removeAll();
@@ -268,9 +257,7 @@ public class PartnerUI extends javax.swing.JFrame {
             String st = time.format(startTime);
             String et = time.format(endTime);
             JButton appointment = new JButton("<html>" + st + " - " + et + "<br />" + forename + " " + surname + "<br />" + practitioner + "</html>");
-
             appointment.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent e)
                 {
                     RecordVisit recvis = new RecordVisit();
@@ -278,15 +265,14 @@ public class PartnerUI extends javax.swing.JFrame {
                     recvis.setVisible(true);
                 }
             });
-
             slot.add(appointment);
         }
-
         slot.invalidate();
         slot.revalidate();
         slot.repaint();
     }
 
+    // Generated Code
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
@@ -892,7 +878,6 @@ public class PartnerUI extends javax.swing.JFrame {
     private void nextWeekActionPerformed(java.awt.event.ActionEvent evt) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, +7);
-
         updateNav();
         updateDays();
         updateDayButtons();
@@ -904,7 +889,6 @@ public class PartnerUI extends javax.swing.JFrame {
     private void prevWeekActionPerformed(java.awt.event.ActionEvent evt) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, -7);
-
         updateNav();
         updateDays();
         updateDayButtons();
@@ -918,9 +902,7 @@ public class PartnerUI extends javax.swing.JFrame {
         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         try {
             Date goToDate = fmt.parse(goToString);
-
             calendar.setTime(goToDate);
-
             updateNav();
             updateDays();
             updateDayButtons();
@@ -934,12 +916,9 @@ public class PartnerUI extends javax.swing.JFrame {
     }
 
     private void resetDateActionPerformed(java.awt.event.ActionEvent evt) {
-        // Reset the date to today
         calendar.setTime(today);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
         searchDate.setText("dd/mm/yyyy");
-
         updateNav();
         updateDays();
         updateDayButtons();
@@ -983,6 +962,8 @@ public class PartnerUI extends javax.swing.JFrame {
         recolourButtons(calendar.getTime());
     }
 
+
+    // Variables declaration
     private javax.swing.JPanel appointmentSlot1;
     private javax.swing.JPanel appointmentSlot2;
     private javax.swing.JPanel appointmentSlot3;
@@ -1030,4 +1011,15 @@ public class PartnerUI extends javax.swing.JFrame {
     private javax.swing.JLabel weekDates;
     private javax.swing.JPanel weekWrapper;
     private javax.swing.JLabel yearDate;
+    private Calendar calendar;
+    private String weekStart;
+    private String weekEnd;
+    private String displayMonth;
+    private String displayYear;
+    private String dateActual;
+    private final Date today;
+    private Date refdate;
+    private String currentPartner;
+
+    // End of variables declaration
 }

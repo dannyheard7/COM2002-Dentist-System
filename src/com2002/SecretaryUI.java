@@ -21,31 +21,24 @@ import javax.swing.JPanel;
 
 public class SecretaryUI extends javax.swing.JFrame {
 
-    private Calendar calendar;
-    private String weekStart;
-    private String weekEnd;
-    private String displayMonth;
-    private String displayYear;
-    private String dateActual;
-    private final Date today;
-    private Date refdate;
-
     public SecretaryUI() {
 
+        // Initialise the calendar
         calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         Date now = new Date();
         calendar.setTime(now);
-
         DateFormat dateAct = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         today = calendar.getTime();
         dateActual = dateAct.format(calendar.getTime());
 
-
+        // Initialise the UI components
         initComponents();
         this.setLocationRelativeTo(null);
 
+        // Set UI type text
         uiType.setText("Viewing for Secretary");
 
+        // Update individual UI elements, pinging the SQL database
         updateNav();
         updateDays();
         updateDayButtons();
@@ -55,25 +48,25 @@ public class SecretaryUI extends javax.swing.JFrame {
         recolourButtons(calendar.getTime());
     }
 
+    // Function to update the Nav bar, adjusting the date to the correct week etc.
     public void updateNav(){
+        // Format and display the date values in the Nav bar
         DateFormat dFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
-
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         displayMonth = dFormat.format(calendar.getTime());
-        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
 
+        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
         weekStart = dFormat2.format(calendar.getTime());
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         weekEnd = dFormat2.format(calendar.getTime());
-
         weekDates.setText(displayMonth + "  Week: " + weekStart + " - " + weekEnd);
 
         DateFormat yFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
         displayYear = yFormat.format(calendar.getTime());
         yearDate.setText(displayYear);
-
     }
 
+    // Function to update the dates for the days of the week, heading the day buttons
     public void updateDays(){
         DateFormat dFormat = new SimpleDateFormat("dd", Locale.getDefault());
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -88,18 +81,23 @@ public class SecretaryUI extends javax.swing.JFrame {
         date5L.setText("Fri - " + dFormat.format(calendar.getTime()));
     }
 
+    // Function to update the buttons for each day of the week, displaying the number of appointments
+    // on the day, and showing the right colour
     public void updateDayButtons(){
+
         refdate = calendar.getTime();
+        // Colour the buttons appropriately
         recolourButtons(calendar.getTime());
 
+        // Get appointments on each day
         ArrayList<Integer> apts = new ArrayList<>();
-
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
             ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
             apts.add(dayApts.size());
         }
 
+        // Set the value for each button
         day1B.setText(String.valueOf(apts.get(0)));
         day2B.setText(String.valueOf(apts.get(1)));
         day3B.setText(String.valueOf(apts.get(2)));
@@ -107,24 +105,26 @@ public class SecretaryUI extends javax.swing.JFrame {
         day5B.setText(String.valueOf(apts.get(4)));
     }
 
+    // Function to repaint the colour of buttons
     public void recolourButtons(Date currentDate){
+        // Default to light gray
         day1B.setBackground(Color.LIGHT_GRAY);
         day2B.setBackground(Color.LIGHT_GRAY);
         day3B.setBackground(Color.LIGHT_GRAY);
         day4B.setBackground(Color.LIGHT_GRAY);
         day5B.setBackground(Color.LIGHT_GRAY);
 
+        // Find today's date
         int trueDay = 0;
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
-
             DateFormat tDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String tempDate = tDate.format(calendar.getTime());
             if(tempDate.equals(dateActual)){
                 trueDay = i+1;
             }
         }
-
+        // Colour it green
         switch (trueDay) {
             case 1:
                 day1B.setBackground(new Color(0,153,51));
@@ -144,10 +144,10 @@ public class SecretaryUI extends javax.swing.JFrame {
             default:
                 break;
         }
-        
+
+        // Colour the day button corresponding to the current day open in the timetable
         calendar.setTime(currentDate);
         int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
         switch (dayInWeek-1) {
             case 1:
                 day1B.setBackground(Color.GRAY);
@@ -167,11 +167,14 @@ public class SecretaryUI extends javax.swing.JFrame {
         }
     }
 
-
+    // Function to update the timetable, displaying the correct day.
+    // This defaults to Today on open, Monday on next week, and the specific day on search
     public void updateTimetable(){
+        // Set the date
         Date now = calendar.getTime();
         ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
 
+        // Lists for each timeslot
         ArrayList<Appointment> slot1apts = new ArrayList<>();
         ArrayList<Appointment> slot2apts = new ArrayList<>();
         ArrayList<Appointment> slot3apts = new ArrayList<>();
@@ -181,6 +184,7 @@ public class SecretaryUI extends javax.swing.JFrame {
         ArrayList<Appointment> slot7apts = new ArrayList<>();
         ArrayList<Appointment> slot8apts = new ArrayList<>();
 
+        // Split the appointments in to their correct time slots based on start time
         for (int i=0; i<dayApts.size(); i++){
             DateFormat time = new SimpleDateFormat("HH");
             Appointment singleApt = dayApts.get(i);
@@ -213,6 +217,7 @@ public class SecretaryUI extends javax.swing.JFrame {
             }
         }
 
+        // Update each hour slot
         updateHourSlot(appointmentSlot1, slot1apts, now);
         updateHourSlot(appointmentSlot2, slot2apts, now);
         updateHourSlot(appointmentSlot3, slot3apts, now);
@@ -223,10 +228,12 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateHourSlot(appointmentSlot8, slot8apts, now);
     }
 
-
+    // Update the contents of each Hour slot
     public void updateHourSlot(JPanel slot, ArrayList<Appointment> apts, Date now){
+        // Remove any appointments
         slot.removeAll();
-        
+
+        // Display new appointments, adding a new button for each one
         for (int i=0; i<apts.size(); i++){
             DateFormat time = new SimpleDateFormat("HH:mm");
             Appointment currentApt = apts.get(i);
@@ -247,18 +254,22 @@ public class SecretaryUI extends javax.swing.JFrame {
             Date endTime = currentApt.getEndTime();
             String st = time.format(startTime);
             String et = time.format(endTime);
+
+            // Add a button for the appointment, showing some rudimentary details
             JButton appointment = new JButton("<html>" + st + " - " + et + "<br />" + forename + " " + surname + "<br />" + practitioner + "</html>");
-
+            // Add a listener to open the full "Appointment View" panel
             appointment.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent e)
                 {
+                    // Create the appointment view
                     AppointmentView appointmentDetails = new AppointmentView();
                     appointmentDetails.setAppointment(currentApt);
                     appointmentDetails.setVisible(true);
+                    // Had to modify the close action to update the details on screen, to remove the need for manual refreshing
                     appointmentDetails.addWindowListener(new java.awt.event.WindowAdapter() {
                         @Override
                         public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                            // Update the relevant UI elements
                             updateDayButtons();
                             calendar.setTime(now);
                             updateTimetable();
@@ -267,15 +278,18 @@ public class SecretaryUI extends javax.swing.JFrame {
                 }
             });
 
+            // Add the button to the panel
             slot.add(appointment);
         }
 
+        // Repaint
         slot.invalidate();
         slot.revalidate();
         slot.repaint();
-
     }
 
+
+    // The code below was generated by the netBeans UI designer //
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
@@ -919,18 +933,27 @@ public class SecretaryUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    private void nextWeekActionPerformed(java.awt.event.ActionEvent evt) {      
+
+
+    // Code below here is functions related to GUI specific elements //
+
+    // Function to advance to the next week
+    private void nextWeekActionPerformed(java.awt.event.ActionEvent evt) {
+        // Set date to monday, and add 7 Days
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, +7);
-
+        // Update the UI elements
         updateNav();
         updateDays();
         updateDayButtons();
+        // Default the displayed day to monday
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
+        // Recolour the buttons
         recolourButtons(calendar.getTime());
     }
 
+    // Same as above, but for previous weeks
     private void prevWeekActionPerformed(java.awt.event.ActionEvent evt) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, -7);
@@ -938,38 +961,41 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateNav();
         updateDays();
         updateDayButtons();
+
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
+    // Function to go to a specific date
     private void goToButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // Convert the string in to a usable date
         String goToString = searchDate.getText();
         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         try {
+            // Instantiate this date and set the calendar
             Date goToDate = fmt.parse(goToString);
-
             calendar.setTime(goToDate);
-
+            // Update the UI
             updateNav();
             updateDays();
             updateDayButtons();
+            // Because of the way the UI updates, calendar needs to be reset before these last 2 updates
             calendar.setTime(goToDate);
             updateTimetable();
             recolourButtons(goToDate);
-
         } catch (ParseException ex) {
             Logger.getLogger(SecretaryUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    // Function to reset the calendar to today's date
     private void resetDateActionPerformed(java.awt.event.ActionEvent evt) {
-        // Reset day to today
+        // Set the calendar
         calendar.setTime(today);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
         searchDate.setText("dd/mm/yyyy");
-
+        // Update UI
         updateNav();
         updateDays();
         updateDayButtons();
@@ -979,17 +1005,19 @@ public class SecretaryUI extends javax.swing.JFrame {
         recolourButtons(calendar.getTime());
     }
 
-    private void lookupPatientActionPerformed(java.awt.event.ActionEvent evt) { 
+    // Function to lookup a patient
+    private void lookupPatientActionPerformed(java.awt.event.ActionEvent evt) {
         // Open the lookup patient GUI, do NOT close the current GUI
         LookUpPatient lookup = new LookUpPatient();
         lookup.setVisible(true);
     }
 
+    // Function to open the book appointment panel
     private void bookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
         // Open the book appointment GUI, do NOT close the current GUI
         BookAppointment book = new BookAppointment();
         book.setVisible(true);
-        
+        // Modify the close operation again, to update on close in real time
         book.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -997,48 +1025,52 @@ public class SecretaryUI extends javax.swing.JFrame {
                 calendar.setTime(refdate);
                 updateTimetable();
             }
-        });   
+        });
     }
 
-    private void searchDateMouseClicked(java.awt.event.MouseEvent evt) {    
+    // Set the text in search to disappear on mouse click
+    private void searchDateMouseClicked(java.awt.event.MouseEvent evt) {
         searchDate.setText("");
     }
 
+    // Function to open the Register Patient panel
+    private void registerPatientActionPerformed(java.awt.event.ActionEvent evt) {
+        RegisterPatient register = new RegisterPatient();
+        register.setVisible(true);
+    }
+
+
+    // Code below here is for the functions of each day button //
     private void day1BActionPerformed(java.awt.event.ActionEvent evt) {
+        // Set the date and update the UI
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
-
-    private void day2BActionPerformed(java.awt.event.ActionEvent evt) {    
+    private void day2BActionPerformed(java.awt.event.ActionEvent evt) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
-
     private void day3BActionPerformed(java.awt.event.ActionEvent evt) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
-
     private void day4BActionPerformed(java.awt.event.ActionEvent evt) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
-
     private void day5BActionPerformed(java.awt.event.ActionEvent evt) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
-    private void registerPatientActionPerformed(java.awt.event.ActionEvent evt) {
-        RegisterPatient register = new RegisterPatient();
-        register.setVisible(true);
-    }
 
+
+    // Variables declaration
     private javax.swing.JPanel appointmentSlot1;
     private javax.swing.JPanel appointmentSlot2;
     private javax.swing.JPanel appointmentSlot3;
@@ -1089,4 +1121,13 @@ public class SecretaryUI extends javax.swing.JFrame {
     private javax.swing.JLabel weekDates;
     private javax.swing.JPanel weekWrapper;
     private javax.swing.JLabel yearDate;
+    private Calendar calendar;
+    private String weekStart;
+    private String weekEnd;
+    private String displayMonth;
+    private String displayYear;
+    private String dateActual;
+    private final Date today;
+    private Date refdate;
+
 }
