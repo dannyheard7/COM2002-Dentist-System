@@ -29,6 +29,9 @@ public class OutstandingCosts {
 
     private Patient patient;
 
+    /**
+     * Creates new form OutstandingCosts
+     */
     public OutstandingCosts() {
         final JFrame frame = new JFrame("Outstanding Costs");
         $$$setupUI$$$();
@@ -38,6 +41,8 @@ public class OutstandingCosts {
         frame.pack();
         frame.setVisible(true);
 
+        //Action listener for the markPaid button.
+        //When clicked it removes the selected cost from the list of outstanding costs.
         markPaidButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,10 +58,11 @@ public class OutstandingCosts {
             }
         });
 
+        //Action listener for the done button.
+        //When clicked it closes the window.
         doneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Is this the best way to dispose?
                 frame.setVisible(false);
                 frame.dispose();
             }
@@ -68,6 +74,7 @@ public class OutstandingCosts {
         unpaidList = new JList(listModel);
     }
 
+    //Set patient method to be able to display the outstanding costs for a given patient.
     public void setPatient(Patient patient) {
         this.patient = patient;
         ArrayList<Appointment> appointments = Appointment.findPatientsAppointments(patient);
