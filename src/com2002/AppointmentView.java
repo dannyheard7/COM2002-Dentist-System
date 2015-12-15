@@ -261,14 +261,23 @@ public class AppointmentView extends javax.swing.JFrame {
         dateStr = dateFormat.format(start);
         staff = app.getStaff().getPosition();
         TxtFld_AppointmentView_Title.setText(title);
+        TxtFld_AppointmentView_Title.setEditable(false);
         TxtFld_AppointmentView_Forename.setText(forename);
+        TxtFld_AppointmentView_Forename.setEditable(false);
         TxtFld_AppointmentView_Surname.setText(surname);
+        TxtFld_AppointmentView_Surname.setEditable(false);
         TxtFld_AppointmentView_Dob.setText(dateOfBirth);
+        TxtFld_AppointmentView_Dob.setEditable(false);
         TxtFld_AppointmentView_Contact.setText(contactNo);
+        TxtFld_AppointmentView_Contact.setEditable(false);
         TxtFld_AppointmentView_Date.setText(dateStr);
+        TxtFld_AppointmentView_Date.setEditable(false);
         TxtFld_AppointmentView_Start.setText(startTime);
+        TxtFld_AppointmentView_Start.setEditable(false);
         TxtFld_AppointmentView_End.setText(endTime);
+        TxtFld_AppointmentView_End.setEditable(false);
         TxtFld_AppointmentView_Partner.setText(staff);
+        TxtFld_AppointmentView_Partner.setEditable(false);
         if (end.getTime() - start.getTime() == 1200000){
             if (staff.equals("Dentist")){
                 TxtFld_AppointmentView_Type.setText("Check-Up");
@@ -280,6 +289,7 @@ public class AppointmentView extends javax.swing.JFrame {
         else{
             TxtFld_AppointmentView_Type.setText("Treatment");
         }
+        TxtFld_AppointmentView_Type.setEditable(false);
         
         this.setTitle("Appointment: " + dateStr + " " + startTime + " - " + endTime + ", " + staff);
     }

@@ -18,11 +18,17 @@ public class PatientView extends javax.swing.JFrame {
         dateOfBirth = patient.getDateOfBirth().toString();
         contactNo = patient.getContactNo();
         TxtFld_PatientView_PatientID.setText(""+patientID);
+        TxtFld_PatientView_PatientID.setEditable(false);
         TxtFld_PatientView_Title.setText(title);
+        TxtFld_PatientView_Title.setEditable(false);
         TxtFld_PatientView_Forename.setText(forename);
+        TxtFld_PatientView_Forename.setEditable(false);
         TxtFld_PatientView_Surname.setText(surname);
+        TxtFld_PatientView_Surname.setEditable(false);
         TxtFld_PatientView_Dob.setText(dateOfBirth);
+        TxtFld_PatientView_Dob.setEditable(false);
         TxtFld_PatientView_Contact.setText(contactNo);
+        TxtFld_PatientView_Contact.setEditable(false);
     }
     
     @SuppressWarnings("unchecked")
