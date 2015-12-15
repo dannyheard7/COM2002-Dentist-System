@@ -131,12 +131,12 @@ public class Appointment {
                 overlaps = true;
             } 
             
-            if (overlaps == true && a.getPatient().getPatientID() == getID()) {
+            if (overlaps && a.getStaff().getId() == staff.getId()) {
+                return true;
+            } else if (overlaps && a.getPatient().getPatientID() == getID()) {
                 return true;
             }
-            if (overlaps == true && a.getStaff().getId() == staff.getId()) {
-                return true;
-            }
+            
         }
         
         return false;
