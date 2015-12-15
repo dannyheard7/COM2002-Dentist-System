@@ -19,34 +19,14 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Louis
- */
+
+// Most of this is identical to the Secretary UI. That has been commented in detail, this will comment the differences
 public class PartnerUI extends javax.swing.JFrame {
 
-
-    private Calendar calendar;
-    private String weekStart;
-    private String weekEnd;
-    private String displayMonth;
-    private String displayYear;
-    private String dateActual;
-    private final Date today;
-    private Date refdate;
-    private String currentPartner;
-
-    /**
-     * Creates new form UI
-     */
     public PartnerUI(int number) {
 
+        // Depending on a constructor variable, define the type of UI, Dentist or Hygienist
         if (number == 0){
             currentPartner = "Dentist";
         }
@@ -63,8 +43,6 @@ public class PartnerUI extends javax.swing.JFrame {
         today = calendar.getTime();
         dateActual = dateAct.format(calendar.getTime());
 
-
-
         initComponents();
         this.setLocationRelativeTo(null);
         uiType.setText("Viewing for " + currentPartner);
@@ -79,15 +57,13 @@ public class PartnerUI extends javax.swing.JFrame {
 
     public void updateNav(){
         DateFormat dFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
-
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         displayMonth = dFormat.format(calendar.getTime());
-        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
 
+        DateFormat dFormat2 = new SimpleDateFormat("dd", Locale.getDefault());
         weekStart = dFormat2.format(calendar.getTime());
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         weekEnd = dFormat2.format(calendar.getTime());
-
         weekDates.setText(displayMonth + "  Week: " + weekStart + " - " + weekEnd);
 
         DateFormat yFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
@@ -113,63 +89,44 @@ public class PartnerUI extends javax.swing.JFrame {
     public void updateDayButtons(){
 
         refdate = calendar.getTime();
-
         recolourButtons(calendar.getTime());
 
         ArrayList<Integer> apts = new ArrayList<>();
-
-
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
 
 
             ArrayList<Appointment> dayApts = Appointment.getAppointmentsOnDate(calendar.getTime());
             ArrayList<Appointment> specificApts = new ArrayList<>();
-
             for (int j=0; j<dayApts.size(); j++){
                 if (dayApts.get(j).getStaff().getPosition().equals(currentPartner)){
                     specificApts.add(dayApts.get(j));
                 }
             }
-
             apts.add(specificApts.size());
-
         }
-
-
         day1B.setText(String.valueOf(apts.get(0)));
         day2B.setText(String.valueOf(apts.get(1)));
         day3B.setText(String.valueOf(apts.get(2)));
         day4B.setText(String.valueOf(apts.get(3)));
         day5B.setText(String.valueOf(apts.get(4)));
-
-
-
     }
 
     public void recolourButtons(Date currentDate){
-
-
-
         day1B.setBackground(Color.LIGHT_GRAY);
         day2B.setBackground(Color.LIGHT_GRAY);
         day3B.setBackground(Color.LIGHT_GRAY);
         day4B.setBackground(Color.LIGHT_GRAY);
         day5B.setBackground(Color.LIGHT_GRAY);
-
         int trueDay = 0;
         for(int i=0; i<5; i++){
             calendar.set(Calendar.DAY_OF_WEEK, (i+2));
-
             DateFormat tDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String tempDate = tDate.format(calendar.getTime());
             if(tempDate.equals(dateActual)){
                 trueDay = i+1;
             }
         }
-
-
-
 
         switch (trueDay) {
             case 1:
@@ -190,9 +147,9 @@ public class PartnerUI extends javax.swing.JFrame {
             default:
                 break;
         }
+
         calendar.setTime(currentDate);
         int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
         switch (dayInWeek-1) {
             case 1:
                 day1B.setBackground(Color.GRAY);
@@ -210,9 +167,7 @@ public class PartnerUI extends javax.swing.JFrame {
                 day5B.setBackground(Color.GRAY);
                 break;
         }
-
     }
-
 
     public void updateTimetable(){
 
@@ -228,6 +183,7 @@ public class PartnerUI extends javax.swing.JFrame {
         ArrayList<Appointment> slot7apts = new ArrayList<>();
         ArrayList<Appointment> slot8apts = new ArrayList<>();
 
+        // Get Specific Appointments for either Partner
         ArrayList<Appointment> specificApts = new ArrayList<>();
         for (int i=0; i<dayApts.size(); i++){
             if (dayApts.get(i).getStaff().getPosition().equals(currentPartner)){
@@ -235,16 +191,12 @@ public class PartnerUI extends javax.swing.JFrame {
             }
         }
 
-
         for (int i=0; i<specificApts.size(); i++){
-
-
             DateFormat time = new SimpleDateFormat("HH");
             Appointment singleApt = specificApts.get(i);
             Date startTime = singleApt.getStartTime();
             Date endTime = singleApt.getEndTime();
             String st = time.format(startTime);
-
 
             if (st.equals("09")){
                 slot1apts.add(singleApt);
@@ -270,9 +222,7 @@ public class PartnerUI extends javax.swing.JFrame {
             else if (st.equals("16")){
                 slot8apts.add(singleApt);
             }
-
         }
-
         updateHourSlot(appointmentSlot1, slot1apts, now);
         updateHourSlot(appointmentSlot2, slot2apts, now);
         updateHourSlot(appointmentSlot3, slot3apts, now);
@@ -281,13 +231,10 @@ public class PartnerUI extends javax.swing.JFrame {
         updateHourSlot(appointmentSlot6, slot6apts, now);
         updateHourSlot(appointmentSlot7, slot7apts, now);
         updateHourSlot(appointmentSlot8, slot8apts, now);
-
-
     }
 
 
     public void updateHourSlot(JPanel slot, ArrayList<Appointment> apts, Date now){
-
         slot.removeAll();
         for (int i=0; i<apts.size(); i++){
             DateFormat time = new SimpleDateFormat("HH:mm");
@@ -310,9 +257,7 @@ public class PartnerUI extends javax.swing.JFrame {
             String st = time.format(startTime);
             String et = time.format(endTime);
             JButton appointment = new JButton("<html>" + st + " - " + et + "<br />" + forename + " " + surname + "<br />" + practitioner + "</html>");
-
             appointment.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent e)
                 {
                     RecordVisit recvis = new RecordVisit();
@@ -320,28 +265,14 @@ public class PartnerUI extends javax.swing.JFrame {
                     recvis.setVisible(true);
                 }
             });
-
             slot.add(appointment);
         }
-
         slot.invalidate();
         slot.revalidate();
         slot.repaint();
-
-
-
     }
 
-
-
-
-
-
-    /**
-     * This method is called from within the constructor to initialise the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    // Generated Code
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
@@ -945,10 +876,8 @@ public class PartnerUI extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void nextWeekActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, +7);
-
         updateNav();
         updateDays();
         updateDayButtons();
@@ -958,11 +887,8 @@ public class PartnerUI extends javax.swing.JFrame {
     }
 
     private void prevWeekActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.add(Calendar.DATE, -7);
-
         updateNav();
         updateDays();
         updateDayButtons();
@@ -972,15 +898,11 @@ public class PartnerUI extends javax.swing.JFrame {
     }
 
     private void goToButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-
         String goToString = searchDate.getText();
         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         try {
             Date goToDate = fmt.parse(goToString);
-
             calendar.setTime(goToDate);
-
             updateNav();
             updateDays();
             updateDayButtons();
@@ -991,18 +913,12 @@ public class PartnerUI extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(PartnerUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }
 
     private void resetDateActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-
         calendar.setTime(today);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
         searchDate.setText("dd/mm/yyyy");
-
         updateNav();
         updateDays();
         updateDayButtons();
@@ -1010,88 +926,44 @@ public class PartnerUI extends javax.swing.JFrame {
         updateTimetable();
         calendar.setTime(today);
         recolourButtons(calendar.getTime());
-
-
-        // Reset the date to today
-
     }
 
     private void searchDateMouseClicked(java.awt.event.MouseEvent evt) {
-        // TODO add your handling code here:
         searchDate.setText("");
     }
 
-
-
     private void day1BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
-
-
     }
 
     private void day2BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
     private void day3BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
     private void day4BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
     private void day5BActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
 
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PartnerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-    }
-
-    // Variables declaration - do not modify
+    // Variables declaration
     private javax.swing.JPanel appointmentSlot1;
     private javax.swing.JPanel appointmentSlot2;
     private javax.swing.JPanel appointmentSlot3;
@@ -1139,5 +1011,15 @@ public class PartnerUI extends javax.swing.JFrame {
     private javax.swing.JLabel weekDates;
     private javax.swing.JPanel weekWrapper;
     private javax.swing.JLabel yearDate;
+    private Calendar calendar;
+    private String weekStart;
+    private String weekEnd;
+    private String displayMonth;
+    private String displayYear;
+    private String dateActual;
+    private final Date today;
+    private Date refdate;
+    private String currentPartner;
+
     // End of variables declaration
 }
