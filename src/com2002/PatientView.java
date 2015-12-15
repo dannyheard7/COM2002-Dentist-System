@@ -99,7 +99,7 @@ public class PatientView extends javax.swing.JFrame {
         });
 
         Btn_PatientView_FindAppointment.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        Btn_PatientView_FindAppointment.setText("Find Appointment");
+        Btn_PatientView_FindAppointment.setText("Find Appointments");
         Btn_PatientView_FindAppointment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_PatientView_FindAppointmentActionPerformed(evt);

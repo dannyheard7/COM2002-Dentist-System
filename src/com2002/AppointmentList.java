@@ -125,6 +125,12 @@ public class AppointmentList extends javax.swing.JFrame {
             AppointmentView appView = new AppointmentView();
             appView.setAppointment(app);
             appView.setVisible(true);
+            appView.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    displayAppointments();
+                }
+            });
         }
     }
 
@@ -134,7 +140,14 @@ public class AppointmentList extends javax.swing.JFrame {
 
     public void setPatient(Patient patient){
         patientObj = patient;
+
         listModel = new DefaultListModel();
+        displayAppointments();
+
+    }
+
+    public void displayAppointments(){
+        listModel.removeAllElements();
         ArrayList<Appointment> appointments = Appointment.findPatientsAppointments(patientObj);
         for (Appointment a : appointments) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -143,6 +156,7 @@ public class AppointmentList extends javax.swing.JFrame {
         }
         Lst_AppointmentList_Appointment.setModel(listModel);
     }
+
 
     /**
      * @param args the command line arguments
