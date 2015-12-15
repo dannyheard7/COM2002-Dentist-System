@@ -116,12 +116,6 @@ public class Appointment {
     */
     public boolean checkOverlap(Patient patient, Date startTime, Date endTime, Staff staff) {
         for (Appointment a : Appointment.getAppointmentsOnDate(startTime)) {
-            System.out.println(a.getStartTime());
-            System.out.println(a.getEndTime());
-            
-            System.out.println(startTime);
-            System.out.println(endTime);
-            
             boolean overlaps = false;
             
             if (startTime.after(a.getStartTime()) && startTime.before(a.getEndTime())) {
@@ -129,8 +123,7 @@ public class Appointment {
             } else if (endTime.after(a.getStartTime()) && endTime.before(a.getEndTime())) {
                 overlaps = true;
             } else if (a.getStartTime().after(startTime) && a.getStartTime().before(endTime)) {
-                overlaps = true;
-                
+                overlaps = true;              
             } else if (a.getEndTime().after(startTime) && a.getEndTime().before(endTime)) {
                 overlaps = true;
             } 
@@ -139,8 +132,7 @@ public class Appointment {
                 return true;
             } else if (overlaps && a.getPatient().getPatientID() == getID()) {
                 return true;
-            }
-            
+            }    
         }
         
         return false;

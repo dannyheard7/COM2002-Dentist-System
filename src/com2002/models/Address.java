@@ -66,11 +66,13 @@ public class Address {
             stmt = conn.prepareStatement("INSERT INTO Address (houseNo, street, "
                     + "city, district, postcode) VALUES (?, ?, ?, ?, ?)");
 
+            postcode = postcode.replace(" ", "");
+            
             stmt.setInt(1, houseNo);
             stmt.setString(2, street);
             stmt.setString(3, city);
             stmt.setString(4, district);
-            stmt.setString(5, postcode.replace(" ", ""));
+            stmt.setString(5, postcode);
 
             stmt.executeUpdate();
         } catch(SQLException e) {

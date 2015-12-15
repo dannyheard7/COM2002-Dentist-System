@@ -268,8 +268,8 @@ public class RegisterPatient extends javax.swing.JFrame {
                 DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
                 Date dob = fmt.parse(dobString);
                 Patient patient = new Patient(title,forename,surname,dob,contactNo);
-                new Address(houseNo,street,city,district,postcode);
-                patient.addAddress(new Address(houseNo,postcode));
+                Address a = new Address(houseNo,street,city,district, postcode);
+                patient.addAddress(a);
                 showSuccess();
             } catch (Exception ex) {
                 System.out.println(ex.toString());

@@ -42,13 +42,11 @@ public class PatientPlan {
         this.remainHygiene = p.getHygieneCount();
         this.remainTreatments = p.getTreatments();
         conn = Database.getConnection();
-        PreparedStatement stmt = null;    
-       
+        PreparedStatement stmt = null;           
 
         try {
             stmt = conn.prepareStatement("INSERT INTO PatientPlan (patientID, planName, "
                     + "remainingTreatments, remainingCheckUps, remainingHygiene, renewDate) VALUES (?, ?, ?, ?, ?, ?)");
-
 
             stmt.setInt(1, patientID);
             stmt.setString(2, planName);
