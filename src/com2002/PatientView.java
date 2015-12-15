@@ -51,8 +51,9 @@ public class PatientView extends javax.swing.JFrame {
         Btn_PatientView_ViewPatientPlan = new javax.swing.JButton();
         Btn_PatientView_OutstandingCosts = new javax.swing.JButton();
         Btn_PatientView_Cancel = new javax.swing.JButton();
+        Btn_PatientView_FindAppointment = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Patient");
 
         Lbl_PatientView_PatientID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -97,6 +98,14 @@ public class PatientView extends javax.swing.JFrame {
             }
         });
 
+        Btn_PatientView_FindAppointment.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        Btn_PatientView_FindAppointment.setText("Find Appointment");
+        Btn_PatientView_FindAppointment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_PatientView_FindAppointmentActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PatientViewPanelLayout = new javax.swing.GroupLayout(PatientViewPanel);
         PatientViewPanel.setLayout(PatientViewPanelLayout);
         PatientViewPanelLayout.setHorizontalGroup(
@@ -138,6 +147,9 @@ public class PatientView extends javax.swing.JFrame {
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(PatientViewPanelLayout.createSequentialGroup()
                                                 .addComponent(Btn_PatientView_OutstandingCosts)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(PatientViewPanelLayout.createSequentialGroup()
+                                                .addComponent(Btn_PatientView_FindAppointment)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(Btn_PatientView_Cancel))))
         );
@@ -169,8 +181,10 @@ public class PatientView extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(Btn_PatientView_ViewPatientPlan)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Btn_PatientView_OutstandingCosts)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(PatientViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(Btn_PatientView_OutstandingCosts)
+                                        .addComponent(Btn_PatientView_FindAppointment)
                                         .addComponent(Btn_PatientView_Cancel))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -185,7 +199,7 @@ public class PatientView extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(PatientViewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PatientViewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -207,9 +221,16 @@ public class PatientView extends javax.swing.JFrame {
         dispose();
     }
 
+    private void Btn_PatientView_FindAppointmentActionPerformed(java.awt.event.ActionEvent evt) {
+        AppointmentList appList = new AppointmentList();
+        appList.setPatient(patientObj);
+        appList.setVisible(true);
+    }
+
     private javax.swing.JButton Btn_PatientView_Cancel;
     private javax.swing.JButton Btn_PatientView_OutstandingCosts;
     private javax.swing.JButton Btn_PatientView_ViewPatientPlan;
+    private javax.swing.JButton Btn_PatientView_FindAppointment;
     private javax.swing.JLabel Lbl_PatientView_Contact;
     private javax.swing.JLabel Lbl_PatientView_Dob;
     private javax.swing.JLabel Lbl_PatientView_Forename;
