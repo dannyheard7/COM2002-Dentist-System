@@ -98,7 +98,7 @@ public class RecordVisit extends javax.swing.JFrame {
         });
 
         Btn_RecordVisit_Cancel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        Btn_RecordVisit_Cancel.setText("Record Visit");
+        Btn_RecordVisit_Cancel.setText("Record Treatment");
         Btn_RecordVisit_Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_RecordVisit_CancelActionPerformed(evt);
@@ -238,6 +238,7 @@ public class RecordVisit extends javax.swing.JFrame {
         RecordTreatment record = new RecordTreatment();
         record.setTreatment(appointmentObj);
         record.setVisible(true);
+        Btn_RecordVisit_OK.setSelected(false);
     }
 
     public void setRecordVisit(Appointment app) {
