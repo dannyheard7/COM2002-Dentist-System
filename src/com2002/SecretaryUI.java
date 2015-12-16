@@ -1,23 +1,18 @@
 package com2002;
 
-import com2002.models.*;
+import com2002.models.Appointment;
+import com2002.models.Patient;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 public class SecretaryUI extends javax.swing.JFrame {
 
@@ -43,8 +38,8 @@ public class SecretaryUI extends javax.swing.JFrame {
         updateDays();
         updateDayButtons();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        updateTimetable();
         calendar.setTime(today);
+        updateTimetable();
         recolourButtons(calendar.getTime());
     }
 
@@ -229,14 +224,14 @@ public class SecretaryUI extends javax.swing.JFrame {
     }
 
     // Update the contents of each Hour slot
-    public void updateHourSlot(JPanel slot, ArrayList<Appointment> apts, Date now){
+    public void updateHourSlot(JPanel slot, ArrayList<Appointment> apts, final Date now){
         // Remove any appointments
         slot.removeAll();
 
         // Display new appointments, adding a new button for each one
         for (int i=0; i<apts.size(); i++){
             DateFormat time = new SimpleDateFormat("HH:mm");
-            Appointment currentApt = apts.get(i);
+            final Appointment currentApt = apts.get(i);
             Patient aptPatient;
             String forename;
             String surname;
